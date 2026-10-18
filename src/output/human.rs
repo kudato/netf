@@ -345,7 +345,10 @@ fn context_registry(out: &mut String, row: &Row, indent: &str, width: usize) {
         out,
         indent,
         "Registry network",
-        &record.map_or_else(|| MISSING.into(), |record| record.range.to_string()),
+        &record.map_or_else(
+            || "not available (no record returned)".into(),
+            |record| record.range.to_string(),
+        ),
         width,
     );
 }
