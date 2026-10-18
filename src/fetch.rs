@@ -12,7 +12,8 @@
 //!   308, at most [`MAX_REDIRECTS`] times. `Location` can be absolute or
 //!   relative to the URL that responded. LACNIC responds to RDAP requests
 //!   with a 307 to another host, and the module follows it with a new
-//!   request through the pool.
+//!   request through the pool. Redirects from HTTPS to HTTP fail before
+//!   the next request.
 //! - **Conditional requests.** With [`Validators`] from a cache file, the
 //!   module sends `If-None-Match` and `If-Modified-Since`, and a 304
 //!   becomes [`Fetched::NotModified`].
@@ -231,8 +232,9 @@ impl Decode {
 ///
 /// # Errors
 ///
-/// Returns an error if the transport fails, a redirect has no valid
-/// `Location`, or there are more than [`MAX_REDIRECTS`] redirects.
+/// Returns an error if the transport fails or a redirect has no valid
+/// `Location`. Redirects from HTTPS to HTTP and chains longer than
+/// [`MAX_REDIRECTS`] also return errors.
 pub(crate) async fn get(
     transport: &dyn Transport,
     url: &str,
@@ -256,11 +258,8 @@ pub(crate) async fn get(
             .map_err(|e| transport_error(&class, url, e))?;
         match response.status {
             301 | 302 | 303 | 307 | 308 => {
-                let next = response
-                    .header("Location")
-                    .and_then(|location| resolve(&current, location))
-                    .ok_or_else(|| context(&class, url, "redirect without a valid Location"))?;
-                current = next;
+                current = redirect(&current, response.header("Location"))
+                    .map_err(|cause| context(&class, url, cause))?;
             }
             304 if validators.is_some_and(|v| !v.is_empty()) => return Ok(Fetched::NotModified),
             status => {
@@ -310,11 +309,33 @@ pub(crate) async fn json(
     }
 }
 
+/// Resolves `Location` and rejects redirects from HTTPS to HTTP.
+///
+/// # Errors
+///
+/// Returns an error if `Location` is missing or cannot be resolved, or if
+/// the redirect changes HTTPS to HTTP.
+pub(crate) fn redirect(base: &str, location: Option<&str>) -> Result<String, &'static str> {
+    let next = location
+        .and_then(|location| resolve(base, location))
+        .ok_or("redirect without a valid Location")?;
+    if base
+        .split_once(':')
+        .is_some_and(|(scheme, _)| scheme.eq_ignore_ascii_case("https"))
+        && next
+            .split_once(':')
+            .is_some_and(|(scheme, _)| scheme.eq_ignore_ascii_case("http"))
+    {
+        return Err("redirect from HTTPS to HTTP is not allowed");
+    }
+    Ok(next)
+}
+
 /// Resolves a `Location` against the URL that sent it.
 ///
 /// Handles absolute URLs, `//host/path`, `/path`, and paths relative to the
 /// directory of `base`. The query of `base` is never kept.
-pub(crate) fn resolve(base: &str, location: &str) -> Option<String> {
+fn resolve(base: &str, location: &str) -> Option<String> {
     let location = location.trim();
     if location.is_empty() {
         return None;
@@ -751,6 +772,64 @@ mod tests {
         assert_eq!(status, 200);
         assert_eq!(value["a"], 1);
         assert_eq!(stub.count(), 3);
+    }
+
+    #[tokio::test(flavor = "current_thread")]
+    async fn https_to_http_redirects_are_rejected() {
+        for status in [301, 302, 303, 307, 308] {
+            for (url, next) in [
+                (URL, "http://downloads.test/data"),
+                ("hTtPs://ris.ripe.test/data", "HtTp://downloads.test/data"),
+            ] {
+                let stub = Stub::new();
+                stub.on(
+                    url,
+                    Reply::status(status).header("Location", &format!(" {next} ")),
+                );
+                stub.on(next, Reply::ok("data"));
+                let error = get(&stub, url, Class::Dataset("ris-v4"), None)
+                    .await
+                    .unwrap_err();
+                assert_eq!(
+                    error.message(),
+                    format!("ris-v4: {url}: redirect from HTTPS to HTTP is not allowed")
+                );
+                assert_eq!(stub.count(), 1);
+                assert_eq!(stub.log()[0].url, url);
+            }
+        }
+    }
+
+    #[tokio::test(flavor = "current_thread")]
+    async fn http_redirects_and_https_upgrades_are_followed() {
+        let stub = Stub::new();
+        let first = "http://127.0.0.1:9/first";
+        let second = "http://127.0.0.1:9/second";
+        let third = "https://downloads.test/data";
+        stub.on(first, Reply::status(301).header("Location", "/second"));
+        stub.on(second, Reply::status(308).header("Location", third));
+        stub.on(third, Reply::ok("data"));
+        let fetched = get(&stub, first, Class::Dataset("ris-v4"), None)
+            .await
+            .unwrap();
+        assert_eq!(body(fetched).bytes(4).await.unwrap(), b"data"[..]);
+        assert_eq!(
+            stub.log()
+                .iter()
+                .map(|request| request.url.as_str())
+                .collect::<Vec<_>>(),
+            [first, second, third]
+        );
+    }
+
+    #[test]
+    fn redirects_require_a_location() {
+        for location in [None, Some(""), Some(" \t ")] {
+            assert_eq!(
+                redirect(URL, location),
+                Err("redirect without a valid Location")
+            );
+        }
     }
 
     #[tokio::test(flavor = "current_thread")]

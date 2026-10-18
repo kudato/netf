@@ -14,7 +14,8 @@
 //!   as "no record".
 //! - The client follows redirects: LACNIC sends Brazil to registro.br. A
 //!   record belongs to the registry of the server asked, not of the host
-//!   that responded.
+//!   that responded. Redirects from HTTPS to HTTP fail before the next
+//!   request.
 //! - All URLs go through `NETF_SOURCE_BASE`, both those of the bootstrap
 //!   and the `up` links.
 //! - Errors read `rdap: <registry>: <cause>`. A 404 is not an error.
@@ -717,6 +718,8 @@ impl RdapClient {
     /// through an egress comes back as a status, not an error. So does a
     /// status that the transport gave up on after its retries, such as a
     /// 503.
+    ///
+    /// Redirects from HTTPS to HTTP return an error before the next request.
     async fn send_json(&self, target: &Target, egress: Option<EgressId>) -> Result<(u16, Value)> {
         let mut current = target.url.clone();
         for _ in 0..=MAX_REDIRECTS {
@@ -732,10 +735,8 @@ impl RdapClient {
             };
             match response.status {
                 301 | 302 | 303 | 307 | 308 => {
-                    current = response
-                        .header("Location")
-                        .and_then(|location| fetch::resolve(&current, location))
-                        .ok_or_else(|| target.error("redirect without a valid Location"))?;
+                    current = fetch::redirect(&current, response.header("Location"))
+                        .map_err(|cause| target.error(cause))?;
                 }
                 status => {
                     let body = response
@@ -1074,6 +1075,53 @@ mod tests {
         assert_eq!(chain.len(), 1);
         assert_eq!(chain[0].range, range("203.0.113.0/24"));
         assert_eq!(chain[0].rir, Rir::Lacnic);
+    }
+
+    #[tokio::test]
+    async fn https_to_http_redirects_are_rejected() {
+        for status in [301, 302, 303, 307, 308] {
+            for egress in [None, Some(EgressId::direct())] {
+                let run = Run::new("rdap-https-to-http");
+                let script = Script::new(&["direct"]);
+                let next = "http://rdap.db.ripe.test/ip/192.0.2.0/24";
+                script.on(RIPE_NET, Reply::status(status).header("Location", next));
+                script.json(next, &samples::ripe_network());
+                let client = run.client(run.settings(), &script);
+                let target = Target {
+                    url: RIPE_NET.to_owned(),
+                    name: Arc::from("ripencc"),
+                    rir: Some(Rir::Ripencc),
+                };
+                let error = client.send_json(&target, egress.clone()).await.unwrap_err();
+                assert_eq!(
+                    error.message(),
+                    "rdap: ripencc: redirect from HTTPS to HTTP is not allowed"
+                );
+                assert_eq!(script.log(), [(RIPE_NET.to_owned(), egress)]);
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn https_redirects_resolve_relative_locations() {
+        let run = Run::new("rdap-relative-redirect");
+        let script = Script::new(&["direct"]);
+        let second = "https://rdap.other.test/net/start";
+        let third = "https://rdap.other.test/ip/192.0.2.0/24";
+        script.on(
+            RIPE_NET,
+            Reply::status(307).header("Location", "//rdap.other.test/net/start"),
+        );
+        script.on(
+            second,
+            Reply::status(302).header("Location", "../ip/192.0.2.0/24"),
+        );
+        script.json(third, &samples::ripe_network());
+        let client = run.client(run.settings(), &script);
+        let net = client.ip(range("192.0.2.0/24")).await.unwrap().unwrap();
+        assert_eq!(net.rir, Rir::Ripencc);
+        assert_eq!(net.range, range("192.0.2.0/24"));
+        assert_eq!(script.urls(), [RIPE_NET, second, third]);
     }
 
     #[tokio::test]
