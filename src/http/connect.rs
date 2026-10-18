@@ -29,12 +29,13 @@ pub(crate) type DirectConnector = HttpsConnector<HttpConnector>;
 /// The connector of a proxy egress.
 pub(crate) type ProxyConnector = HttpsConnector<Tunnel<HttpConnector>>;
 
-/// A `--proxy` URL that netf cannot use: a usage error, exit code 2.
+/// An error for a proxy URL that netf cannot use.
+/// The CLI exits with code 2 for this error.
 ///
-/// [`Display`](fmt::Display) gives the message without the `netf: ` prefix:
-/// `--proxy socks5://10.0.0.2:1080: unsupported proxy scheme, only http://
-/// is supported`. The message replaces the entire userinfo with `***`,
-/// or omits the URL if it cannot be safely redacted.
+/// [`Display`](fmt::Display) uses `--proxy URL: REASON` without the `netf: `
+/// prefix. `URL` contains `***` in place of the username and password.
+/// If the URL cannot be safely redacted, the message is `--proxy: REASON`.
+/// The stored URL is already redacted, so `Debug` also omits the credentials.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ProxyError {
     url: Option<String>,
@@ -133,14 +134,14 @@ pub(crate) fn parse_proxy(url: &str) -> Result<ProxyUrl, ProxyError> {
     })
 }
 
-/// Replaces all userinfo with `***` before the URL enters an error.
-/// Omits URLs that cannot be parsed even after redaction.
+/// Redacts the username and password before a URL is stored in `ProxyError`.
+/// Returns `None` if the scheme or the redacted URI is invalid.
 fn mask_credentials(url: &str) -> Option<String> {
     let (scheme, rest) = url.split_once("://")?;
     scheme.parse::<Scheme>().ok()?;
-    // A malformed password can contain '/', '?' or '#', so find the last
-    // '@' before trying to parse the URL. Hiding all userinfo also handles
-    // a percent-encoded ':' without decoding or retaining credentials.
+    // Locate the final '@' before parsing the URI because a malformed
+    // password can contain '/', '?', or '#'.
+    // Mask all userinfo to cover percent-encoded ':'.
     let masked = match rest.rsplit_once('@') {
         Some((_, host)) => format!("{scheme}://***@{host}"),
         None => url.to_owned(),
