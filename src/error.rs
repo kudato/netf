@@ -88,6 +88,14 @@ impl ExitCode {
 pub(crate) struct Error {
     kind: Kind,
     message: String,
+    location: Option<Box<Location>>,
+    hint: Option<String>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct Location {
+    source: Option<String>,
+    span: std::ops::Range<usize>,
 }
 
 impl Error {
@@ -96,6 +104,8 @@ impl Error {
         Self {
             kind,
             message: message.into(),
+            location: None,
+            hint: None,
         }
     }
 
@@ -144,12 +154,116 @@ impl Error {
         self.message = format!("{prefix}: {}", self.message);
         self
     }
+
+    /// Attaches a byte span without replacing a more specific inner error.
+    pub(crate) fn span(mut self, span: std::ops::Range<usize>) -> Self {
+        if self.location.is_none() {
+            self.location = Some(Box::new(Location { source: None, span }));
+        }
+        self
+    }
+
+    /// Attaches the source of a span, retaining the source of nested set errors.
+    pub(crate) fn source(mut self, source: &str) -> Self {
+        if let Some(location) = &mut self.location {
+            location.source.get_or_insert_with(|| source.to_owned());
+        }
+        self
+    }
+
+    pub(crate) fn hint(mut self, hint: impl Into<String>) -> Self {
+        self.hint = Some(hint.into());
+        self
+    }
+
+    /// The user-facing diagnostic. Display remains a concise error for callers.
+    pub(crate) fn render(&self) -> String {
+        let Some(location) = &self.location else {
+            return self.to_string();
+        };
+        let Some(source) = &location.source else {
+            return self.to_string();
+        };
+        let mut out = format!("netf: {}", crate::text::terminal_safe(&self.message));
+        out.push('\n');
+        out.push_str(&excerpt(source, location.span.clone()));
+        if let Some(hint) = &self.hint {
+            out.push('\n');
+            let mut chars = hint.chars();
+            if let Some(first) = chars.next() {
+                out.extend(first.to_uppercase());
+            }
+            out.push_str(&crate::text::terminal_safe(chars.as_str()));
+        }
+        out
+    }
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "netf: {}", self.message)
+        write!(f, "netf: {}", self.message)?;
+        if let Some(hint) = &self.hint {
+            write!(f, "; {hint}")?;
+        }
+        Ok(())
     }
+}
+
+/// Shows the affected lines, with Unicode display columns and bounded context.
+fn excerpt(source: &str, span: std::ops::Range<usize>) -> String {
+    use unicode_segmentation::UnicodeSegmentation as _;
+    use unicode_width::UnicodeWidthStr as _;
+    let start = source.floor_char_boundary(span.start.min(source.len()));
+    let end = source
+        .ceil_char_boundary(span.end.min(source.len()))
+        .max(start);
+    let mut out = String::new();
+    let mut offset = 0;
+    let mut shown = 0;
+    for line in source.split('\n') {
+        let last = offset + line.len();
+        if last >= start && (offset < end || offset <= start && start <= last) {
+            if shown == 3 {
+                out.push_str("  …\n");
+                break;
+            }
+            shown += 1;
+            let lo = start.saturating_sub(offset).min(line.len());
+            let hi = end.saturating_sub(offset).min(line.len());
+            let cut = line[..lo]
+                .grapheme_indices(true)
+                .rev()
+                .nth(24)
+                .map_or(0, |(i, _)| i);
+            let mut visible = String::new();
+            let mut before = 0;
+            let mut marked = 0;
+            if cut > 0 {
+                visible.push('…');
+                before += 1;
+            }
+            for (i, g) in line[cut..].grapheme_indices(true) {
+                let text = crate::text::terminal_safe(g);
+                if visible.width() + text.width() > 76 {
+                    visible.push('…');
+                    break;
+                }
+                if cut + i < lo {
+                    before += text.width();
+                } else if cut + i < hi {
+                    marked += text.width();
+                }
+                visible.push_str(&text);
+            }
+            out.push_str(&format!(
+                "\n  {visible}\n  {}{}\n",
+                " ".repeat(before),
+                "^".repeat(marked.max(1))
+            ));
+        }
+        offset = last + 1;
+    }
+    out
 }
 
 impl std::error::Error for Error {}

@@ -26,6 +26,16 @@ impl From<Field> for Column {
 }
 
 impl Column {
+    /// The shared catalog used for parsing and spelling suggestions.
+    pub(crate) fn names() -> impl Iterator<Item = &'static str> {
+        Field::ALL.iter().map(|field| field.name()).chain([
+            "match",
+            "net.holder",
+            "net.range",
+            "net.abuse",
+            "as.abuse",
+        ])
+    }
     /// Parses a name, keeping output-only names out of KQL.
     pub(crate) fn parse(name: &str) -> Option<Self> {
         match name {

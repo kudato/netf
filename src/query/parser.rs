@@ -108,18 +108,23 @@ impl<'a> Parser<'a> {
 
     /// Returns a usage error at byte offset `at`.
     fn error(&self, at: usize, message: impl std::fmt::Display) -> Error {
+        let text = self.lexer.text();
+        let rest = &text[at..];
+        let len = rest
+            .find(|c: char| c.is_whitespace() || matches!(c, ':' | '(' | ')' | '{' | '}' | '"'))
+            .unwrap_or(rest.len())
+            .max(rest.chars().next().map_or(0, char::len_utf8));
         Error::usage(format!(
             "query: {message} at column {}",
             column(self.lexer.text(), at)
         ))
+        .span(at..at + len)
+        .source(text)
     }
 
     /// Returns a usage error at byte offset `at` with a hint after it.
     fn error_hint(&self, at: usize, message: impl std::fmt::Display, hint: &str) -> Error {
-        Error::usage(format!(
-            "query: {message} at column {}; {hint}",
-            column(self.lexer.text(), at)
-        ))
+        self.error(at, message).hint(hint)
     }
 
     /// Describes what is at the cursor for a message: `'LLC'`, `')'`, or
@@ -395,6 +400,8 @@ impl<'a> Parser<'a> {
             Err(_) => None,
         };
         Error::usage(suggest::nested_group(group, rewrite))
+            .span(open.saturating_sub(group.len() + 1)..open + 1)
+            .source(self.lexer.text())
     }
 
     /// Parses `field range_op literal`.

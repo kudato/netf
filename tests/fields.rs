@@ -153,11 +153,11 @@ fn fields_errors_are_usage_errors() {
     for (args, text) in [
         (
             &["--fields", "holder", "as.asn: 64496"][..],
-            "netf: --fields: holder: unknown field; see netf --help=fields",
+            "netf: --fields: holder: unknown field; see netf --help=fields\n\n  --fields holder\n           ^^^^^^\n",
         ),
         (
             &["--fields", "route", "as.asn: 64496"][..],
-            "netf: --fields: route: already a column",
+            "netf: --fields: route: already a column\n\n  --fields route\n           ^^^^^\n",
         ),
         (
             &["--ipset", "--fields", "as.name", "as.asn: 64496"][..],

@@ -277,7 +277,7 @@ fn finish(invocation: &Invocation, result: Result<Vec<u8>>) -> Outcome {
     match result {
         Ok(stdout) => Outcome { code: 0, stdout },
         Err(error) => {
-            invocation.reporter.error(&error.to_string());
+            invocation.reporter.error(&error.render());
             Outcome {
                 code: error.exit_code().code(),
                 stdout: Vec::new(),
@@ -324,7 +324,8 @@ async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<V
         &|name| settings.sets.query(name),
         settings.families,
         &invocation.env.cwd,
-    )?;
+    )
+    .map_err(|error| error.source(&settings.query))?;
     let plan = plan::build(expr, settings.mode.clone(), settings.families)?;
     // Create the output before the work, so that an unwritable directory
     // fails at once.

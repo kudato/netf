@@ -102,7 +102,7 @@ fn help_and_errors_in_options_touch_nothing() {
         run(&world, &["--bogus", "x"]),
         (
             2,
-            "netf: --bogus: unknown option; see netf --help".to_owned()
+            "netf: --bogus: unknown option; see netf --help\n\n  --bogus\n  ^^^^^^^\n".to_owned()
         )
     );
     assert!(!netf_dir(&world).exists());
@@ -286,11 +286,11 @@ fn option_errors() {
         ),
         (
             &["--limit", "many", "x"][..],
-            "netf: --limit many: expected a number",
+            "netf: --limit many: expected a number\n\n  --limit many\n          ^^^^\n",
         ),
         (
             &["--ttl", "1w", "x"][..],
-            "netf: --ttl 1w: expected a duration such as 30m, 12h, 7d, or 0",
+            "netf: --ttl 1w: expected a duration such as 30m, 12h, 7d, or 0\n\n  --ttl 1w\n        ^^\n",
         ),
     ] {
         assert_eq!(run(&world, args), (2, message.to_owned()), "{args:?}");
@@ -313,7 +313,7 @@ fn options_are_checked_before_the_config() {
         run(&world, &["--fields", "holder", "x"]),
         (
             2,
-            "netf: --fields: holder: unknown field; see netf --help=fields".to_owned()
+            "netf: --fields: holder: unknown field; see netf --help=fields\n\n  --fields holder\n           ^^^^^^\n".to_owned()
         )
     );
 }

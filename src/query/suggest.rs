@@ -163,6 +163,17 @@ fn distance(a: &str, b: &str) -> usize {
     previous[b.len()]
 }
 
+/// Suggests names from an explicit catalog without interpreting or executing them.
+pub(crate) fn nearest(name: &str, names: impl Iterator<Item = &'static str>) -> Vec<&'static str> {
+    let limit = if name.chars().count() <= 3 { 1 } else { 2 };
+    let mut near: Vec<_> = names
+        .map(|n| (distance(name, n), n))
+        .filter(|(d, _)| *d <= limit)
+        .collect();
+    near.sort_by_key(|(d, _)| *d);
+    near.into_iter().take(3).map(|(_, n)| n).collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

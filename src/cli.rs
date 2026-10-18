@@ -182,23 +182,19 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
             }
             Arg::Long("fields") => {
                 let value = text(&name, &mut parser)?;
-                let fields = value
-                    .split(',')
-                    .map(|item| parse_field(item.trim()))
-                    .collect::<Result<Vec<_>, _>>()
-                    .map_err(|reason| Error::usage(format!("{name}: {reason}")))?;
+                let fields = output_fields(&name, &value)?;
                 once(&name, &mut cli.fields, fields)?;
             }
             Arg::Long("limit") => {
                 let value = text(&name, &mut parser)?;
                 let limit = number(&value)
-                    .ok_or_else(|| Error::usage(format!("{name} {value}: expected a number")))?;
+                    .ok_or_else(|| invalid_value(&name, &value, "expected a number"))?;
                 once(&name, &mut cli.limit, limit)?;
             }
             Arg::Long("ttl") => {
                 let value = text(&name, &mut parser)?;
                 let ttl = parse_duration(&value)
-                    .ok_or_else(|| Error::usage(format!("{name} {value}: {DURATION_HINT}")))?;
+                    .ok_or_else(|| invalid_value(&name, &value, DURATION_HINT))?;
                 once(&name, &mut cli.ttl, ttl)?;
             }
             Arg::Long("cache-dir") => {
@@ -209,9 +205,9 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
             Arg::Long("proxy") => cli.proxies.push(text(&name, &mut parser)?),
             Arg::Long("concurrency") => {
                 let value = text(&name, &mut parser)?;
-                let concurrency = number(&value).filter(|&n| n > 0).ok_or_else(|| {
-                    Error::usage(format!("{name} {value}: expected a number, at least 1"))
-                })?;
+                let concurrency = number(&value)
+                    .filter(|&n| n > 0)
+                    .ok_or_else(|| invalid_value(&name, &value, "expected a number, at least 1"))?;
                 once(&name, &mut cli.concurrency, concurrency)?;
             }
             Arg::Long("ripe-emails") => cli.ripe_emails = true,
@@ -221,9 +217,14 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
             }
             Arg::Short('i') => cli.interactive = true,
             _ => {
-                return Err(Error::usage(format!(
-                    "{name}: unknown option; see netf --help"
-                )));
+                let near = crate::query::suggest::nearest(&name, OPTIONS.iter().copied());
+                let mut error = Error::usage(format!("{name}: unknown option; see netf --help"))
+                    .span(0..name.len())
+                    .source(&name);
+                if !near.is_empty() {
+                    error = error.hint(format!("did you mean {}?", near.join(", ")));
+                }
+                return Err(error);
             }
         }
     }
@@ -262,6 +263,55 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
         return Err(Error::usage("-i cannot be combined with -f"));
     }
     Ok(Command::Run(Box::new(cli)))
+}
+
+const OPTIONS: &[&str] = &[
+    "--help",
+    "--version",
+    "--set",
+    "--config",
+    "--ipset",
+    "--file",
+    "--fields",
+    "--limit",
+    "--ttl",
+    "--cache-dir",
+    "--no-cache",
+    "--proxy",
+    "--concurrency",
+    "--ripe-emails",
+    "--doh",
+];
+
+fn invalid_value(name: &str, value: &str, reason: &str) -> Error {
+    let source = format!("{name} {value}");
+    Error::usage(format!("{source}: {reason}"))
+        .span(name.len() + 1..source.len())
+        .source(&source)
+}
+
+fn output_fields(name: &str, value: &str) -> Result<Vec<Column>> {
+    let source = format!("{name} {value}");
+    let mut offset = name.len() + 1;
+    let mut fields = Vec::new();
+    for item in value.split(',') {
+        let word = item.trim();
+        let parsed = parse_field(word);
+        let field = parsed.map_err(|reason| {
+            let at = offset + item.len() - item.trim_start().len();
+            let mut error = Error::usage(format!("{name}: {reason}"))
+                .span(at..at + word.len())
+                .source(&source);
+            let near = crate::query::suggest::nearest(word, Column::names());
+            if Column::parse(word).is_none() && !near.is_empty() {
+                error = error.hint(format!("did you mean {}?", near.join(", ")));
+            }
+            error
+        })?;
+        fields.push(field);
+        offset += item.len() + 1;
+    }
+    Ok(fields)
 }
 
 /// Stores the value of an option that may be given only once.

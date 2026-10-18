@@ -154,7 +154,9 @@ impl Expander<'_> {
             Ast::Or(items) => or(items.iter().map(|a| self.ast(a)).collect::<Result<_>>()?),
             Ast::And(items) => and(items.iter().map(|a| self.ast(a)).collect::<Result<_>>()?),
             Ast::Not(inner) => Expr::Not(Box::new(self.ast(inner)?)),
-            Ast::Term(term) => self.term(term)?,
+            Ast::Term(term) => self
+                .term(term)
+                .map_err(|error| error.span(term.span.start..term.span.end))?,
         })
     }
 
@@ -274,7 +276,9 @@ impl Expander<'_> {
             return Err(Error::usage(format!("unknown set '{name}'")));
         };
         self.stack.push(name.to_owned());
-        let result = parser::parse(&text).and_then(|ast| self.ast(&ast));
+        let result = parser::parse(&text)
+            .and_then(|ast| self.ast(&ast))
+            .map_err(|error| error.source(&text));
         self.stack.pop();
         result.map_err(|error| {
             if self.cycle {
