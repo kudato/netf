@@ -247,9 +247,21 @@ fn unusable_proxy_urls() {
         ),
         (
             "https://u:secret@10.0.0.2:3128",
-            "--proxy https://u:***@10.0.0.2:3128: unsupported proxy scheme, only http:// is supported",
+            "--proxy https://***@10.0.0.2:3128: unsupported proxy scheme, only http:// is supported",
         ),
         ("http://10.0.0.2", "--proxy http://10.0.0.2: missing port"),
+        (
+            "http://alice:demo/password@127.0.0.1:8080",
+            "--proxy http://***@127.0.0.1:8080: a proxy URL has no path",
+        ),
+        (
+            "http://alice%3Ademo-password@127.0.0.1:bad",
+            "--proxy http://***@127.0.0.1:bad: invalid port",
+        ),
+        (
+            "alice:demo-password@127.0.0.1:8080",
+            "--proxy: not a URL, expected http://host:port",
+        ),
     ] {
         let options = HttpOptions {
             proxies: vec![url.to_owned()],

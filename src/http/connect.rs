@@ -16,7 +16,7 @@
 
 use std::{error::Error as StdError, fmt, io, sync::Arc, time::Duration};
 
-use http::{HeaderValue, Uri};
+use http::{HeaderValue, Uri, uri::Scheme};
 use hyper_rustls::HttpsConnector;
 use hyper_util::client::legacy::connect::{HttpConnector, proxy::Tunnel};
 
@@ -33,16 +33,21 @@ pub(crate) type ProxyConnector = HttpsConnector<Tunnel<HttpConnector>>;
 ///
 /// [`Display`](fmt::Display) gives the message without the `netf: ` prefix:
 /// `--proxy socks5://10.0.0.2:1080: unsupported proxy scheme, only http://
-/// is supported`. The message shows a password in the URL as `***`.
+/// is supported`. The message replaces the entire userinfo with `***`,
+/// or omits the URL if it cannot be safely redacted.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ProxyError {
-    url: String,
+    url: Option<String>,
     reason: &'static str,
 }
 
 impl fmt::Display for ProxyError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "--proxy {}: {}", self.url, self.reason)
+        f.write_str("--proxy")?;
+        if let Some(url) = &self.url {
+            write!(f, " {url}")?;
+        }
+        write!(f, ": {}", self.reason)
     }
 }
 
@@ -71,7 +76,7 @@ pub(crate) struct ProxyUrl {
 /// the port, a path, or the credentials.
 pub(crate) fn parse_proxy(url: &str) -> Result<ProxyUrl, ProxyError> {
     let error = |reason| ProxyError {
-        url: mask_password(url),
+        url: mask_credentials(url),
         reason,
     };
     let Some((scheme, rest)) = url.split_once("://") else {
@@ -128,21 +133,20 @@ pub(crate) fn parse_proxy(url: &str) -> Result<ProxyUrl, ProxyError> {
     })
 }
 
-/// Replaces the password of a URL with `***`, for messages.
-fn mask_password(url: &str) -> String {
-    let Some((scheme, rest)) = url.split_once("://") else {
-        return url.to_owned();
-    };
-    let authority_end = rest.find('/').unwrap_or(rest.len());
-    let (authority, path) = rest.split_at(authority_end);
-    match authority.rsplit_once('@') {
-        Some((userinfo, host)) => {
-            let user = userinfo.split_once(':').map_or(userinfo, |(user, _)| user);
-            let hidden = if userinfo.contains(':') { ":***" } else { "" };
-            format!("{scheme}://{user}{hidden}@{host}{path}")
-        }
+/// Replaces all userinfo with `***` before the URL enters an error.
+/// Omits URLs that cannot be parsed even after redaction.
+fn mask_credentials(url: &str) -> Option<String> {
+    let (scheme, rest) = url.split_once("://")?;
+    scheme.parse::<Scheme>().ok()?;
+    // A malformed password can contain '/', '?' or '#', so find the last
+    // '@' before trying to parse the URL. Hiding all userinfo also handles
+    // a percent-encoded ':' without decoding or retaining credentials.
+    let masked = match rest.rsplit_once('@') {
+        Some((_, host)) => format!("{scheme}://***@{host}"),
         None => url.to_owned(),
-    }
+    };
+    masked.parse::<Uri>().ok()?;
+    Some(masked)
 }
 
 /// Decodes `%XX` escapes.
@@ -329,6 +333,15 @@ mod tests {
             proxy.authorization.unwrap(),
             format!("Basic {}", base64(b"user:"))
         );
+
+        let proxy = parse_proxy("http://alice%3Ademo%2Fpassword@127.0.0.1:8080").unwrap();
+        assert_eq!(proxy.id.to_string(), "http://127.0.0.1:8080");
+        let authorization = proxy.authorization.unwrap();
+        assert!(authorization.is_sensitive());
+        assert_eq!(
+            authorization,
+            format!("Basic {}", base64(b"alice:demo/password"))
+        );
     }
 
     #[test]
@@ -365,16 +378,106 @@ mod tests {
         );
         assert_eq!(
             message("10.0.0.2:3128"),
-            "--proxy 10.0.0.2:3128: not a URL, expected http://host:port"
+            "--proxy: not a URL, expected http://host:port"
         );
         assert_eq!(
             message("socks5://user:secret@h:1080"),
-            "--proxy socks5://user:***@h:1080: unsupported proxy scheme, only http:// is supported"
+            "--proxy socks5://***@h:1080: unsupported proxy scheme, only http:// is supported"
         );
         assert_eq!(
             message("http://user:%zz@h:1"),
-            "--proxy http://user:***@h:1: invalid credentials"
+            "--proxy http://***@h:1: invalid credentials"
         );
+    }
+
+    #[test]
+    fn proxy_errors_hide_credentials() {
+        for (url, shown, reason) in [
+            (
+                "http://alice:demo/password@127.0.0.1:8080",
+                "http://***@127.0.0.1:8080",
+                "a proxy URL has no path",
+            ),
+            (
+                "http://alice%3Ademo-password@127.0.0.1:bad",
+                "http://***@127.0.0.1:bad",
+                "invalid port",
+            ),
+            (
+                "http://alice%3ademo%2Fpassword@127.0.0.1:bad",
+                "http://***@127.0.0.1:bad",
+                "invalid port",
+            ),
+            (
+                "http://alice:demo?password@127.0.0.1:8080",
+                "http://***@127.0.0.1:8080",
+                "a proxy URL has no path",
+            ),
+            (
+                "http://alice:demo#password@127.0.0.1:8080",
+                "http://***@127.0.0.1:8080",
+                "a proxy URL has no path",
+            ),
+            (
+                "http://alice:demo@password@127.0.0.1:bad",
+                "http://***@127.0.0.1:bad",
+                "invalid port",
+            ),
+            (
+                "http://alice:demo://password@127.0.0.1:8080",
+                "http://***@127.0.0.1:8080",
+                "a proxy URL has no path",
+            ),
+            (
+                "http://alice:demo%zz@127.0.0.1:8080",
+                "http://***@127.0.0.1:8080",
+                "invalid credentials",
+            ),
+            (
+                "http://alice@127.0.0.1:bad",
+                "http://***@127.0.0.1:bad",
+                "invalid port",
+            ),
+            (
+                "https://alice:demo-password@[::1]:3128/",
+                "https://***@[::1]:3128/",
+                "unsupported proxy scheme, only http:// is supported",
+            ),
+        ] {
+            let error = parse_proxy(url).unwrap_err();
+            assert_eq!(error.to_string(), format!("--proxy {shown}: {reason}"));
+            let debug = format!("{error:?}");
+            assert!(debug.contains(shown), "{debug}");
+            assert!(!debug.contains("alice"), "{debug}");
+            assert!(!debug.contains("demo"), "{debug}");
+        }
+    }
+
+    #[test]
+    fn proxy_errors_omit_urls_that_cannot_be_safely_redacted() {
+        for (url, reason) in [
+            (
+                "alice:demo-password@127.0.0.1:8080",
+                "not a URL, expected http://host:port",
+            ),
+            (
+                "alice:demo://password@127.0.0.1:8080",
+                "unsupported proxy scheme, only http:// is supported",
+            ),
+            ("http://alice:demo-password@bad host:8080", "invalid host"),
+            ("http://alice:demo-password@[::1:8080", "invalid host"),
+            (
+                "http://alice%3Ademo-password%40127.0.0.1:8080",
+                "invalid host",
+            ),
+        ] {
+            let error = parse_proxy(url).unwrap_err();
+            assert_eq!(error.to_string(), format!("--proxy: {reason}"));
+            let debug = format!("{error:?}");
+            assert!(!debug.contains("alice"), "{debug}");
+            assert!(!debug.contains("demo"), "{debug}");
+            assert!(!debug.contains("127.0.0.1"), "{debug}");
+        }
     }
 
     #[test]
