@@ -78,8 +78,10 @@ const USER_AGENT_VALUE: &str = concat!("netf/", env!("CARGO_PKG_VERSION"));
 /// timeouts and pauses instead of waiting for them.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct HttpOptions {
-    /// The `--proxy` URLs, `http://[user:pass@]host:port`. Empty means
-    /// direct.
+    /// Proxy URLs in the form `http://[user:pass@]host:port`.
+    /// An empty list selects `direct`.
+    /// The pool uses one egress per normalized address and authorization pair.
+    /// The first occurrence of each pair sets the egress order.
     pub proxies: Vec<String>,
     /// The concurrent requests per server and egress: `--concurrency`, 8 by
     /// default.

@@ -4,9 +4,10 @@
 //!
 //! # Invariants
 //!
-//! - Without proxies, the pool is one egress, `direct`. With proxies, the
-//!   pool has one egress per proxy, and netf never uses the machine's own
-//!   address, not even for DNS over HTTPS.
+//! - An empty proxy list creates one `direct` egress.
+//! - With proxies, the pool creates one egress per normalized address and
+//!   authorization pair. The first occurrence of each pair sets the order.
+//!   All HTTP requests use these proxies, including DNS over HTTPS.
 //! - Each `(egress, host)` pair has a semaphore of `concurrency` slots. A
 //!   request takes its slot before it is sent and holds the slot until the
 //!   reader reads the body to the end or drops it, so a long download keeps
@@ -17,7 +18,7 @@
 //!   egresses go on.
 
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     sync::{
         Arc, Mutex, PoisonError,
         atomic::{AtomicUsize, Ordering},
@@ -193,7 +194,10 @@ pub(crate) struct Pool {
 }
 
 impl Pool {
-    /// Builds the pool: `direct` without proxies, or one egress per proxy.
+    /// Creates a `direct` egress if `proxies` is empty.
+    ///
+    /// Otherwise, creates one egress per normalized address and authorization
+    /// pair. The first occurrence of each pair sets the order.
     ///
     /// A `concurrency` of 0 counts as 1.
     pub(crate) fn new(proxies: &[ProxyUrl], concurrency: usize, connect_timeout: Duration) -> Self {
@@ -201,8 +205,10 @@ impl Pool {
         let egresses = if proxies.is_empty() {
             vec![Egress::direct(concurrency, connect_timeout)]
         } else {
+            let mut seen = HashSet::new();
             proxies
                 .iter()
+                .filter(|proxy| seen.insert((&proxy.id, &proxy.authorization)))
                 .map(|proxy| Egress::proxy(proxy, concurrency, connect_timeout))
                 .collect()
         };
@@ -264,6 +270,50 @@ mod tests {
         let pool = Pool::new(&[], 8, Duration::from_secs(10));
         assert_eq!(pool.ids(), vec![EgressId::direct()]);
         assert!(pool.get(0).proxy_id().is_none());
+    }
+
+    #[test]
+    fn duplicate_proxies_keep_first_occurrence_order() {
+        let proxies: Vec<_> = [
+            "http://first.example:8080",
+            "http://user:p%40ss@auth.example:3128",
+            "http://last.example:8080",
+            "HTTP://FIRST.Example:8080/",
+            "http://%75ser%3Ap%40ss@AUTH.example:3128/",
+            "http://last.example:8080",
+        ]
+        .into_iter()
+        .map(|url| connect::parse_proxy(url).unwrap())
+        .collect();
+        let pool = Pool::new(&proxies, 2, Duration::from_secs(10));
+        assert_eq!(
+            pool.ids(),
+            vec![
+                EgressId("http://first.example:8080".into()),
+                EgressId("http://auth.example:3128".into()),
+                EgressId("http://last.example:8080".into()),
+            ]
+        );
+    }
+
+    #[test]
+    fn proxies_with_different_credentials_stay_separate() {
+        let proxies: Vec<_> = [
+            "http://user@proxy.example:8080",
+            "http://user:@proxy.example:8080/",
+            "http://user:one@proxy.example:8080",
+            "http://user:two@proxy.example:8080",
+            "http://User:one@proxy.example:8080",
+            "http://proxy.example:8080",
+        ]
+        .into_iter()
+        .map(|url| connect::parse_proxy(url).unwrap())
+        .collect();
+        let pool = Pool::new(&proxies, 2, Duration::from_secs(10));
+        assert_eq!(
+            pool.ids(),
+            vec![EgressId("http://proxy.example:8080".into()); 5]
+        );
     }
 
     #[test]

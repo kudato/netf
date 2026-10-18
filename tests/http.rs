@@ -186,6 +186,25 @@ async fn proxies_multiply_the_limit_and_take_turns() {
 }
 
 #[tokio::test]
+async fn duplicate_proxies_share_the_limit() {
+    let server = StubServer::start();
+    server.always("/slow", slow());
+    let proxy = StubProxy::start(None);
+    let (transport, _) = start(HttpOptions {
+        proxies: vec![proxy.url(), format!("{}/", proxy.url()), proxy.url()],
+        concurrency: 2,
+        ..options()
+    });
+
+    let egresses = many(&transport, vec![server.url("/slow"); 12]).await;
+
+    assert_eq!(server.count("/slow"), 12);
+    assert_eq!(server.peak(), 2);
+    assert_eq!(egresses, vec![EgressId(proxy.url().into()); 12]);
+    assert_eq!(transport.egresses(), vec![EgressId(proxy.url().into())]);
+}
+
+#[tokio::test]
 async fn connect_with_credentials() {
     let server = StubServer::start();
     server.always("/a", Reply::ok("ok"));
@@ -194,7 +213,10 @@ async fn connect_with_credentials() {
     let proxy = StubProxy::start(Some("Basic dXNlcjpwQHNz"));
 
     let (transport, _) = start(HttpOptions {
-        proxies: vec![proxy.url_with("user:p%40ss")],
+        proxies: vec![
+            proxy.url_with("user:p%40ss"),
+            format!("{}/", proxy.url_with("%75ser%3Ap%40ss")),
+        ],
         ..options()
     });
     // The name of the egress has no credentials.
@@ -323,6 +345,42 @@ async fn a_paused_egress_is_skipped() {
     // The first request retries on its own egress after the pause.
     let egress = paused.await.unwrap().unwrap();
     assert_eq!(egress, EgressId(first.url().into()));
+    assert_eq!(reporter.lines().len(), 1);
+}
+
+#[tokio::test]
+async fn duplicate_proxies_observe_the_same_pause() {
+    let server = StubServer::start();
+    server.on("/ip", Reply::status(429).header("Retry-After", "1"));
+    server.always("/ip", Reply::ok("{}"));
+    let proxy = StubProxy::start(None);
+    let (transport, reporter) = start(HttpOptions {
+        proxies: vec![proxy.url(), format!("{}/", proxy.url())],
+        ..options()
+    });
+    let transport = Arc::new(transport);
+    let started = Instant::now();
+    let paused = tokio::spawn({
+        let transport = Arc::clone(&transport);
+        let url = server.url("/ip");
+        async move { body(get(&transport, &url).await.unwrap()).await.unwrap() }
+    });
+    // The HTTP 429 notice confirms that the proxy pause has started.
+    tokio::time::timeout(Duration::from_secs(5), async {
+        while reporter.lines().is_empty() {
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .expect("a rate-limit notice");
+
+    // The second request waits for the pause, even with a duplicate proxy URL.
+    let response = get(&transport, &server.url("/ip")).await.unwrap();
+    assert!(started.elapsed() >= Duration::from_secs(1));
+    assert_eq!(response.egress, EgressId(proxy.url().into()));
+    assert_eq!(body(response).await.unwrap(), "{}");
+    assert_eq!(paused.await.unwrap(), "{}");
+    assert_eq!(server.count("/ip"), 3);
     assert_eq!(reporter.lines().len(), 1);
 }
 
