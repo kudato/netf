@@ -60,6 +60,14 @@ pub(crate) struct Responses {
 }
 
 impl Responses {
+    /// Records the retrieval time of a response already read or stored successfully.
+    pub(crate) fn observe(&self, method: Method, url: &str, class: crate::Class) {
+        let path = self.dir.join(file_name(&key(method, url)));
+        let checked = fs::metadata(path).and_then(|m| m.modified()).ok();
+        self.reporter
+            .source(crate::Source::new(class, checked, None));
+    }
+
     /// Returns the responses in `dir`, which is `<cache dir>/responses`.
     ///
     /// The directory is created on the first write. A `ttl` of zero makes

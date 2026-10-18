@@ -238,6 +238,10 @@ impl RipeRest {
             let search = answer(status, &value)?;
             if let Some(responses) = &self.responses {
                 responses.put(Method::Get, url, &search)?;
+                responses.observe(Method::Get, url, Class::RipeRest);
+            } else {
+                self.reporter
+                    .source(crate::Source::new(Class::RipeRest, None, None));
             }
             self.report(&search);
             Ok(Arc::new(search))
@@ -249,6 +253,9 @@ impl RipeRest {
     /// Returns the cached response to `url`, if it is fresh.
     fn cached(&self, url: &str) -> Option<RestSearch> {
         let search: RestSearch = self.responses.as_ref()?.get(Method::Get, url)?;
+        self.responses
+            .as_ref()?
+            .observe(Method::Get, url, Class::RipeRest);
         self.report(&search);
         Some(search)
     }

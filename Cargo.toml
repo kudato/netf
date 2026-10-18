@@ -19,6 +19,8 @@ hyper-util = { version = "0.1", features = ["client-legacy", "client-proxy", "ht
 hyper-rustls = { version = "0.27", default-features = false, features = ["http1", "ring", "tls12", "webpki-tokio"] }
 rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
 http = "1"
+# Already used by hyper; formats source retrieval times in UTC.
+httpdate = "1"
 http-body-util = "0.1"
 bytes = "1"
 # Already in the dependency tree through hyper-util. `FuturesOrdered` and

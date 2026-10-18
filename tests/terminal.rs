@@ -342,3 +342,47 @@ fn progress_is_cleared_before_the_tree_opens() {
     assert!(before.ends_with("\r\x1b[K"), "{before:?}");
     assert!(!tree.contains("elapsed"), "{tree}");
 }
+
+#[test]
+fn explicit_formats_and_completion_work_with_separate_terminal_streams() {
+    let (home, stub) = (TempHome::new(), StubServer::start());
+    let (code, terminal, _, stderr) = Session::start(
+        &home,
+        &stub,
+        &[
+            "--columns",
+            "route,as.asn",
+            "--format",
+            "table",
+            "as.asn: 64498",
+        ],
+        45,
+        true,
+        false,
+        "xterm",
+    )
+    .finish();
+    assert_eq!(code, 0, "{stderr}");
+    assert!(terminal.contains("BGP route      Origin AS"), "{terminal}");
+    assert!(
+        terminal.contains("1 record · 1 route · 1 origin AS"),
+        "{terminal}"
+    );
+    assert!(!terminal.contains("Registry network:"), "{terminal}");
+    let (code, terminal, stdout, _) = Session::start(
+        &home,
+        &stub,
+        &["--ipset", "-f", "out.txt", "ip: 192.0.2.1"],
+        45,
+        false,
+        true,
+        "xterm",
+    )
+    .finish();
+    assert_eq!(code, 0);
+    assert!(stdout.is_empty());
+    assert!(
+        terminal.contains("netf: saved 1 CIDR to out.txt (IPv4)."),
+        "{terminal}"
+    );
+}

@@ -123,6 +123,11 @@ pub(crate) async fn run(plan: &Plan, context: &Context<'_>) -> Result<Answer> {
             Ok(Answer::Rows {
                 rows: selection.rows,
                 fields: fields.clone(),
+                selection: crate::output::metadata::Selection {
+                    shown: limit.map_or(selection.total, |n| n.min(selection.total)),
+                    total: selection.unchecked.is_none().then_some(selection.total),
+                    unchecked: selection.unchecked.unwrap_or(0),
+                },
             })
         }
     }

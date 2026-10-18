@@ -8,6 +8,7 @@ pub(crate) mod fields;
 pub(crate) mod file;
 pub(crate) mod human;
 pub(crate) mod ipset;
+pub(crate) mod metadata;
 pub(crate) mod table;
 
 use crate::{addr::set::AddrSet, model::Row};
@@ -44,6 +45,8 @@ pub(crate) enum Answer {
         rows: Vec<Row>,
         /// The columns added with `--fields`.
         fields: Vec<Column>,
+        /// Counts from selection, before enrichment or MOAS presentation.
+        selection: metadata::Selection,
     },
     /// The addresses of all rows, for `--ipset`.
     Ipset(AddrSet),
@@ -58,7 +61,7 @@ impl Answer {
         columns: Option<&[Column]>,
     ) -> String {
         match self {
-            Self::Rows { rows, fields } => {
+            Self::Rows { rows, fields, .. } => {
                 let width = terminal_width.unwrap_or(80);
                 if let Some(columns) = columns {
                     human::exact(rows, columns, width, format.unwrap_or(Format::Auto))

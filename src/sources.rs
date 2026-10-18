@@ -74,6 +74,7 @@ pub(crate) fn rewrite(base: Option<&str>, url: &str) -> String {
 
 /// The datasets of one run, loaded on first use.
 pub(crate) struct Sources {
+    reporting: Option<(Arc<dyn crate::Reporter>, Arc<dyn crate::Clock>)>,
     transport: Arc<dyn Transport>,
     cache: Option<Cache>,
     base: Option<String>,
@@ -133,6 +134,7 @@ impl Sources {
         urls: Urls,
     ) -> Self {
         Self {
+            reporting: None,
             transport,
             cache,
             base,
@@ -148,6 +150,16 @@ impl Sources {
     /// Returns `true` without the cache, when every request downloads.
     pub(crate) fn is_streaming(&self) -> bool {
         self.cache.is_none()
+    }
+
+    /// Adds provenance reporting for downloads made without a cache.
+    pub(crate) fn with_reporting(
+        mut self,
+        reporter: Arc<dyn crate::Reporter>,
+        clock: Arc<dyn crate::Clock>,
+    ) -> Self {
+        self.reporting = Some((reporter, clock));
+        self
     }
 
     /// Returns the URL of a dataset, after `NETF_SOURCE_BASE`.
@@ -614,7 +626,15 @@ impl Sources {
         if !body.is_success() {
             return Err(body.status_error());
         }
+        let modified = body.validators.last_modified.clone();
         body.lines(sink).await?;
+        if let Some((reporter, clock)) = &self.reporting {
+            reporter.source(crate::Source::new(
+                Class::Dataset(kind.source().file),
+                Some(clock.now()),
+                modified,
+            ));
+        }
         Ok(())
     }
 }

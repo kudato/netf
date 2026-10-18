@@ -181,9 +181,14 @@ impl Cache {
     {
         let path = self.path(entry.name);
         let existing = self.open_existing(&path, entry, &open)?;
-        if let Some((_, _, mtime)) = &existing
+        if let Some((_, validators, mtime)) = &existing
             && self.is_fresh(*mtime)
         {
+            self.reporter.source(crate::Source::new(
+                Class::Dataset(entry.name),
+                Some(*mtime),
+                validators.last_modified.clone(),
+            ));
             return Ok(existing.expect("checked above").0);
         }
         let validators = existing
@@ -193,8 +198,13 @@ impl Cache {
         let class = Class::Dataset(entry.name);
         let body = match fetch::get(transport, entry.url, class, validators).await? {
             Fetched::NotModified => {
-                let (value, _, _) = existing.expect("304 only for a conditional request");
+                let (value, validators, _) = existing.expect("304 only for a conditional request");
                 self.touch(&path)?;
+                self.reporter.source(crate::Source::new(
+                    Class::Dataset(entry.name),
+                    Some(self.clock.now()),
+                    validators.last_modified,
+                ));
                 return Ok(value);
             }
             Fetched::Body(body) if !body.is_success() => return Err(body.status_error()),
@@ -210,6 +220,11 @@ impl Cache {
         // that is open.
         drop(existing);
         self.write(&path, entry, &validators, &sections)?;
+        self.reporter.source(crate::Source::new(
+            Class::Dataset(entry.name),
+            Some(self.clock.now()),
+            validators.last_modified.clone(),
+        ));
         drop(sections);
         let reopened = MappedFile::open(&path)
             .map_err(|error| io_error(&path, &error))

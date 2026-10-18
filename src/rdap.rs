@@ -188,6 +188,7 @@ impl From<Error> for Pinned {
 
 /// The RDAP client of one run.
 pub(crate) struct RdapClient {
+    clock: Arc<dyn Clock>,
     transport: Arc<dyn Transport>,
     bootstrap: Bootstrap,
     responses: Option<Arc<Responses>>,
@@ -229,6 +230,7 @@ impl RdapClient {
             .ripe_emails
             .then(|| RipeLimit::open(settings.cache_dir.clone(), Arc::clone(&clock)));
         Self {
+            clock,
             bootstrap: Bootstrap::new(
                 Arc::clone(&transport),
                 cache,
@@ -624,6 +626,9 @@ impl RdapClient {
         if !what.matches(&stored) {
             return None;
         }
+        self.responses
+            .as_ref()?
+            .observe(Method::Get, &target.url, target.class());
         self.report(target, &stored);
         Some(stored.into())
     }
@@ -634,6 +639,11 @@ impl RdapClient {
         if let Some(responses) = &self.responses {
             responses.put(Method::Get, &target.url, &stored)?;
         }
+        self.reporter.source(crate::Source::new(
+            target.class(),
+            Some(self.clock.now()),
+            None,
+        ));
         self.report(target, &stored);
         Ok(stored.into())
     }

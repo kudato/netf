@@ -73,7 +73,7 @@ use std::{
 pub use addr::{Families, Family};
 pub use dns::{DnsError, Resolved, Resolver};
 pub use http::{HttpOptions, HttpTransport, ProxyError};
-pub use report::{Notice, Reporter, StderrReporter};
+pub use report::{Notice, Reporter, Source, StderrReporter};
 pub use transport::{
     BodyStream, BoxFuture, Class, EgressId, Method, Request, Response, Transport, TransportError,
 };
@@ -340,10 +340,12 @@ async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<V
     let relay = settings
         .interactive
         .then(|| Arc::new(tree::Relay::new(Arc::clone(&invocation.reporter))));
-    let reporter: &Arc<dyn Reporter> = &match &relay {
+    let inner: Arc<dyn Reporter> = match &relay {
         Some(relay) => Arc::clone(relay) as Arc<dyn Reporter>,
         None => Arc::clone(&invocation.reporter),
     };
+    let evidence = Arc::new(output::metadata::Evidence::new(inner));
+    let reporter: &Arc<dyn Reporter> = &(Arc::clone(&evidence) as Arc<dyn Reporter>);
     for notice in &notices {
         reporter.notice(notice);
     }
@@ -395,7 +397,8 @@ async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<V
         base.clone(),
         Arc::clone(reporter),
     );
-    let sources = sources::Sources::new(transport, cache, base, settings.sources.clone());
+    let sources = sources::Sources::new(transport, cache, base, settings.sources.clone())
+        .with_reporting(Arc::clone(reporter), Arc::clone(&invocation.clock));
     let context = engine::Context {
         sources: &sources,
         rdap: &rdap,
@@ -410,14 +413,62 @@ async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<V
     }
     let width =
         (env.stdout_is_terminal && output.is_none()).then_some(env.stdout_columns.unwrap_or(80));
-    let text = answer
-        .render(width, cli.format, cli.columns.as_deref())
-        .into_bytes();
+    let mut text = answer.render(width, cli.format, cli.columns.as_deref());
+    let (written, empty) = match &answer {
+        output::Answer::Rows {
+            rows, selection, ..
+        } => {
+            if let Some(width) =
+                width.filter(|_| !rows.is_empty() && cli.format != Some(output::Format::Plain))
+            {
+                text.push('\n');
+                for line in output::metadata::summary(rows, selection, plan.families)
+                    .into_iter()
+                    .chain(evidence.limitations())
+                    .chain(evidence.provenance())
+                {
+                    text.push_str(&text::wrap(&line, "", width));
+                }
+            }
+            (
+                output::metadata::count(rows.len(), "record", "records"),
+                rows.is_empty(),
+            )
+        }
+        output::Answer::Ipset(set) => (
+            output::metadata::count(text.lines().count(), "CIDR", "CIDRs"),
+            set.is_empty(),
+        ),
+    };
+    let text = text.into_bytes();
+    reporter.activity(None);
+    reporter.clear_progress();
     match output {
         Some(output) => {
             output.commit(&text)?;
+            if env.stderr_is_terminal {
+                reporter.notice(&Notice::Completion(format!(
+                    "saved {written} to {} ({}).",
+                    text::terminal_safe(
+                        &cli.file
+                            .as_ref()
+                            .expect("output path")
+                            .display()
+                            .to_string()
+                    ),
+                    output::metadata::families(plan.families)
+                )));
+            }
             Ok(Vec::new())
         }
-        None => Ok(text),
+        None => {
+            if empty && env.stderr_is_terminal {
+                reporter.notice(&Notice::Completion(format!(
+                    "no matches ({}).",
+                    output::metadata::families(plan.families)
+                )));
+            }
+            Ok(text)
+        }
     }
 }

@@ -30,6 +30,36 @@ use tokio::time::Instant;
 
 use crate::{addr::Family, transport::Class};
 
+/// When a source used by this run was retrieved or revalidated.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Source {
+    /// The dataset or registry name, without a request URL.
+    pub name: String,
+    /// Retrieval or revalidation time. This is not the source's snapshot date.
+    pub checked: Option<std::time::SystemTime>,
+    /// The source's HTTP Last-Modified value, if available.
+    pub last_modified: Option<String>,
+}
+
+impl Source {
+    pub(crate) fn new(
+        class: Class,
+        checked: Option<std::time::SystemTime>,
+        last_modified: Option<String>,
+    ) -> Self {
+        let name = match class {
+            Class::Dataset(name @ ("ris-v4" | "ris-v6")) => format!("RIPE RIS ({name})"),
+            Class::Dataset("asn") => "RIPE NCC asn.txt".into(),
+            other => other.to_string(),
+        };
+        Self {
+            name,
+            checked,
+            last_modified,
+        }
+    }
+}
+
 /// Receives what netf has to say on stderr.
 ///
 /// [`StderrReporter`] prints to the stderr of the process. Tests collect the
@@ -64,6 +94,9 @@ pub trait Reporter: Send + Sync {
 
     /// Redraws a slow activity, including while no request has completed.
     fn tick(&self) {}
+
+    /// Records source provenance without printing a progress message.
+    fn source(&self, _source: Source) {}
 }
 
 /// Drives progress independently of results arriving from the network.
@@ -96,6 +129,8 @@ pub(crate) async fn drive<T>(reporter: &dyn Reporter, work: impl Future<Output =
 /// and without a newline.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Notice {
+    /// A completion message, emitted only when stderr is a terminal.
+    Completion(String),
     /// `as.asn: N` gave no networks. `N` is a single number, not a range.
     ///
     /// In rows: `netf: AS64505 QUIET-AS - Quiet Networks, Inc., XE: no
@@ -220,6 +255,7 @@ impl fmt::Display for Notice {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str("netf: ")?;
         match self {
+            Self::Completion(message) => f.write_str(message),
             Self::NoNetworks {
                 asn,
                 entry: Some(entry),

@@ -968,6 +968,9 @@ impl Relay {
 }
 
 impl Reporter for Relay {
+    fn source(&self, source: crate::Source) {
+        self.inner.source(source);
+    }
     fn notice(&self, notice: &Notice) {
         let mut state = self.state();
         if matches!(notice, Notice::Truncated { .. }) {
