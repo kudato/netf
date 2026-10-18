@@ -88,21 +88,13 @@ pub(crate) fn fold(text: &str) -> String {
     text.chars().flat_map(char::to_lowercase).collect()
 }
 
-/// Returns the width of `text` in a terminal, in columns.
-///
-/// Wide characters take two columns: CJK, Hangul, full-width forms, and
-/// emoji. Combining marks, zero-width characters, and controls take none.
-/// The ranges cover the main blocks of East Asian Width `W` and `F` and of
-/// the general category `Mn`, not the whole Unicode table. Registry names
-/// are mostly ASCII, and a rare character outside the blocks misaligns a
-/// line by one column at worst.
+/// Returns display columns, including joined emoji and combining sequences.
+/// Controls have no width here; callers display them through terminal_safe.
 pub(crate) fn width(text: &str) -> usize {
-    text.chars().map(char_width).sum()
+    text.split(char::is_control).map(|part| part.width()).sum()
 }
 
-/// Cuts `text` to at most `columns` columns.
-///
-/// A cut line ends with `…`. If `columns` is 0, the result is empty.
+/// Cuts text to at most columns, preserving graphemes and ending with an ellipsis.
 pub(crate) fn truncate(text: &str, columns: usize) -> String {
     if width(text) <= columns {
         return text.to_owned();
@@ -112,78 +104,17 @@ pub(crate) fn truncate(text: &str, columns: usize) -> String {
     };
     let mut out = String::new();
     let mut used = 0;
-    for c in text.chars() {
-        let w = char_width(c);
-        if used + w > room {
+    for grapheme in text.graphemes(true) {
+        let n = width(grapheme);
+        if used + n > room {
             break;
         }
-        used += w;
-        out.push(c);
+        used += n;
+        out.push_str(grapheme);
     }
     out.push('…');
     out
 }
-
-/// Returns the width of one character: 0, 1, or 2 columns.
-fn char_width(c: char) -> usize {
-    let code = u32::from(c);
-    if code < 0x20 || (0x7f..0xa0).contains(&code) {
-        return 0;
-    }
-    if code < 0x300 {
-        return 1;
-    }
-    if ZERO
-        .iter()
-        .any(|(first, last)| (*first..=*last).contains(&code))
-    {
-        0
-    } else if WIDE
-        .iter()
-        .any(|(first, last)| (*first..=*last).contains(&code))
-    {
-        2
-    } else {
-        1
-    }
-}
-
-/// The characters of no width: combining marks, zero-width spaces and
-/// joiners, and variation selectors.
-const ZERO: [(u32, u32); 13] = [
-    (0x0300, 0x036f),
-    (0x0483, 0x0489),
-    (0x0591, 0x05bd),
-    (0x0610, 0x061a),
-    (0x064b, 0x065f),
-    (0x1ab0, 0x1aff),
-    (0x1dc0, 0x1dff),
-    (0x200b, 0x200f),
-    (0x2060, 0x2064),
-    (0x20d0, 0x20ff),
-    (0xfe00, 0xfe0f),
-    (0xfe20, 0xfe2f),
-    (0xfeff, 0xfeff),
-];
-
-/// The characters two columns wide: Hangul, CJK, Kana, full-width forms,
-/// and emoji.
-const WIDE: [(u32, u32); 14] = [
-    (0x1100, 0x115f),
-    (0x2e80, 0x303e),
-    (0x3041, 0x33ff),
-    (0x3400, 0x4dbf),
-    (0x4e00, 0x9fff),
-    (0xa000, 0xa4cf),
-    (0xac00, 0xd7a3),
-    (0xf900, 0xfaff),
-    (0xfe30, 0xfe4f),
-    (0xff00, 0xff60),
-    (0xffe0, 0xffe6),
-    (0x1f300, 0x1f64f),
-    (0x1f900, 0x1f9ff),
-    (0x20000, 0x3fffd),
-];
 
 /// Returns `true` if `text` has a `*` that is not escaped as `\*`.
 ///
