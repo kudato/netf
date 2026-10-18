@@ -12,6 +12,9 @@
 # Scratch
 .scratch/
 
+# Local agent files
+/.agents/
+
 # Claude Code
 .claude/
 
