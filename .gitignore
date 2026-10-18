@@ -1,0 +1,19 @@
+# Build artifacts
+/target
+**/*.rs.bk
+*.pdb
+/site/
+/.venv/
+
+# Coverage
+*.profraw
+*.profdata
+
+# Scratch
+.scratch/
+
+# Claude Code
+.claude/
+
+# macOS
+.DS_Store
