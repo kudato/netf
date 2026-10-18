@@ -18,7 +18,7 @@ use netf::{
 };
 
 use common::{
-    CollectReporter,
+    CollectReporter, World,
     stub::{Reply, StubProxy, StubServer},
 };
 
@@ -265,24 +265,24 @@ fn unusable_proxy_urls() {
     for (url, message) in [
         (
             "socks5://10.0.0.2:1080",
-            "--proxy socks5://10.0.0.2:1080: unsupported proxy scheme, only http:// is supported",
+            "proxy socks5://10.0.0.2:1080: unsupported proxy scheme, only http:// is supported",
         ),
         (
             "https://u:secret@10.0.0.2:3128",
-            "--proxy https://***@10.0.0.2:3128: unsupported proxy scheme, only http:// is supported",
+            "proxy https://***@10.0.0.2:3128: unsupported proxy scheme, only http:// is supported",
         ),
-        ("http://10.0.0.2", "--proxy http://10.0.0.2: missing port"),
+        ("http://10.0.0.2", "proxy http://10.0.0.2: missing port"),
         (
             "http://alice:demo/password@127.0.0.1:8080",
-            "--proxy http://***@127.0.0.1:8080: a proxy URL has no path",
+            "proxy http://***@127.0.0.1:8080: a proxy URL has no path",
         ),
         (
             "http://alice%3Ademo-password@127.0.0.1:bad",
-            "--proxy http://***@127.0.0.1:bad: invalid port",
+            "proxy http://***@127.0.0.1:bad: invalid port",
         ),
         (
             "alice:demo-password@127.0.0.1:8080",
-            "--proxy: not a URL, expected http://host:port",
+            "proxy: not a URL, expected http://host:port",
         ),
     ] {
         let options = HttpOptions {
@@ -293,6 +293,37 @@ fn unusable_proxy_urls() {
             panic!("{url} accepted");
         };
         assert_eq!(error.to_string(), message);
+    }
+}
+
+#[tokio::test]
+async fn proxy_errors_do_not_depend_on_the_configuration_source() {
+    for (url, message) in [
+        (
+            "http://alice:demo-password@127.0.0.1:bad",
+            "netf: proxy http://***@127.0.0.1:bad: invalid port",
+        ),
+        (
+            "alice:demo-password@127.0.0.1:8080",
+            "netf: proxy: not a URL, expected http://host:port",
+        ),
+    ] {
+        for from_config in [true, false] {
+            let world = World::new();
+            let args = if from_config {
+                world.home.base_config(&format!("proxies = [\"{url}\"]"));
+                vec!["--ipset", "ip: 192.0.2.1"]
+            } else {
+                vec!["--proxy", url, "--ipset", "ip: 192.0.2.1"]
+            };
+            let (mut invocation, reporter) = world.invocation(&args);
+            // Let `HttpTransport` validate the proxy before any request.
+            invocation.transport = None;
+            let outcome = netf::run(invocation).await;
+            assert_eq!(outcome.code, 2);
+            assert!(outcome.stdout.is_empty());
+            assert_eq!(reporter.lines(), [message], "from_config: {from_config}");
+        }
     }
 }
 

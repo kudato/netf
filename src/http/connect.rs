@@ -32,9 +32,9 @@ pub(crate) type ProxyConnector = HttpsConnector<Tunnel<HttpConnector>>;
 /// An error for a proxy URL that netf cannot use.
 /// The CLI exits with code 2 for this error.
 ///
-/// [`Display`](fmt::Display) uses `--proxy URL: REASON` without the `netf: `
+/// [`Display`](fmt::Display) uses `proxy URL: REASON` without the `netf: `
 /// prefix. `URL` contains `***` in place of the username and password.
-/// If the URL cannot be safely redacted, the message is `--proxy: REASON`.
+/// If the URL cannot be safely redacted, the message is `proxy: REASON`.
 /// The stored URL is already redacted, so `Debug` also omits the credentials.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ProxyError {
@@ -44,7 +44,7 @@ pub struct ProxyError {
 
 impl fmt::Display for ProxyError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("--proxy")?;
+        f.write_str("proxy")?;
         if let Some(url) = &self.url {
             write!(f, " {url}")?;
         }
@@ -350,44 +350,38 @@ mod tests {
         let message = |url| parse_proxy(url).unwrap_err().to_string();
         assert_eq!(
             message("socks5://10.0.0.2:1080"),
-            "--proxy socks5://10.0.0.2:1080: unsupported proxy scheme, only http:// is supported"
+            "proxy socks5://10.0.0.2:1080: unsupported proxy scheme, only http:// is supported"
         );
         assert_eq!(
             message("https://10.0.0.2:3128"),
-            "--proxy https://10.0.0.2:3128: unsupported proxy scheme, only http:// is supported"
+            "proxy https://10.0.0.2:3128: unsupported proxy scheme, only http:// is supported"
         );
         assert_eq!(
             message("http://10.0.0.2"),
-            "--proxy http://10.0.0.2: missing port"
+            "proxy http://10.0.0.2: missing port"
         );
-        assert_eq!(
-            message("http://[::1]"),
-            "--proxy http://[::1]: missing port"
-        );
-        assert_eq!(
-            message("http://:3128"),
-            "--proxy http://:3128: missing host"
-        );
-        assert_eq!(message("http://h:0"), "--proxy http://h:0: invalid port");
+        assert_eq!(message("http://[::1]"), "proxy http://[::1]: missing port");
+        assert_eq!(message("http://:3128"), "proxy http://:3128: missing host");
+        assert_eq!(message("http://h:0"), "proxy http://h:0: invalid port");
         assert_eq!(
             message("http://h:99999"),
-            "--proxy http://h:99999: invalid port"
+            "proxy http://h:99999: invalid port"
         );
         assert_eq!(
             message("http://h:3128/x"),
-            "--proxy http://h:3128/x: a proxy URL has no path"
+            "proxy http://h:3128/x: a proxy URL has no path"
         );
         assert_eq!(
             message("10.0.0.2:3128"),
-            "--proxy: not a URL, expected http://host:port"
+            "proxy: not a URL, expected http://host:port"
         );
         assert_eq!(
             message("socks5://user:secret@h:1080"),
-            "--proxy socks5://***@h:1080: unsupported proxy scheme, only http:// is supported"
+            "proxy socks5://***@h:1080: unsupported proxy scheme, only http:// is supported"
         );
         assert_eq!(
             message("http://user:%zz@h:1"),
-            "--proxy http://***@h:1: invalid credentials"
+            "proxy http://***@h:1: invalid credentials"
         );
     }
 
@@ -446,7 +440,7 @@ mod tests {
             ),
         ] {
             let error = parse_proxy(url).unwrap_err();
-            assert_eq!(error.to_string(), format!("--proxy {shown}: {reason}"));
+            assert_eq!(error.to_string(), format!("proxy {shown}: {reason}"));
             let debug = format!("{error:?}");
             assert!(debug.contains(shown), "{debug}");
             assert!(!debug.contains("alice"), "{debug}");
@@ -473,7 +467,7 @@ mod tests {
             ),
         ] {
             let error = parse_proxy(url).unwrap_err();
-            assert_eq!(error.to_string(), format!("--proxy: {reason}"));
+            assert_eq!(error.to_string(), format!("proxy: {reason}"));
             let debug = format!("{error:?}");
             assert!(!debug.contains("alice"), "{debug}");
             assert!(!debug.contains("demo"), "{debug}");
