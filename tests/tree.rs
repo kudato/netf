@@ -131,7 +131,10 @@ fn the_rest_loads_on_expand() {
         .position(|frame| frame.loading)
         .expect("a load");
     assert!(
-        run.frames[loading].status.starts_with("rdap: "),
+        run.frames[loading]
+            .footer
+            .iter()
+            .any(|line| line.starts_with("rdap: ")),
         "{:?}",
         run.frames[loading].status
     );
@@ -208,7 +211,13 @@ fn a_truncated_answer_marks_the_query() {
     world.serve_search();
     let run = tree(&world, &["net.org: ORG-EN1-RIPE"], &[Key::Char('q')]);
     assert_eq!(run.outcome.code, 0, "{:?}", run.stderr);
-    assert_eq!(run.frames[0].lines[0], "net.org: ORG-EN1-RIPE *");
+    assert_eq!(run.frames[0].lines[0], "net.org: ORG-EN1-RIPE");
+    assert!(
+        run.frames[0]
+            .footer
+            .iter()
+            .any(|line| line.contains("Partial result"))
+    );
     assert_eq!(
         run.stderr,
         ["netf: ripencc: limited search results to 100 maximum"]
@@ -240,10 +249,15 @@ fn marked_nodes_are_printed_as_kql() {
         "as.asn: 64499 or ip: 192.0.2.130 or route: 192.0.2.128/27\n"
     );
     let last = run.frames.last().unwrap();
-    assert!(last.status.starts_with("3 marked · "), "{:?}", last.status);
+    assert!(
+        last.lines[1].starts_with("Selected nodes: 3"),
+        "{:?}",
+        last.lines
+    );
+    assert_eq!(last.status, "q/Esc export KQL  Ctrl+C cancel");
     assert_eq!(
         last.lines[8],
-        "   └─ ✓ 192.0.2.128/27 · Tenant One GmbH, XC · also AS64499"
+        "   └─ [x] 192.0.2.128/27 · Tenant One GmbH, XC · also AS64499"
     );
 }
 
@@ -323,4 +337,52 @@ fn interactive_takes_one_query() {
     }
     assert!(!path.exists());
     assert!(world.transport.requests().is_empty());
+}
+
+#[test]
+fn help_and_details_preserve_selection_and_exit_keys_at_each_size() {
+    let world = World::standard();
+    for size in [(80, 24), (45, 24), (32, 10)] {
+        let run = tree_sized(
+            &world,
+            &["as.asn: 64498"],
+            &[
+                Key::Space,
+                Key::Char('?'),
+                Key::PageDown,
+                Key::Home,
+                Key::Backspace,
+                Key::Char('d'),
+                Key::Esc,
+            ],
+            size,
+        );
+        assert_eq!(run.outcome.code, 0, "{:?}", run.stderr);
+        assert_eq!(run.stdout(), "as.asn: 64498\n");
+        assert!(run.frames.iter().any(|f| f.lines[0] == "Help"));
+        assert!(run.frames.iter().any(|f| f.lines[0] == "Node details"));
+        for frame in &run.frames {
+            assert_eq!(frame.status, "q/Esc export KQL  Ctrl+C cancel");
+            assert!(
+                frame.lines.len() + frame.footer.len() < usize::from(size.1),
+                "{frame:?}"
+            );
+            for line in frame
+                .lines
+                .iter()
+                .chain(&frame.footer)
+                .chain([&frame.status])
+            {
+                assert!(
+                    unicode_width::UnicodeWidthStr::width(line.as_str()) <= usize::from(size.0),
+                    "{line}"
+                );
+            }
+        }
+    }
+    let run = tree_sized(&world, &["as.asn: 64498"], &[Key::Interrupt], (20, 8));
+    assert_eq!(run.outcome.code, 130);
+    assert!(run.outcome.stdout.is_empty());
+    assert_eq!(run.frames[0].footer, ["q/Esc: export KQL"]);
+    assert_eq!(run.frames[0].status, "Ctrl+C: cancel");
 }

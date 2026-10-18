@@ -408,8 +408,40 @@ async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<V
         concurrency: settings.concurrency,
     };
     let answer = engine::run(&plan, &context).await?;
-    if let (Some(relay), output::Answer::Rows { rows, .. }) = (&relay, &answer) {
-        return tree::run(&context, &plan, &settings.query, rows, relay, terminal).await;
+    if let (
+        Some(relay),
+        output::Answer::Rows {
+            rows, selection, ..
+        },
+    ) = (&relay, &answer)
+    {
+        let information = || {
+            std::iter::once(format!(
+                "Family: {}",
+                output::metadata::families(plan.families)
+            ))
+            .chain(output::metadata::selection_lines(selection))
+            .chain(evidence.limitations())
+            .chain(evidence.provenance())
+            .collect()
+        };
+        let result = tree::run(
+            &context,
+            &plan,
+            &settings.query,
+            rows,
+            relay,
+            terminal,
+            &information,
+        )
+        .await?;
+        if result.is_none() && env.stderr_is_terminal {
+            reporter.notice(&Notice::Completion(format!(
+                "no matches ({}).",
+                output::metadata::families(plan.families)
+            )));
+        }
+        return Ok(result.unwrap_or_default());
     }
     let width =
         (env.stdout_is_terminal && output.is_none()).then_some(env.stdout_columns.unwrap_or(80));

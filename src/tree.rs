@@ -1035,13 +1035,14 @@ pub(crate) async fn run(
     rows: &[Row],
     relay: &Relay,
     terminal: Option<&mut dyn tui::Terminal>,
-) -> Result<Vec<u8>> {
+    information: &dyn Fn() -> Vec<String>,
+) -> Result<Option<Vec<u8>>> {
     context.reporter.activity(Some("reading registry records"));
     let mut tree = build(context, plan, query, rows, relay.truncated()).await?;
     context.reporter.activity(None);
     context.reporter.clear_progress();
     if tree.is_empty() {
-        return Ok(Vec::new());
+        return Ok(None);
     }
     let page = match &plan.mode {
         Mode::Rows { limit, .. } => *limit,
@@ -1051,6 +1052,7 @@ pub(crate) async fn run(
         context,
         relay,
         page,
+        information,
     };
     relay.capture(true);
     let exit = match terminal {
@@ -1069,7 +1071,7 @@ pub(crate) async fn run(
             if !query.is_empty() {
                 query.push('\n');
             }
-            Ok(query.into_bytes())
+            Ok(Some(query.into_bytes()))
         }
         tui::Exit::Interrupted => Err(Error::interrupted()),
     }

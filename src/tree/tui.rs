@@ -51,7 +51,8 @@ use crate::{addr::Range, engine::Context, text};
 const TICK: Duration = Duration::from_millis(20);
 
 /// The status line when there is no message and no progress.
-const HELP: &str = "↑↓ move · → expand · ← collapse · space mark · q print · ^C cancel";
+const EXIT_KEYS: &str = "q/Esc export KQL  Ctrl+C cancel";
+const HELP: &str = "▶ query match. [x] selected for KQL export.\nSpace selects or deselects the current node.\nSelecting a parent exports that parent's condition. It does not select its children. Separately selected children also contribute to the exported query.\n↑↓ or j/k move. →, Enter or l expand. ← or h collapse or move to the parent.\nPgUp/PgDn scroll. Home/End jump.\n? opens or closes help. d opens or closes full node details. Backspace closes either panel.\nIn a panel, ↑↓ and PgUp/PgDn scroll.\nq or Esc exports the selected KQL, including from a panel. Ctrl+C cancels with empty stdout and exit code 130.\nWhile routes load, q, Esc and Ctrl+C remain available.\nCountry codes describe registration, not geolocation.\nCounters describe matching candidates, not input file lines.";
 
 /// A terminal the tree is drawn on.
 ///
@@ -91,6 +92,8 @@ pub enum Key {
     Enter,
     /// `Space`.
     Space,
+    /// `Backspace`: close help or details.
+    Backspace,
     /// `Esc`.
     Esc,
     /// `Ctrl+C`.
@@ -110,6 +113,8 @@ pub struct Frame {
     /// The status line, at the bottom: the keys, a notice, an error, or
     /// the progress of a load.
     pub status: String,
+    /// Persistent key hints and status above the exit keys.
+    pub footer: Vec<String>,
     /// A page of routes is loading. Until the load ends, the tree ignores
     /// every key except `q`, `Esc`, and `Ctrl+C`.
     pub loading: bool,
@@ -132,6 +137,8 @@ pub(crate) struct Loader<'a, 'c> {
     pub(crate) relay: &'a Relay,
     /// Routes per page, the limit of the run. `None` loads all routes.
     pub(crate) page: Option<usize>,
+    /// Family, completeness, and source information for this query.
+    pub(crate) information: &'a dyn Fn() -> Vec<String>,
 }
 
 /// What a key asks of the loop.
@@ -145,6 +152,12 @@ enum Action {
     Exit(Exit),
 }
 
+#[derive(Clone, Copy, Eq, PartialEq)]
+enum Panel {
+    Help,
+    Details,
+}
+
 /// The tree on screen, with the cursor and the scroll position.
 struct App<'t> {
     tree: &'t mut Tree,
@@ -156,6 +169,9 @@ struct App<'t> {
     rows: usize,
     /// A message for the status line until the next key.
     status: Option<String>,
+    information: Vec<String>,
+    panel: Option<Panel>,
+    panel_offset: usize,
 }
 
 impl<'t> App<'t> {
@@ -171,6 +187,9 @@ impl<'t> App<'t> {
             offset: 0,
             rows: 1,
             status: None,
+            information: Vec::new(),
+            panel: None,
+            panel_offset: 0,
         }
     }
 
@@ -179,9 +198,73 @@ impl<'t> App<'t> {
     /// Scrolls the tree to keep the cursor on screen. `loading` is the
     /// progress of a load as done and total.
     fn frame(&mut self, (columns, height): (u16, u16), loading: Option<(usize, usize)>) -> Frame {
-        let width = usize::from(columns);
-        // The query, the blank line, and the status line take three lines.
-        self.rows = usize::from(height).saturating_sub(3).max(1);
+        let width = usize::from(columns).max(1);
+        let height = usize::from(height);
+        if width < 32 || height < 10 {
+            let status = if width >= 14 {
+                "Ctrl+C: cancel"
+            } else {
+                "^C:cancel"
+            };
+            let export = if width >= 17 {
+                "q/Esc: export KQL"
+            } else {
+                "q/Esc:KQL"
+            };
+            return Frame {
+                lines: vec![text::truncate("Resize to at least 32 × 10", width)],
+                cursor: None,
+                footer: vec![text::truncate(export, width)],
+                status: text::truncate(status, width),
+                loading: loading.is_some(),
+            };
+        }
+        let mut footer = Vec::new();
+        if self.tree.truncated
+            || self
+                .information
+                .iter()
+                .any(|line| line.starts_with("Partial") || line.starts_with("Showing"))
+        {
+            footer.push(
+                if width < 45 {
+                    "Partial result · ? for details"
+                } else {
+                    "Partial result · ? for limits and sources"
+                }
+                .into(),
+            );
+        }
+        if let Some((done, total)) = loading {
+            footer.push(format!("rdap: {done}/{total}"));
+        } else if let Some(status) = &self.status {
+            footer.push(text::truncate(&text::terminal_safe(status), width));
+        }
+        if self.panel.is_some() {
+            footer.push("↑↓ scroll  Backspace close  ? help  d details".into());
+        } else {
+            footer.push(
+                if width < 45 {
+                    "▶ match  [x] selected"
+                } else {
+                    "▶ query match  [x] selected for KQL"
+                }
+                .into(),
+            );
+            footer.push("Space select/deselect  ? help  d details".into());
+            footer.push("↑↓ move  → expand  ← collapse".into());
+        }
+        let footer: Vec<_> = footer
+            .iter()
+            .flat_map(|line| {
+                text::wrap(line, "", width)
+                    .lines()
+                    .map(str::to_owned)
+                    .collect::<Vec<_>>()
+            })
+            .collect();
+        // Reserve the header and every key hint before allocating tree rows.
+        self.rows = height.saturating_sub(3 + footer.len()).max(1);
         let total = render::lines(self.tree).len();
         self.cursor = self.cursor.min(total.saturating_sub(1));
         if self.cursor < self.offset {
@@ -190,7 +273,7 @@ impl<'t> App<'t> {
             self.offset = self.cursor + 1 - self.rows;
         }
         self.offset = self.offset.min(total.saturating_sub(self.rows));
-        let lines = render::render(
+        let mut lines = render::render(
             self.tree,
             View {
                 width,
@@ -198,20 +281,53 @@ impl<'t> App<'t> {
                 offset: self.offset,
             },
         );
-        let status = match loading {
-            Some((done, total)) => format!("rdap: {done}/{total}"),
-            None => match &self.status {
-                Some(status) => status.clone(),
-                None => match marked(&self.tree.roots) {
-                    0 => HELP.to_owned(),
-                    n => format!("{n} marked · {HELP}"),
-                },
-            },
-        };
+        lines[0] = text::truncate(&text::terminal_safe(&self.tree.header), width);
+        lines[1] = text::truncate(
+            &format!(
+                "Selected nodes: {} · {}",
+                marked(&self.tree.roots),
+                self.information
+                    .first()
+                    .map_or("Family: IPv4", String::as_str)
+            ),
+            width,
+        );
+        let mut cursor = Some(2 + self.cursor - self.offset);
+        if let Some(panel) = self.panel {
+            let help = panel == Panel::Help;
+            let content = if help {
+                format!("{HELP}\n\n{}", self.information.join("\n"))
+            } else {
+                let visible = render::lines(self.tree);
+                visible
+                    .get(self.cursor)
+                    .and_then(|line| self.tree.node(&line.path))
+                    .map_or_else(|| "No node selected.".into(), details)
+            };
+            let content: Vec<_> = content
+                .lines()
+                .flat_map(|line| {
+                    text::wrap(&text::terminal_safe(line), "", width)
+                        .lines()
+                        .map(str::to_owned)
+                        .collect::<Vec<_>>()
+                })
+                .collect();
+            self.panel_offset = self
+                .panel_offset
+                .min(content.len().saturating_sub(self.rows));
+            lines = vec![
+                if help { "Help" } else { "Node details" }.into(),
+                String::new(),
+            ];
+            lines.extend(content.into_iter().skip(self.panel_offset).take(self.rows));
+            cursor = None;
+        }
         Frame {
-            cursor: Some(2 + self.cursor - self.offset),
+            cursor,
             lines,
-            status: text::truncate(&status, width),
+            footer,
+            status: EXIT_KEYS.into(),
             loading: loading.is_some(),
         }
     }
@@ -219,6 +335,43 @@ impl<'t> App<'t> {
     /// Handles `key` and returns what the loop does next.
     fn key(&mut self, key: Key) -> Action {
         self.status = None;
+        match key {
+            Key::Esc | Key::Char('q') => return Action::Exit(Exit::Done),
+            Key::Interrupt => return Action::Exit(Exit::Interrupted),
+            Key::Char('?') | Key::Char('d') => {
+                let panel = if key == Key::Char('?') {
+                    Panel::Help
+                } else {
+                    Panel::Details
+                };
+                self.panel = if self.panel == Some(panel) {
+                    None
+                } else {
+                    Some(panel)
+                };
+                self.panel_offset = 0;
+                return Action::Stay;
+            }
+            Key::Backspace => {
+                self.panel = None;
+                return Action::Stay;
+            }
+            _ => {}
+        }
+        if self.panel.is_some() {
+            match key {
+                Key::Up | Key::Char('k') => self.panel_offset = self.panel_offset.saturating_sub(1),
+                Key::Down | Key::Char('j') => {
+                    self.panel_offset = self.panel_offset.saturating_add(1)
+                }
+                Key::PageUp => self.panel_offset = self.panel_offset.saturating_sub(self.rows),
+                Key::PageDown => self.panel_offset = self.panel_offset.saturating_add(self.rows),
+                Key::Home => self.panel_offset = 0,
+                Key::End => self.panel_offset = usize::MAX,
+                _ => {}
+            }
+            return Action::Stay;
+        }
         let lines = render::lines(self.tree);
         let last = lines.len().saturating_sub(1);
         let path = match lines.get(self.cursor) {
@@ -261,10 +414,38 @@ impl<'t> App<'t> {
             }
             Key::Esc | Key::Char('q') => return Action::Exit(Exit::Done),
             Key::Interrupt => return Action::Exit(Exit::Interrupted),
-            Key::Char(_) => {}
+            Key::Char(_) | Key::Backspace => {}
         }
         Action::Stay
     }
+}
+
+fn details(node: &Node) -> String {
+    let kind = match &node.kind {
+        NodeKind::Org(_) => format!(
+            "Organization; {} in RIPE RIS",
+            super::count(node.routes, "route", "routes")
+        ),
+        NodeKind::As(_) => format!(
+            "Origin AS; {} in RIPE RIS",
+            super::count(node.routes, "route", "routes")
+        ),
+        NodeKind::Route(_) => "BGP route seen in RIPE RIS".into(),
+        NodeKind::Part(_) => "Selected part of a BGP route".into(),
+        NodeKind::Net(_) => "Registry network".into(),
+        NodeKind::NoRoute => "Networks not seen in RIPE RIS".into(),
+        NodeKind::More { rest, .. } => format!("{} routes remain to be loaded", rest.len()),
+    };
+    format!(
+        "{}\n\n{kind}\nQuery match: {}\nSelected for export: {}\nKQL: {}",
+        text::terminal_safe(&node.label),
+        node.matched,
+        node.marked,
+        node.kql().map_or_else(
+            || "this node cannot be selected".into(),
+            |q| text::terminal_safe(&q)
+        )
+    )
 }
 
 /// Returns the number of marked nodes in `nodes` and their descendants.
@@ -295,6 +476,7 @@ pub(crate) async fn run(
     loader: &Loader<'_, '_>,
 ) -> io::Result<Exit> {
     let mut app = App::new(tree);
+    app.information = (loader.information)();
     let mut shown = None;
     loop {
         let frame = app.frame(terminal.size()?, None);
@@ -353,6 +535,11 @@ async fn load(
         }
     };
     let notices = loader.relay.take_notices();
+    app.information = (loader.information)();
+    for notice in &notices {
+        app.information.push(notice.clone());
+    }
+    app.tree.truncated |= loader.relay.truncated();
     match result {
         Ok(found) => {
             app.tree.show_page(path, &found);
@@ -426,7 +613,8 @@ impl Terminal for Screen {
     fn draw(&mut self, frame: &Frame) -> io::Result<()> {
         let (_, height) = terminal::size()?;
         let last = height.saturating_sub(1);
-        for (row, line) in (0..last).zip(&frame.lines) {
+        let footer_start = last.saturating_sub(u16::try_from(frame.footer.len()).unwrap_or(last));
+        for (row, line) in (0..footer_start).zip(&frame.lines) {
             queue!(self.out, MoveTo(0, row), Clear(ClearType::CurrentLine))?;
             if frame.cursor == Some(usize::from(row)) {
                 queue!(
@@ -441,11 +629,13 @@ impl Terminal for Screen {
         }
         let used = u16::try_from(frame.lines.len())
             .unwrap_or(u16::MAX)
-            .min(last);
+            .min(footer_start);
+        queue!(self.out, MoveTo(0, used), Clear(ClearType::FromCursorDown),)?;
+        for (row, line) in (footer_start..last).zip(&frame.footer) {
+            queue!(self.out, MoveTo(0, row), Print(line))?;
+        }
         queue!(
             self.out,
-            MoveTo(0, used),
-            Clear(ClearType::FromCursorDown),
             MoveTo(0, last),
             SetAttribute(Attribute::Dim),
             Print(&frame.status),
@@ -472,6 +662,7 @@ fn key_of(event: KeyEvent) -> Option<Key> {
         KeyCode::End => Key::End,
         KeyCode::Enter => Key::Enter,
         KeyCode::Esc => Key::Esc,
+        KeyCode::Backspace => Key::Backspace,
         _ => return None,
     })
 }
@@ -535,8 +726,9 @@ mod tests {
         app.key(Key::Space);
         assert_eq!(app.tree.query(), "as.org: ORG-EN1-RIPE or as.asn: 64496");
         let frame = app.frame((80, 24), None);
-        assert_eq!(frame.lines[2], "✓ Example Networks LLC, XA");
-        assert!(frame.status.starts_with("2 marked · "));
+        assert_eq!(frame.lines[2], "[x] Example Networks LLC, XA");
+        assert!(frame.lines[1].starts_with("Selected nodes: 2"));
+        assert_eq!(frame.status, EXIT_KEYS);
         app.key(Key::Space);
         app.key(Key::End);
         assert_eq!(app.cursor, 3);
@@ -552,18 +744,16 @@ mod tests {
         let mut tree = tree();
         let mut app = App::new(&mut tree);
         app.key(Key::Home);
-        // Two lines of the tree fit between the header and the status.
-        let frame = app.frame((10, 5), None);
-        assert_eq!(frame.lines, ["route: 19…", "", "Example N…", "├─ AS6449…"]);
+        let frame = app.frame((45, 10), None);
         assert_eq!(frame.cursor, Some(2));
-        app.key(Key::PageDown);
-        app.key(Key::PageDown);
-        let frame = app.frame((10, 5), None);
-        assert_eq!(frame.lines[2..], ["└─ AS6449…", "   └─ ▶ 1…"]);
-        assert_eq!(frame.cursor, Some(3));
-        assert_eq!(frame.status, "↑↓ move ·…");
+        app.key(Key::End);
+        let frame = app.frame((45, 10), None);
+        assert_eq!(frame.cursor, Some(frame.lines.len() - 1));
+        assert!(frame.lines.len() + frame.footer.len() < 10);
+        assert_eq!(frame.status, EXIT_KEYS);
         let frame = app.frame((10, 5), Some((3, 12)));
-        assert_eq!(frame.status, "rdap: 3/12");
+        assert_eq!(frame.footer, ["q/Esc:KQL"]);
+        assert_eq!(frame.status, "^C:cancel");
         assert!(frame.loading);
     }
 
@@ -584,5 +774,27 @@ mod tests {
         );
         assert_eq!(key(KeyCode::Up, KeyModifiers::NONE), Some(Key::Up));
         assert_eq!(key(KeyCode::F(1), KeyModifiers::NONE), None);
+    }
+
+    #[test]
+    fn details_scroll_through_full_unicode_names() {
+        let mut tree = tree();
+        tree.roots[0].label = format!("START {} END", "日本 e\u{301} 👩‍💻 ".repeat(70));
+        let mut app = App::new(&mut tree);
+        app.key(Key::Home);
+        app.key(Key::Char('d'));
+        let mut seen = String::new();
+        for _ in 0..30 {
+            let frame = app.frame((45, 24), None);
+            assert_eq!(frame.status, EXIT_KEYS);
+            for line in &frame.lines {
+                assert!(text::width(line) <= 45, "{line}");
+                assert!(!line.contains('…'));
+            }
+            seen.push_str(&frame.lines.join("\n"));
+            app.key(Key::PageDown);
+        }
+        assert!(seen.contains("START") && seen.contains("END") && seen.contains("👩‍💻"));
+        assert!(seen.contains("KQL: as.org: ORG-EN1-RIPE"));
     }
 }

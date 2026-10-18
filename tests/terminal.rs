@@ -344,6 +344,39 @@ fn progress_is_cleared_before_the_tree_opens() {
 }
 
 #[test]
+fn tree_panels_keep_export_and_cancel_in_a_real_terminal() {
+    let (home, stub) = (TempHome::new(), StubServer::start());
+    for (width, exit, expected) in [(80, b'\x1b', 0), (45, b'\x03', 130), (32, b'q', 0)] {
+        let mut session = Session::start(
+            &home,
+            &stub,
+            &["-i", "as.asn: 64498"],
+            width,
+            true,
+            true,
+            "xterm",
+        );
+        session.until("q/Esc export KQL");
+        session.terminal.write_all(b" ?").unwrap();
+        session.until("Help");
+        session.terminal.write_all(b"d").unwrap();
+        session.until("Node details");
+        session.terminal.write_all(&[exit]).unwrap();
+        let (code, terminal, _, _) = session.finish();
+        assert_eq!(code, expected, "{terminal}");
+        let (_, after) = terminal
+            .rsplit_once("\x1b[?1049l")
+            .expect("restored terminal");
+        if code == 0 {
+            assert!(after.contains("as.asn: 64498"), "{after:?}");
+        } else {
+            assert!(!after.contains("as.asn:"), "{after:?}");
+            assert!(after.contains("netf: interrupted"), "{after:?}");
+        }
+    }
+}
+
+#[test]
 fn explicit_formats_and_completion_work_with_separate_terminal_streams() {
     let (home, stub) = (TempHome::new(), StubServer::start());
     let (code, terminal, _, stderr) = Session::start(

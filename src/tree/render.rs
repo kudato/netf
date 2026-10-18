@@ -77,12 +77,12 @@ fn walk(node: &Node, path: Vec<usize>, branch: &str, indent: &str, out: &mut Vec
 fn text_of(node: &Node) -> String {
     let mut out = String::new();
     if node.marked {
-        out.push_str("✓ ");
+        out.push_str("[x] ");
     }
     if node.matched {
         out.push_str("▶ ");
     }
-    out.push_str(&node.label);
+    out.push_str(&text::terminal_safe(&node.label));
     if let Some(size) = size(node) {
         out.push_str(" · ");
         out.push_str(&size);
@@ -242,7 +242,7 @@ mod tests {
             [
                 "SAMPLE LLC, XA · 121 routes",
                 "no route",
-                "└─ ✓ ▶ 10.250.128.0/17 · SAMPLE LLC, XA",
+                "└─ [x] ▶ 10.250.128.0/17 · SAMPLE LLC, XA",
             ]
         );
     }

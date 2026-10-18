@@ -247,6 +247,15 @@ Redirected auto/details output uses a width of 80 columns.
 --fields, --columns, and --format are unavailable with --ipset or --set.
 --columns and --format are unavailable with -i.
 
+Tree keys (-i):
+  q or Esc  Export selected KQL       Ctrl+C  Cancel, with no output
+  Space     Select or deselect       ?       Help and legend
+  d         Full node details        ↑↓      Move or scroll
+  →         Expand                   ←       Collapse or move to parent
+  Backspace Close help or details
+Selecting a parent exports its condition.
+Children remain independently selected.
+The tree needs at least 32 columns and 10 lines. Exit keys remain available.
 ";
 
 /// Returns one topic, or the complete reference.
