@@ -1,0 +1,50 @@
+{
+  "description": "RDAP bootstrap file of the tests of netf (synthetic)",
+  "publication": "2026-01-01T00:00:00Z",
+  "services": [
+    [
+      [
+        "192.0.2.0/24"
+      ],
+      [
+        "https://rdap.db.ripe.test/"
+      ]
+    ],
+    [
+      [
+        "198.51.100.0/24",
+        "233.252.0.0/24"
+      ],
+      [
+        "https://rdap.arin.test/registry/",
+        "http://rdap.arin.test/registry/"
+      ]
+    ],
+    [
+      [
+        "203.0.113.0/25"
+      ],
+      [
+        "https://rdap.apnic.test/"
+      ]
+    ],
+    [
+      [
+        "203.0.113.128/26",
+        "203.0.113.192/27"
+      ],
+      [
+        "https://rdap.lacnic.test/rdap/"
+      ]
+    ],
+    [
+      [
+        "203.0.113.224/27"
+      ],
+      [
+        "https://rdap.afrinic.test/rdap/"
+      ]
+    ]
+  ],
+  "version": "1.0"
+}

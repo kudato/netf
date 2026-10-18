@@ -1,0 +1,198 @@
+{
+  "objectClassName": "entity",
+  "handle": "ORG-LB1-RIPE",
+  "vcardArray": [
+    "vcard",
+    [
+      [
+        "version",
+        {},
+        "text",
+        "4.0"
+      ],
+      [
+        "fn",
+        {},
+        "text",
+        "Lease Broker LLC"
+      ],
+      [
+        "kind",
+        {},
+        "text",
+        "org"
+      ]
+    ]
+  ],
+  "links": [
+    {
+      "value": "https://rdap.db.ripe.test/entity/ORG-LB1-RIPE",
+      "rel": "self",
+      "href": "https://rdap.db.ripe.test/entity/ORG-LB1-RIPE",
+      "type": "application/rdap+json"
+    }
+  ],
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "networks": [
+    {
+      "objectClassName": "ip network",
+      "handle": "192.0.2.128 - 192.0.2.255",
+      "startAddress": "192.0.2.128",
+      "endAddress": "192.0.2.255",
+      "ipVersion": "v4",
+      "name": "LEASE-BROKER",
+      "type": "SUB-ALLOCATED PA",
+      "country": "XE",
+      "cidr0_cidrs": [
+        {
+          "v4prefix": "192.0.2.128",
+          "length": 25
+        }
+      ],
+      "status": [
+        "active"
+      ],
+      "entities": [
+        {
+          "objectClassName": "entity",
+          "handle": "ORG-LB1-RIPE",
+          "roles": [
+            "registrant"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Lease Broker LLC"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "org"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.db.ripe.test/entity/ORG-LB1-RIPE",
+              "rel": "self",
+              "href": "https://rdap.db.ripe.test/entity/ORG-LB1-RIPE",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "AR-LB1-RIPE",
+          "roles": [
+            "abuse"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Lease Broker Abuse"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "group"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "abuse@lease-broker.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.db.ripe.test/entity/AR-LB1-RIPE",
+              "rel": "self",
+              "href": "https://rdap.db.ripe.test/entity/AR-LB1-RIPE",
+              "type": "application/rdap+json"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/ip/192.0.2.128/25",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/ip/192.0.2.128/25",
+          "type": "application/rdap+json"
+        },
+        {
+          "value": "https://rdap.db.ripe.test/ip/192.0.2.128/25",
+          "rel": "up",
+          "href": "https://rdap.db.ripe.test/ip/192.0.2.0/24",
+          "type": "application/rdap+json"
+        }
+      ],
+      "events": [
+        {
+          "eventAction": "registration",
+          "eventDate": "2020-01-01T00:00:00Z"
+        },
+        {
+          "eventAction": "last changed",
+          "eventDate": "2025-06-01T00:00:00Z"
+        }
+      ],
+      "parentHandle": "192.0.2.0 - 192.0.2.255"
+    }
+  ],
+  "autnums": [],
+  "notices": [
+    {
+      "title": "Filtered",
+      "description": [
+        "This output has been filtered."
+      ]
+    },
+    {
+      "title": "Source",
+      "description": [
+        "Objects returned came from source",
+        "RIPE"
+      ]
+    },
+    {
+      "title": "Terms and Conditions",
+      "description": [
+        "This is the RIPE Database query service. The objects are in RDAP format."
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/",
+          "rel": "terms-of-service",
+          "href": "https://apps.db.ripe.test/docs/terms",
+          "type": "application/pdf"
+        }
+      ]
+    }
+  ]
+}

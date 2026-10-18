@@ -1,0 +1,15 @@
+# APNIC whois data, synthetic copy for the tests of netf.
+# Documentation addresses (RFC 5737, RFC 3849) and AS numbers (RFC 5398) only.
+
+inet6num:       2001:db8:f000::/36
+netname:        EXAMPLE-CDN-V6
+descr:          Example CDN Ltd
+country:        XG
+org:            ORG-ECL1-AP
+admin-c:        ECA1-AP
+tech-c:         ECA1-AP
+status:         ASSIGNED PORTABLE
+mnt-by:         MAINT-XG-EXAMPLECDN
+last-modified:  2025-06-01T00:00:00Z
+source:         APNIC
+

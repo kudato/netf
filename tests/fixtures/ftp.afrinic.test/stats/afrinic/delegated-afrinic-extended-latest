@@ -1,0 +1,7 @@
+2|afrinic|20260101|3|20050101|20260101|+0000
+afrinic|*|asn|*|2|summary
+afrinic|*|ipv4|*|1|summary
+afrinic|*|ipv6|*|0|summary
+afrinic|XI|asn|64508|3|20170101|allocated|FEXAMPLE1
+afrinic||asn|64511|1||available|
+afrinic|XI|ipv4|203.0.113.224|32|20170101|allocated|FEXAMPLE1

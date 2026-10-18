@@ -1,0 +1,32 @@
+# APNIC whois data, synthetic copy for the tests of netf.
+# Documentation addresses (RFC 5737, RFC 3849) and AS numbers (RFC 5398) only.
+
+inetnum:        203.0.113.0 - 203.0.113.95
+netname:        EXAMPLE-CDN-XG
+descr:          Example CDN Ltd
+                Content delivery, Sampleton
+country:        XG
+org:            ORG-ECL1-AP
+admin-c:        ECA1-AP
+tech-c:         ECA1-AP
+status:         ALLOCATED PORTABLE
+remarks:        abuse contact: see the organisation
+mnt-by:         MAINT-XG-EXAMPLECDN
+mnt-irt:        IRT-EXAMPLECDN-XG
+last-modified:  2025-06-01T00:00:00Z
+source:         APNIC
+
+inetnum:        203.0.113.16 - 203.0.113.31
+netname:        CDN-CUSTOMER-XG
+descr:          CDN Customer Pty Ltd
+country:        XG
+org:            ORG-CC1-AP
+admin-c:        CCA1-AP
+tech-c:         CCA1-AP
+abuse-c:        IRT-CDNCUSTOMER-XG
+status:         ASSIGNED NON-PORTABLE
+mnt-by:         MAINT-XG-CDNCUSTOMER
+mnt-irt:        IRT-CDNCUSTOMER-XG
+last-modified:  2025-06-01T00:00:00Z
+source:         APNIC
+

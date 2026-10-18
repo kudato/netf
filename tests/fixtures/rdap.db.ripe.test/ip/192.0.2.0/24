@@ -1,0 +1,415 @@
+{
+  "rdapConformance": [
+    "rdap_level_0",
+    "cidr0"
+  ],
+  "objectClassName": "ip network",
+  "handle": "192.0.2.0 - 192.0.2.255",
+  "startAddress": "192.0.2.0",
+  "endAddress": "192.0.2.255",
+  "ipVersion": "v4",
+  "name": "EXNET-XA",
+  "type": "ALLOCATED PA",
+  "country": "XA",
+  "cidr0_cidrs": [
+    {
+      "v4prefix": "192.0.2.0",
+      "length": 24
+    }
+  ],
+  "status": [
+    "active"
+  ],
+  "entities": [
+    {
+      "objectClassName": "entity",
+      "handle": "ORG-EN1-RIPE",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Example Networks LLC"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "org"
+          ],
+          [
+            "adr",
+            {
+              "label": "1 Example Street, Exampleton, XA"
+            },
+            "text",
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/ORG-EN1-RIPE",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/ORG-EN1-RIPE",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "EXNET-MNT",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "EXNET-MNT"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "individual"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/EXNET-MNT",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/EXNET-MNT",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "EXAMPLE-HM-MNT",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "EXAMPLE-HM-MNT"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "individual"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/EXAMPLE-HM-MNT",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/EXAMPLE-HM-MNT",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "AR-EN1-RIPE",
+      "roles": [
+        "abuse"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Example Networks Abuse"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "group"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "abuse@example.net"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/AR-EN1-RIPE",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/AR-EN1-RIPE",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "JD1-RIPE",
+      "roles": [
+        "administrative"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "John Doe"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "individual"
+          ],
+          [
+            "adr",
+            {
+              "label": "1 Example Street, Exampleton, XA"
+            },
+            "text",
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          [
+            "tel",
+            {
+              "type": "voice"
+            },
+            "text",
+            "+1 555 0100"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/JD1-RIPE",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/JD1-RIPE",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "NOC1-RIPE",
+      "roles": [
+        "technical"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Example Networks NOC"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "group"
+          ],
+          [
+            "tel",
+            {
+              "type": "voice"
+            },
+            "text",
+            "+1 555 0102"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "noc@example.net"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/NOC1-RIPE",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/NOC1-RIPE",
+          "type": "application/rdap+json"
+        }
+      ],
+      "entities": [
+        {
+          "objectClassName": "entity",
+          "handle": "JS1-RIPE",
+          "roles": [
+            "technical"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Jane Smith"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "individual"
+              ],
+              [
+                "tel",
+                {
+                  "type": "voice"
+                },
+                "text",
+                "+1 555 0103"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "jsmith@example.net"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.db.ripe.test/entity/JS1-RIPE",
+              "rel": "self",
+              "href": "https://rdap.db.ripe.test/entity/JS1-RIPE",
+              "type": "application/rdap+json"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "value": "https://rdap.db.ripe.test/ip/192.0.2.0/24",
+      "rel": "self",
+      "href": "https://rdap.db.ripe.test/ip/192.0.2.0/24",
+      "type": "application/rdap+json"
+    }
+  ],
+  "events": [
+    {
+      "eventAction": "registration",
+      "eventDate": "2020-01-01T00:00:00Z"
+    },
+    {
+      "eventAction": "last changed",
+      "eventDate": "2025-06-01T00:00:00Z"
+    }
+  ],
+  "parentHandle": "0.0.0.0 - 255.255.255.255",
+  "notices": [
+    {
+      "title": "Filtered",
+      "description": [
+        "This output has been filtered."
+      ]
+    },
+    {
+      "title": "Source",
+      "description": [
+        "Objects returned came from source",
+        "RIPE"
+      ]
+    },
+    {
+      "title": "Terms and Conditions",
+      "description": [
+        "This is the RIPE Database query service. The objects are in RDAP format."
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/",
+          "rel": "terms-of-service",
+          "href": "https://apps.db.ripe.test/docs/terms",
+          "type": "application/pdf"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "objectClassName": "autnum",
+  "handle": "AS64507",
+  "startAutnum": 64507,
+  "endAutnum": 64507,
+  "name": "REDE-EXEMPLO",
+  "status": [
+    "active"
+  ],
+  "entities": [
+    {
+      "objectClassName": "entity",
+      "handle": "XH-REEX-LACNIC",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Rede Exemplo Ltda"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "org"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.lacnic.test/rdap/entity/XH-REEX-LACNIC",
+          "rel": "self",
+          "href": "https://rdap.lacnic.test/rdap/entity/XH-REEX-LACNIC",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "XH-REEX-LACNIC-C",
+      "roles": [
+        "administrative",
+        "technical",
+        "abuse"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Rede Exemplo Ltda"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "individual"
+          ],
+          [
+            "tel",
+            {
+              "type": "voice"
+            },
+            "text",
+            "+1 555 0131"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "noc@rede-exemplo.example"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.lacnic.test/rdap/entity/XH-REEX-LACNIC-C",
+          "rel": "self",
+          "href": "https://rdap.lacnic.test/rdap/entity/XH-REEX-LACNIC-C",
+          "type": "application/rdap+json"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "value": "https://rdap.lacnic.test/rdap/autnum/64507",
+      "rel": "self",
+      "href": "https://rdap.lacnic.test/rdap/autnum/64507",
+      "type": "application/rdap+json"
+    }
+  ],
+  "events": [
+    {
+      "eventAction": "registration",
+      "eventDate": "2020-01-01T00:00:00Z"
+    }
+  ],
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    }
+  ]
+}

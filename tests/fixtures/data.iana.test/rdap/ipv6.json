@@ -1,0 +1,15 @@
+{
+  "description": "RDAP bootstrap file of the tests of netf (synthetic)",
+  "publication": "2026-01-01T00:00:00Z",
+  "services": [
+    [
+      [
+        "2001:db8::/32"
+      ],
+      [
+        "https://rdap.db.ripe.test/"
+      ]
+    ]
+  ],
+  "version": "1.0"
+}

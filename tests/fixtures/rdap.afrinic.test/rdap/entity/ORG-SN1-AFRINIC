@@ -1,0 +1,335 @@
+{
+  "objectClassName": "entity",
+  "handle": "ORG-SN1-AFRINIC",
+  "vcardArray": [
+    "vcard",
+    [
+      [
+        "version",
+        {},
+        "text",
+        "4.0"
+      ],
+      [
+        "fn",
+        {},
+        "text",
+        "Savanna Net Ltd"
+      ],
+      [
+        "kind",
+        {},
+        "text",
+        "org"
+      ]
+    ]
+  ],
+  "links": [
+    {
+      "value": "https://rdap.afrinic.test/rdap/entity/ORG-SN1-AFRINIC",
+      "rel": "self",
+      "href": "https://rdap.afrinic.test/rdap/entity/ORG-SN1-AFRINIC",
+      "type": "application/rdap+json"
+    }
+  ],
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "networks": [
+    {
+      "objectClassName": "ip network",
+      "handle": "203.0.113.224 - 203.0.113.255",
+      "startAddress": "203.0.113.224",
+      "endAddress": "203.0.113.255",
+      "ipVersion": "v4",
+      "name": "SAVANNA-NET",
+      "type": "ALLOCATED PA",
+      "country": "XI",
+      "cidr0_cidrs": [
+        {
+          "v4prefix": "203.0.113.224",
+          "length": 27
+        }
+      ],
+      "status": [
+        "active"
+      ],
+      "entities": [
+        {
+          "objectClassName": "entity",
+          "handle": "ORG-SN1-AFRINIC",
+          "roles": [
+            "registrant"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Savanna Net Ltd"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "org"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.afrinic.test/rdap/entity/ORG-SN1-AFRINIC",
+              "rel": "self",
+              "href": "https://rdap.afrinic.test/rdap/entity/ORG-SN1-AFRINIC",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "EXAMPLE-AF-HM-MNT",
+          "roles": [
+            "registrant"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "EXAMPLE-AF-HM-MNT"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "individual"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.afrinic.test/rdap/entity/EXAMPLE-AF-HM-MNT",
+              "rel": "self",
+              "href": "https://rdap.afrinic.test/rdap/entity/EXAMPLE-AF-HM-MNT",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "SN1-AFRINIC",
+          "roles": [
+            "administrative",
+            "technical"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Savanna NOC"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "group"
+              ],
+              [
+                "tel",
+                {
+                  "type": "voice"
+                },
+                "text",
+                "+1 555 0140"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "noc@savanna.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.afrinic.test/rdap/entity/SN1-AFRINIC",
+              "rel": "self",
+              "href": "https://rdap.afrinic.test/rdap/entity/SN1-AFRINIC",
+              "type": "application/rdap+json"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "value": "https://rdap.afrinic.test/rdap/ip/203.0.113.224/27",
+          "rel": "self",
+          "href": "https://rdap.afrinic.test/rdap/ip/203.0.113.224/27",
+          "type": "application/rdap+json"
+        }
+      ],
+      "events": [
+        {
+          "eventAction": "registration",
+          "eventDate": "2020-01-01T00:00:00Z"
+        },
+        {
+          "eventAction": "last changed",
+          "eventDate": "2025-06-01T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "autnums": [
+    {
+      "objectClassName": "autnum",
+      "handle": "AS64508",
+      "startAutnum": 64508,
+      "endAutnum": 64510,
+      "name": "SAVANNA-AS",
+      "status": [
+        "active"
+      ],
+      "entities": [
+        {
+          "objectClassName": "entity",
+          "handle": "ORG-SN1-AFRINIC",
+          "roles": [
+            "registrant"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Savanna Net Ltd"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "org"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.afrinic.test/rdap/entity/ORG-SN1-AFRINIC",
+              "rel": "self",
+              "href": "https://rdap.afrinic.test/rdap/entity/ORG-SN1-AFRINIC",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "SN1-AFRINIC",
+          "roles": [
+            "administrative",
+            "technical"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Savanna NOC"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "group"
+              ],
+              [
+                "tel",
+                {
+                  "type": "voice"
+                },
+                "text",
+                "+1 555 0140"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "noc@savanna.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.afrinic.test/rdap/entity/SN1-AFRINIC",
+              "rel": "self",
+              "href": "https://rdap.afrinic.test/rdap/entity/SN1-AFRINIC",
+              "type": "application/rdap+json"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "value": "https://rdap.afrinic.test/rdap/autnum/64508",
+          "rel": "self",
+          "href": "https://rdap.afrinic.test/rdap/autnum/64508",
+          "type": "application/rdap+json"
+        }
+      ],
+      "events": [
+        {
+          "eventAction": "registration",
+          "eventDate": "2020-01-01T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    }
+  ]
+}

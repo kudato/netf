@@ -1,0 +1,143 @@
+{
+  "rdapConformance": [
+    "rdap_level_0",
+    "cidr0"
+  ],
+  "objectClassName": "ip network",
+  "handle": "203.0.113.128 - 203.0.113.191",
+  "startAddress": "203.0.113.128",
+  "endAddress": "203.0.113.191",
+  "ipVersion": "v4",
+  "name": "REDE-EXEMPLO",
+  "type": "ALLOCATED",
+  "country": "XH",
+  "cidr0_cidrs": [
+    {
+      "v4prefix": "203.0.113.128",
+      "length": 26
+    }
+  ],
+  "status": [
+    "active"
+  ],
+  "entities": [
+    {
+      "objectClassName": "entity",
+      "handle": "XH-REEX-LACNIC",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Rede Exemplo Ltda"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "org"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.registro.test/entity/XH-REEX-LACNIC",
+          "rel": "self",
+          "href": "https://rdap.registro.test/entity/XH-REEX-LACNIC",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "XH-REEX-LACNIC-C",
+      "roles": [
+        "administrative",
+        "technical",
+        "abuse"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Rede Exemplo Ltda"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "individual"
+          ],
+          [
+            "tel",
+            {
+              "type": "voice"
+            },
+            "text",
+            "+1 555 0130"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "abuse@rede-exemplo.example"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.registro.test/entity/XH-REEX-LACNIC-C",
+          "rel": "self",
+          "href": "https://rdap.registro.test/entity/XH-REEX-LACNIC-C",
+          "type": "application/rdap+json"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "value": "https://rdap.registro.test/ip/203.0.113.128/26",
+      "rel": "self",
+      "href": "https://rdap.registro.test/ip/203.0.113.128/26",
+      "type": "application/rdap+json"
+    }
+  ],
+  "events": [
+    {
+      "eventAction": "registration",
+      "eventDate": "2020-01-01T00:00:00Z"
+    },
+    {
+      "eventAction": "last changed",
+      "eventDate": "2025-06-01T00:00:00Z"
+    }
+  ],
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    }
+  ]
+}

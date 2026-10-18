@@ -1,0 +1,10 @@
+{
+  "errormessages": {
+    "errormessage": [
+      {
+        "severity": "Warning",
+        "text": "limited search results to 100 maximum"
+      }
+    ]
+  }
+}

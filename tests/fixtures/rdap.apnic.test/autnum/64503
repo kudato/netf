@@ -1,0 +1,135 @@
+{
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "objectClassName": "autnum",
+  "handle": "AS64503",
+  "startAutnum": 64503,
+  "endAutnum": 64503,
+  "name": "EXAMPLE-CDN",
+  "status": [
+    "active"
+  ],
+  "entities": [
+    {
+      "objectClassName": "entity",
+      "handle": "ORG-ECL1-AP",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Example CDN Ltd"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "org"
+          ],
+          [
+            "adr",
+            {
+              "label": "1 Example Road, Sampleton, XG"
+            },
+            "text",
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.apnic.test/entity/ORG-ECL1-AP",
+          "rel": "self",
+          "href": "https://rdap.apnic.test/entity/ORG-ECL1-AP",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "IRT-EXAMPLECDN-AS",
+      "roles": [
+        "abuse"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "IRT-EXAMPLECDN-AS"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "group"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "abuse@cdn.example"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.apnic.test/entity/IRT-EXAMPLECDN-AS",
+          "rel": "self",
+          "href": "https://rdap.apnic.test/entity/IRT-EXAMPLECDN-AS",
+          "type": "application/rdap+json"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "value": "https://rdap.apnic.test/autnum/64503",
+      "rel": "self",
+      "href": "https://rdap.apnic.test/autnum/64503",
+      "type": "application/rdap+json"
+    }
+  ],
+  "events": [
+    {
+      "eventAction": "registration",
+      "eventDate": "2020-01-01T00:00:00Z"
+    }
+  ],
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    }
+  ]
+}

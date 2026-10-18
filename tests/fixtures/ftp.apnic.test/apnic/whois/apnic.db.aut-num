@@ -1,0 +1,18 @@
+# APNIC whois data, synthetic copy for the tests of netf.
+# Documentation addresses (RFC 5737, RFC 3849) and AS numbers (RFC 5398) only.
+
+aut-num:        AS64503
+as-name:        EXAMPLE-CDN
+descr:          Example CDN Ltd
+country:        XG
+org:            ORG-ECL1-AP
+import:         from AS64496 accept ANY
+export:         to AS64496 announce AS64503
+admin-c:        ECA1-AP
+tech-c:         ECA1-AP
+abuse-c:        IRT-EXAMPLECDN-AS
+mnt-by:         MAINT-XG-EXAMPLECDN
+mnt-irt:        IRT-EXAMPLECDN-AS
+last-modified:  2025-06-01T00:00:00Z
+source:         APNIC
+

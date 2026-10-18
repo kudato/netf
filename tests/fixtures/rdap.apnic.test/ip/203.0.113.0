@@ -1,0 +1,245 @@
+{
+  "rdapConformance": [
+    "rdap_level_0",
+    "cidr0"
+  ],
+  "objectClassName": "ip network",
+  "handle": "203.0.113.0 - 203.0.113.95",
+  "startAddress": "203.0.113.0",
+  "endAddress": "203.0.113.95",
+  "ipVersion": "v4",
+  "name": "EXAMPLE-CDN-XG",
+  "type": "ALLOCATED PORTABLE",
+  "country": "XG",
+  "cidr0_cidrs": [
+    {
+      "v4prefix": "203.0.113.0",
+      "length": 26
+    },
+    {
+      "v4prefix": "203.0.113.64",
+      "length": 27
+    }
+  ],
+  "status": [
+    "active"
+  ],
+  "entities": [
+    {
+      "objectClassName": "entity",
+      "handle": "ORG-ECL1-AP",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Example CDN Ltd"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "org"
+          ],
+          [
+            "adr",
+            {
+              "label": "1 Example Road, Sampleton, XG"
+            },
+            "text",
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.apnic.test/entity/ORG-ECL1-AP",
+          "rel": "self",
+          "href": "https://rdap.apnic.test/entity/ORG-ECL1-AP",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "MAINT-XG-EXAMPLECDN",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "MAINT-XG-EXAMPLECDN"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "individual"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.apnic.test/entity/MAINT-XG-EXAMPLECDN",
+          "rel": "self",
+          "href": "https://rdap.apnic.test/entity/MAINT-XG-EXAMPLECDN",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "IRT-EXAMPLECDN-XG",
+      "roles": [
+        "abuse"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "IRT-EXAMPLECDN-XG"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "group"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "irt@cdn.example"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.apnic.test/entity/IRT-EXAMPLECDN-XG",
+          "rel": "self",
+          "href": "https://rdap.apnic.test/entity/IRT-EXAMPLECDN-XG",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "ECA1-AP",
+      "roles": [
+        "administrative",
+        "technical"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Example CDN Operations"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "group"
+          ],
+          [
+            "tel",
+            {
+              "type": "voice"
+            },
+            "text",
+            "+1 555 0120"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "ops@cdn.example"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.apnic.test/entity/ECA1-AP",
+          "rel": "self",
+          "href": "https://rdap.apnic.test/entity/ECA1-AP",
+          "type": "application/rdap+json"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "value": "https://rdap.apnic.test/ip/203.0.113.0",
+      "rel": "self",
+      "href": "https://rdap.apnic.test/ip/203.0.113.0",
+      "type": "application/rdap+json"
+    }
+  ],
+  "events": [
+    {
+      "eventAction": "registration",
+      "eventDate": "2020-01-01T00:00:00Z"
+    },
+    {
+      "eventAction": "last changed",
+      "eventDate": "2025-06-01T00:00:00Z"
+    }
+  ],
+  "parentHandle": "203.0.113.0 - 203.0.113.255",
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "objectClassName": "autnum",
+  "handle": "AS64498",
+  "startAutnum": 64498,
+  "endAutnum": 64498,
+  "name": "DOCNET",
+  "status": [
+    "active"
+  ],
+  "entities": [
+    {
+      "objectClassName": "entity",
+      "handle": "DNI-1",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Documentation Net Inc"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "org"
+          ],
+          [
+            "adr",
+            {
+              "label": "100 Example Avenue, Testville, XE"
+            },
+            "text",
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.arin.test/registry/entity/DNI-1",
+          "rel": "self",
+          "href": "https://rdap.arin.test/registry/entity/DNI-1",
+          "type": "application/rdap+json"
+        }
+      ],
+      "entities": [
+        {
+          "objectClassName": "entity",
+          "handle": "ABUSE1-ARIN",
+          "roles": [
+            "abuse"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Abuse Desk"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "group"
+              ],
+              [
+                "tel",
+                {
+                  "type": "voice"
+                },
+                "text",
+                "+1 555 0101"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "abuse@docnet.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.arin.test/registry/entity/ABUSE1-ARIN",
+              "rel": "self",
+              "href": "https://rdap.arin.test/registry/entity/ABUSE1-ARIN",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "ADMIN1-ARIN",
+          "roles": [
+            "administrative"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Alice Admin"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "individual"
+              ],
+              [
+                "tel",
+                {
+                  "type": "voice"
+                },
+                "text",
+                "+1 555 0104"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "admin@docnet.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.arin.test/registry/entity/ADMIN1-ARIN",
+              "rel": "self",
+              "href": "https://rdap.arin.test/registry/entity/ADMIN1-ARIN",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "NOC1-ARIN",
+          "roles": [
+            "technical"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Network Operations"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "group"
+              ],
+              [
+                "tel",
+                {
+                  "type": "voice"
+                },
+                "text",
+                "+1 555 0105"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "noc1@docnet.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.arin.test/registry/entity/NOC1-ARIN",
+              "rel": "self",
+              "href": "https://rdap.arin.test/registry/entity/NOC1-ARIN",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "NOC2-ARIN",
+          "roles": [
+            "technical"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Backup Operations"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "group"
+              ],
+              [
+                "tel",
+                {
+                  "type": "voice"
+                },
+                "text",
+                "+1 555 0106"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "noc2@docnet.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.arin.test/registry/entity/NOC2-ARIN",
+              "rel": "self",
+              "href": "https://rdap.arin.test/registry/entity/NOC2-ARIN",
+              "type": "application/rdap+json"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "value": "https://rdap.arin.test/registry/autnum/64498",
+      "rel": "self",
+      "href": "https://rdap.arin.test/registry/autnum/64498",
+      "type": "application/rdap+json"
+    }
+  ],
+  "events": [
+    {
+      "eventAction": "registration",
+      "eventDate": "2020-01-01T00:00:00Z"
+    }
+  ],
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    },
+    {
+      "title": "Whois Inaccuracy Reporting",
+      "description": [
+        "Synthetic data; nothing to report."
+      ]
+    }
+  ]
+}

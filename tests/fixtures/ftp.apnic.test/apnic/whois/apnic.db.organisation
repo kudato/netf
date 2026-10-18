@@ -1,0 +1,29 @@
+# APNIC whois data, synthetic copy for the tests of netf.
+# Documentation addresses (RFC 5737, RFC 3849) and AS numbers (RFC 5398) only.
+
+organisation:   ORG-ECL1-AP
+org-name:       Example CDN Ltd
+org-type:       LIR
+country:        XG
+address:        1 Example Road, Sampleton
+phone:          +1 555 0120
+e-mail:         ops@cdn.example
+abuse-c:        IRT-EXAMPLECDN-XG
+mnt-ref:        MAINT-XG-EXAMPLECDN
+mnt-by:         MAINT-XG-EXAMPLECDN
+last-modified:  2025-06-01T00:00:00Z
+source:         APNIC
+
+organisation:   ORG-CC1-AP
+org-name:       CDN Customer Pty Ltd
+org-type:       OTHER
+country:        XG
+address:        2 Example Lane, Sampleton
+phone:          +1 555 0121
+e-mail:         noc@cdn-customer.example
+abuse-c:        IRT-CDNCUSTOMER-XG
+mnt-ref:        MAINT-XG-EXAMPLECDN
+mnt-by:         MAINT-XG-EXAMPLECDN
+last-modified:  2025-06-01T00:00:00Z
+source:         APNIC
+

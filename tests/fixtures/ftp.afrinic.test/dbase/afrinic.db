@@ -1,0 +1,68 @@
+# AFRINIC whois data, synthetic copy for the tests of netf.
+# All classes in one file.
+
+inetnum:        203.0.113.224 - 203.0.113.255
+netname:        SAVANNA-NET
+descr:          Savanna Net Ltd
+country:        XI
+org:            ORG-SN1-AFRINIC
+admin-c:        SN1-AFRINIC
+tech-c:         SN1-AFRINIC
+status:         ALLOCATED PA
+mnt-by:         EXAMPLE-AF-HM-MNT
+mnt-lower:      SAVANNA-MNT
+mnt-routes:     SAVANNA-MNT
+source:         AFRINIC
+
+aut-num:        AS64508
+as-name:        SAVANNA-AS
+descr:          Savanna Net Ltd
+org:            ORG-SN1-AFRINIC
+admin-c:        SN1-AFRINIC
+tech-c:         SN1-AFRINIC
+mnt-by:         EXAMPLE-AF-HM-MNT
+mnt-routes:     SAVANNA-MNT
+source:         AFRINIC
+
+organisation:   ORG-SN1-AFRINIC
+org-name:       Savanna Net Ltd
+org-type:       LIR
+country:        XI
+address:        3 Example Drive, Testburg
+phone:          +1 555 0140
+e-mail:         noc@savanna.example
+mnt-ref:        SAVANNA-MNT
+mnt-by:         EXAMPLE-AF-HM-MNT
+source:         AFRINIC
+
+role:           Savanna NOC
+nic-hdl:        SN1-AFRINIC
+address:        3 Example Drive, Testburg
+phone:          +1 555 0140
+e-mail:         noc@savanna.example
+admin-c:        SNA1-AFRINIC
+tech-c:         SNA1-AFRINIC
+mnt-by:         SAVANNA-MNT
+source:         AFRINIC
+
+person:         Sam Savanna
+nic-hdl:        SNA1-AFRINIC
+address:        3 Example Drive, Testburg
+phone:          +1 555 0141
+mnt-by:         SAVANNA-MNT
+source:         AFRINIC
+
+mntner:         SAVANNA-MNT
+descr:          Savanna Net Ltd
+admin-c:        SNA1-AFRINIC
+upd-to:         noc@savanna.example
+auth:           CRYPT-PW DummyValue
+mnt-by:         SAVANNA-MNT
+source:         AFRINIC
+
+route:          203.0.113.224/27
+descr:          Savanna Net Ltd
+origin:         AS64508
+mnt-by:         SAVANNA-MNT
+source:         AFRINIC
+

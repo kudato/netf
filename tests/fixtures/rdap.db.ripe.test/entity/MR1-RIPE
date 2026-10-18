@@ -1,0 +1,81 @@
+{
+  "objectClassName": "entity",
+  "handle": "MR1-RIPE",
+  "vcardArray": [
+    "vcard",
+    [
+      [
+        "version",
+        {},
+        "text",
+        "4.0"
+      ],
+      [
+        "fn",
+        {},
+        "text",
+        "Mary Roe"
+      ],
+      [
+        "kind",
+        {},
+        "text",
+        "individual"
+      ],
+      [
+        "tel",
+        {
+          "type": "voice"
+        },
+        "text",
+        "+1 555 0110"
+      ],
+      [
+        "email",
+        {},
+        "text",
+        "mroe@example.net"
+      ]
+    ]
+  ],
+  "links": [
+    {
+      "value": "https://rdap.db.ripe.test/entity/MR1-RIPE",
+      "rel": "self",
+      "href": "https://rdap.db.ripe.test/entity/MR1-RIPE",
+      "type": "application/rdap+json"
+    }
+  ],
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "notices": [
+    {
+      "title": "Filtered",
+      "description": [
+        "This output has been filtered."
+      ]
+    },
+    {
+      "title": "Source",
+      "description": [
+        "Objects returned came from source",
+        "RIPE"
+      ]
+    },
+    {
+      "title": "Terms and Conditions",
+      "description": [
+        "This is the RIPE Database query service. The objects are in RDAP format."
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/",
+          "rel": "terms-of-service",
+          "href": "https://apps.db.ripe.test/docs/terms",
+          "type": "application/pdf"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "link": {
+    "type": "locator",
+    "href": "https://rest.ripe.test/search"
+  },
+  "errormessages": {
+    "errormessage": [
+      {
+        "severity": "Error",
+        "text": "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+        "args": [
+          {
+            "value": "RIPE"
+          }
+        ]
+      }
+    ]
+  },
+  "terms-and-conditions": {
+    "type": "locator",
+    "href": "https://docs.db.ripe.test/terms-conditions.html"
+  }
+}

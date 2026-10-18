@@ -1,0 +1,11 @@
+64496 EXAMPLE-NET Example Networks LLC, XA
+64497 TELE-EDGE Tele Edge d.o.o., Testville, XB
+64498 DOCNET Documentation Net Inc, XE
+64499 SETONE Set One GmbH, XC
+64500 SETTWO Set Two GmbH, XC
+64501 HOMENET Home Net LLC, XD
+64502 ROGUE Rogue Transit Ltd, XB
+64503 EXAMPLE-CDN Example CDN Ltd, XF
+64504 NOCOUNTRY-AS No Country Org
+64505 QUIET-AS - Quiet Networks, Inc., XE
+64506 SIXNET Six Net BV, XD

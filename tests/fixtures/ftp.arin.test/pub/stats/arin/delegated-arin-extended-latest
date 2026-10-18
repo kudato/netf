@@ -1,0 +1,8 @@
+2|arin|20260101|4|19700101|20260101|-0500
+arin|*|asn|*|2|summary
+arin|*|ipv4|*|2|summary
+arin|*|ipv6|*|0|summary
+arin|XE|asn|64498|1|20050101|assigned|7a2c4f9e8b1d3e5a6c7b8d9e0f1a2b3c
+arin|XE|asn|64505|1|20060101|assigned|0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c
+arin|XE|ipv4|198.51.100.0|256|20050101|allocated|7a2c4f9e8b1d3e5a6c7b8d9e0f1a2b3c
+arin||ipv4|233.252.0.0|256||available|

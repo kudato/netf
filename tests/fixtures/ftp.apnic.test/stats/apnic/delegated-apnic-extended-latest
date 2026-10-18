@@ -1,0 +1,9 @@
+# Synthetic APNIC extended delegated stats of the tests of netf.
+# 203.0.113.0 + 96 is not a CIDR block; 203.0.113.96 + 32 is reserved.
+2|apnic|20260101|3|19850701|20260101|+1000
+apnic|*|asn|*|1|summary
+apnic|*|ipv4|*|2|summary
+apnic|*|ipv6|*|0|summary
+apnic|XG|asn|64503|1|20150101|allocated|AEXAMPLE1
+apnic|XG|ipv4|203.0.113.0|96|20150101|allocated|AEXAMPLE1
+apnic||ipv4|203.0.113.96|32||reserved|

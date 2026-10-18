@@ -1,0 +1,52 @@
+{
+  "description": "RDAP bootstrap file of the tests of netf (synthetic)",
+  "publication": "2026-01-01T00:00:00Z",
+  "services": [
+    [
+      [
+        "64496-64497",
+        "64499-64502",
+        "64506-64506"
+      ],
+      [
+        "https://rdap.db.ripe.test/"
+      ]
+    ],
+    [
+      [
+        "64498-64498",
+        "64505-64505"
+      ],
+      [
+        "https://rdap.arin.test/registry/",
+        "http://rdap.arin.test/registry/"
+      ]
+    ],
+    [
+      [
+        "64503-64503"
+      ],
+      [
+        "https://rdap.apnic.test/"
+      ]
+    ],
+    [
+      [
+        "64504-64504",
+        "64507-64507"
+      ],
+      [
+        "https://rdap.lacnic.test/rdap/"
+      ]
+    ],
+    [
+      [
+        "64508-64511"
+      ],
+      [
+        "https://rdap.afrinic.test/rdap/"
+      ]
+    ]
+  ],
+  "version": "1.0"
+}

@@ -1,0 +1,6591 @@
+{
+  "objects": {
+    "object": [
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.0 - 192.0.2.255"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.0 - 192.0.2.255"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.0 - 192.0.2.255"
+            },
+            {
+              "name": "netname",
+              "value": "EXNET-XA"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-EN1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-EN1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/JD1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "JD1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/NOC1-RIPE"
+              },
+              "name": "tech-c",
+              "value": "NOC1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-EN1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-EN1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ALLOCATED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/EXAMPLE-HM-MNT"
+              },
+              "name": "mnt-by",
+              "value": "EXAMPLE-HM-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/EXNET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "EXNET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "created",
+              "value": "2010-01-01T00:00:00Z"
+            },
+            {
+              "name": "last-modified",
+              "value": "2025-06-01T00:00:00Z"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.0 - 192.0.2.63"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.0 - 192.0.2.63"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.0 - 192.0.2.63"
+            },
+            {
+              "name": "netname",
+              "value": "CLIENT-HOSTING"
+            },
+            {
+              "name": "country",
+              "value": "XB"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-CH1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-CH1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/MR1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "MR1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/MR1-RIPE"
+              },
+              "name": "tech-c",
+              "value": "MR1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-CH1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-CH1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/CH-MNT"
+              },
+              "name": "mnt-by",
+              "value": "CH-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.128 - 192.0.2.255"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.128 - 192.0.2.255"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.128 - 192.0.2.255"
+            },
+            {
+              "name": "netname",
+              "value": "LEASE-BROKER"
+            },
+            {
+              "name": "country",
+              "value": "XE"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-LB1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-LB1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/LB1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "LB1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/LB1-RIPE"
+              },
+              "name": "tech-c",
+              "value": "LB1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-LB1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-LB1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "SUB-ALLOCATED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/LB-MNT"
+              },
+              "name": "mnt-by",
+              "value": "LB-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.128 - 192.0.2.159"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.128 - 192.0.2.159"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.128 - 192.0.2.159"
+            },
+            {
+              "name": "netname",
+              "value": "TENANT-ONE"
+            },
+            {
+              "name": "country",
+              "value": "XC"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-TO1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-TO1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/LB1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "LB1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/LB1-RIPE"
+              },
+              "name": "tech-c",
+              "value": "LB1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-TO1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-TO1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/LB-MNT"
+              },
+              "name": "mnt-by",
+              "value": "LB-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inet6num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inet6num/2001:db8::/32"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inet6num",
+              "value": "2001:db8::/32"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inet6num",
+              "value": "2001:db8::/32"
+            },
+            {
+              "name": "netname",
+              "value": "EXNET-V6"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-EN1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-EN1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/JD1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "JD1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/NOC1-RIPE"
+              },
+              "name": "tech-c",
+              "value": "NOC1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-EN1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-EN1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ALLOCATED-BY-RIR"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/EXNET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "EXNET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "aut-num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/aut-num/AS64496"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64496"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64496"
+            },
+            {
+              "name": "as-name",
+              "value": "EXAMPLE-NET"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-EN1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-EN1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/JD1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "JD1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-64496-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-64496-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/EXAMPLE-NET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "EXAMPLE-NET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "aut-num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/aut-num/AS64497"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64497"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64497"
+            },
+            {
+              "name": "as-name",
+              "value": "TELE-EDGE"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-TE1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-TE1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-64497-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-64497-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/TELE-EDGE-MNT"
+              },
+              "name": "mnt-by",
+              "value": "TELE-EDGE-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "aut-num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/aut-num/AS64499"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64499"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64499"
+            },
+            {
+              "name": "as-name",
+              "value": "SETONE"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-SO1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-SO1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-64499-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-64499-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/SETONE-MNT"
+              },
+              "name": "mnt-by",
+              "value": "SETONE-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "aut-num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/aut-num/AS64500"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64500"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64500"
+            },
+            {
+              "name": "as-name",
+              "value": "SETTWO"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-ST1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-ST1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-64500-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-64500-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/SETTWO-MNT"
+              },
+              "name": "mnt-by",
+              "value": "SETTWO-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "aut-num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/aut-num/AS64501"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64501"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64501"
+            },
+            {
+              "name": "as-name",
+              "value": "HOMENET"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-HN1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-HN1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-64501-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-64501-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/HOMENET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "HOMENET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "aut-num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/aut-num/AS64502"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64502"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64502"
+            },
+            {
+              "name": "as-name",
+              "value": "ROGUE"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-RT1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-RT1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-EN1-RIPE"
+              },
+              "name": "sponsoring-org",
+              "value": "ORG-EN1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-64502-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-64502-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/ROGUE-MNT"
+              },
+              "name": "mnt-by",
+              "value": "ROGUE-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "aut-num",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/aut-num/AS64506"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64506"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "aut-num",
+              "value": "AS64506"
+            },
+            {
+              "name": "as-name",
+              "value": "SIXNET"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/organisation/ORG-SX1-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-SX1-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-64506-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-64506-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/SIXNET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "SIXNET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "organisation",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/organisation/ORG-EN1-RIPE"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-EN1-RIPE"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-EN1-RIPE"
+            },
+            {
+              "name": "org-name",
+              "value": "Example Networks LLC"
+            },
+            {
+              "name": "org-type",
+              "value": "OTHER"
+            },
+            {
+              "name": "address",
+              "value": "Example Street 1"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-EN1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-EN1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "mnt-ref",
+              "value": "EXNET-MNT"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/EXNET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "EXNET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "organisation",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/organisation/ORG-CH1-RIPE"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-CH1-RIPE"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-CH1-RIPE"
+            },
+            {
+              "name": "org-name",
+              "value": "Client Hosting Ltd"
+            },
+            {
+              "name": "org-type",
+              "value": "OTHER"
+            },
+            {
+              "name": "address",
+              "value": "Example Street 1"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-CH1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-CH1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "mnt-ref",
+              "value": "CH-MNT"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/CH-MNT"
+              },
+              "name": "mnt-by",
+              "value": "CH-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "organisation",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/organisation/ORG-LB1-RIPE"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-LB1-RIPE"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-LB1-RIPE"
+            },
+            {
+              "name": "org-name",
+              "value": "Lease Broker LLC"
+            },
+            {
+              "name": "org-type",
+              "value": "OTHER"
+            },
+            {
+              "name": "address",
+              "value": "Example Street 1"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-LB1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-LB1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "mnt-ref",
+              "value": "LB-MNT"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/LB-MNT"
+              },
+              "name": "mnt-by",
+              "value": "LB-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "organisation",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/organisation/ORG-TO1-RIPE"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-TO1-RIPE"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-TO1-RIPE"
+            },
+            {
+              "name": "org-name",
+              "value": "Tenant One GmbH"
+            },
+            {
+              "name": "org-type",
+              "value": "OTHER"
+            },
+            {
+              "name": "address",
+              "value": "Example Street 1"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-TO1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-TO1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "mnt-ref",
+              "value": "LB-MNT"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/LB-MNT"
+              },
+              "name": "mnt-by",
+              "value": "LB-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "organisation",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/organisation/ORG-TE1-RIPE"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-TE1-RIPE"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-TE1-RIPE"
+            },
+            {
+              "name": "org-name",
+              "value": "Tele Edge d.o.o."
+            },
+            {
+              "name": "org-type",
+              "value": "OTHER"
+            },
+            {
+              "name": "address",
+              "value": "Example Street 1"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-TE1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-TE1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "mnt-ref",
+              "value": "TELE-EDGE-MNT"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/TELE-EDGE-MNT"
+              },
+              "name": "mnt-by",
+              "value": "TELE-EDGE-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "organisation",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/organisation/ORG-RT1-RIPE"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-RT1-RIPE"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "organisation",
+              "value": "ORG-RT1-RIPE"
+            },
+            {
+              "name": "org-name",
+              "value": "Rogue Transit Ltd"
+            },
+            {
+              "name": "org-type",
+              "value": "OTHER"
+            },
+            {
+              "name": "address",
+              "value": "Example Street 1"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/role/AR-RT1-RIPE"
+              },
+              "name": "abuse-c",
+              "value": "AR-RT1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "name": "mnt-ref",
+              "value": "ROGUE-MNT"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/ROGUE-MNT"
+              },
+              "name": "mnt-by",
+              "value": "ROGUE-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "role",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/role/Example Networks NOC"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "nic-hdl",
+              "value": "NOC1-RIPE"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "role",
+              "value": "Example Networks NOC"
+            },
+            {
+              "name": "nic-hdl",
+              "value": "NOC1-RIPE"
+            },
+            {
+              "name": "address",
+              "value": "1 Example Street, Exampleton"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/JD1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "JD1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/JS1-RIPE"
+              },
+              "name": "tech-c",
+              "value": "JS1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "name": "abuse-mailbox",
+              "value": "noc@example.net"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/EXNET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "EXNET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "mntner",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/mntner/EXNET-MNT"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "mntner",
+              "value": "EXNET-MNT"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "mntner",
+              "value": "EXNET-MNT"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/person/JD1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "JD1-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "name": "upd-to",
+              "value": "noc@example.net"
+            },
+            {
+              "name": "auth",
+              "value": "SSO hidden"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/EXNET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "EXNET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.0 - 192.0.2.0"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.0 - 192.0.2.0"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.0 - 192.0.2.0"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-0"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.1 - 192.0.2.1"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.1 - 192.0.2.1"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.1 - 192.0.2.1"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-1"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.2 - 192.0.2.2"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.2 - 192.0.2.2"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.2 - 192.0.2.2"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-2"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.3 - 192.0.2.3"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.3 - 192.0.2.3"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.3 - 192.0.2.3"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-3"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.4 - 192.0.2.4"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.4 - 192.0.2.4"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.4 - 192.0.2.4"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-4"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.5 - 192.0.2.5"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.5 - 192.0.2.5"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.5 - 192.0.2.5"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-5"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.6 - 192.0.2.6"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.6 - 192.0.2.6"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.6 - 192.0.2.6"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-6"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.7 - 192.0.2.7"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.7 - 192.0.2.7"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.7 - 192.0.2.7"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-7"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.8 - 192.0.2.8"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.8 - 192.0.2.8"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.8 - 192.0.2.8"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-8"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.9 - 192.0.2.9"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.9 - 192.0.2.9"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.9 - 192.0.2.9"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-9"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.10 - 192.0.2.10"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.10 - 192.0.2.10"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.10 - 192.0.2.10"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-10"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.11 - 192.0.2.11"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.11 - 192.0.2.11"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.11 - 192.0.2.11"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-11"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.12 - 192.0.2.12"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.12 - 192.0.2.12"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.12 - 192.0.2.12"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-12"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.13 - 192.0.2.13"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.13 - 192.0.2.13"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.13 - 192.0.2.13"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-13"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.14 - 192.0.2.14"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.14 - 192.0.2.14"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.14 - 192.0.2.14"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-14"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.15 - 192.0.2.15"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.15 - 192.0.2.15"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.15 - 192.0.2.15"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-15"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.16 - 192.0.2.16"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.16 - 192.0.2.16"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.16 - 192.0.2.16"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-16"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.17 - 192.0.2.17"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.17 - 192.0.2.17"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.17 - 192.0.2.17"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-17"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.18 - 192.0.2.18"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.18 - 192.0.2.18"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.18 - 192.0.2.18"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-18"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.19 - 192.0.2.19"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.19 - 192.0.2.19"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.19 - 192.0.2.19"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-19"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.20 - 192.0.2.20"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.20 - 192.0.2.20"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.20 - 192.0.2.20"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-20"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.21 - 192.0.2.21"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.21 - 192.0.2.21"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.21 - 192.0.2.21"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-21"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.22 - 192.0.2.22"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.22 - 192.0.2.22"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.22 - 192.0.2.22"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-22"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.23 - 192.0.2.23"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.23 - 192.0.2.23"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.23 - 192.0.2.23"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-23"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.24 - 192.0.2.24"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.24 - 192.0.2.24"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.24 - 192.0.2.24"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-24"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.25 - 192.0.2.25"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.25 - 192.0.2.25"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.25 - 192.0.2.25"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-25"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.26 - 192.0.2.26"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.26 - 192.0.2.26"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.26 - 192.0.2.26"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-26"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.27 - 192.0.2.27"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.27 - 192.0.2.27"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.27 - 192.0.2.27"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-27"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.28 - 192.0.2.28"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.28 - 192.0.2.28"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.28 - 192.0.2.28"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-28"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.29 - 192.0.2.29"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.29 - 192.0.2.29"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.29 - 192.0.2.29"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-29"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.30 - 192.0.2.30"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.30 - 192.0.2.30"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.30 - 192.0.2.30"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-30"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.31 - 192.0.2.31"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.31 - 192.0.2.31"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.31 - 192.0.2.31"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-31"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.32 - 192.0.2.32"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.32 - 192.0.2.32"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.32 - 192.0.2.32"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-32"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.33 - 192.0.2.33"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.33 - 192.0.2.33"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.33 - 192.0.2.33"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-33"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.34 - 192.0.2.34"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.34 - 192.0.2.34"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.34 - 192.0.2.34"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-34"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.35 - 192.0.2.35"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.35 - 192.0.2.35"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.35 - 192.0.2.35"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-35"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.36 - 192.0.2.36"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.36 - 192.0.2.36"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.36 - 192.0.2.36"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-36"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.37 - 192.0.2.37"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.37 - 192.0.2.37"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.37 - 192.0.2.37"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-37"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.38 - 192.0.2.38"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.38 - 192.0.2.38"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.38 - 192.0.2.38"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-38"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.39 - 192.0.2.39"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.39 - 192.0.2.39"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.39 - 192.0.2.39"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-39"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.40 - 192.0.2.40"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.40 - 192.0.2.40"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.40 - 192.0.2.40"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-40"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.41 - 192.0.2.41"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.41 - 192.0.2.41"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.41 - 192.0.2.41"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-41"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.42 - 192.0.2.42"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.42 - 192.0.2.42"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.42 - 192.0.2.42"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-42"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.43 - 192.0.2.43"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.43 - 192.0.2.43"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.43 - 192.0.2.43"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-43"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.44 - 192.0.2.44"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.44 - 192.0.2.44"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.44 - 192.0.2.44"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-44"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.45 - 192.0.2.45"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.45 - 192.0.2.45"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.45 - 192.0.2.45"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-45"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.46 - 192.0.2.46"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.46 - 192.0.2.46"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.46 - 192.0.2.46"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-46"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.47 - 192.0.2.47"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.47 - 192.0.2.47"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.47 - 192.0.2.47"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-47"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.48 - 192.0.2.48"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.48 - 192.0.2.48"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.48 - 192.0.2.48"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-48"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.49 - 192.0.2.49"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.49 - 192.0.2.49"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.49 - 192.0.2.49"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-49"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.50 - 192.0.2.50"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.50 - 192.0.2.50"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.50 - 192.0.2.50"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-50"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.51 - 192.0.2.51"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.51 - 192.0.2.51"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.51 - 192.0.2.51"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-51"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.52 - 192.0.2.52"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.52 - 192.0.2.52"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.52 - 192.0.2.52"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-52"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.53 - 192.0.2.53"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.53 - 192.0.2.53"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.53 - 192.0.2.53"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-53"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.54 - 192.0.2.54"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.54 - 192.0.2.54"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.54 - 192.0.2.54"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-54"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.55 - 192.0.2.55"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.55 - 192.0.2.55"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.55 - 192.0.2.55"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-55"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.56 - 192.0.2.56"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.56 - 192.0.2.56"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.56 - 192.0.2.56"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-56"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.57 - 192.0.2.57"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.57 - 192.0.2.57"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.57 - 192.0.2.57"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-57"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.58 - 192.0.2.58"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.58 - 192.0.2.58"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.58 - 192.0.2.58"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-58"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.59 - 192.0.2.59"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.59 - 192.0.2.59"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.59 - 192.0.2.59"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-59"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.60 - 192.0.2.60"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.60 - 192.0.2.60"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.60 - 192.0.2.60"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-60"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.61 - 192.0.2.61"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.61 - 192.0.2.61"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.61 - 192.0.2.61"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-61"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.62 - 192.0.2.62"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.62 - 192.0.2.62"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.62 - 192.0.2.62"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-62"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.63 - 192.0.2.63"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.63 - 192.0.2.63"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.63 - 192.0.2.63"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-63"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.64 - 192.0.2.64"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.64 - 192.0.2.64"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.64 - 192.0.2.64"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-64"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.65 - 192.0.2.65"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.65 - 192.0.2.65"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.65 - 192.0.2.65"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-65"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.66 - 192.0.2.66"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.66 - 192.0.2.66"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.66 - 192.0.2.66"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-66"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.67 - 192.0.2.67"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.67 - 192.0.2.67"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.67 - 192.0.2.67"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-67"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.68 - 192.0.2.68"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.68 - 192.0.2.68"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.68 - 192.0.2.68"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-68"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.69 - 192.0.2.69"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.69 - 192.0.2.69"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.69 - 192.0.2.69"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-69"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.70 - 192.0.2.70"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.70 - 192.0.2.70"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.70 - 192.0.2.70"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-70"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.71 - 192.0.2.71"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.71 - 192.0.2.71"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.71 - 192.0.2.71"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-71"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.72 - 192.0.2.72"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.72 - 192.0.2.72"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.72 - 192.0.2.72"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-72"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.73 - 192.0.2.73"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.73 - 192.0.2.73"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.73 - 192.0.2.73"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-73"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.74 - 192.0.2.74"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.74 - 192.0.2.74"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.74 - 192.0.2.74"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-74"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.75 - 192.0.2.75"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.75 - 192.0.2.75"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.75 - 192.0.2.75"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-75"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.76 - 192.0.2.76"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.76 - 192.0.2.76"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.76 - 192.0.2.76"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-76"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.77 - 192.0.2.77"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.77 - 192.0.2.77"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.77 - 192.0.2.77"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-77"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.78 - 192.0.2.78"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.78 - 192.0.2.78"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.78 - 192.0.2.78"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-78"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.79 - 192.0.2.79"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.79 - 192.0.2.79"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.79 - 192.0.2.79"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-79"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.80 - 192.0.2.80"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.80 - 192.0.2.80"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.80 - 192.0.2.80"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-80"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.81 - 192.0.2.81"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.81 - 192.0.2.81"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.81 - 192.0.2.81"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-81"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.82 - 192.0.2.82"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.82 - 192.0.2.82"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.82 - 192.0.2.82"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-82"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.83 - 192.0.2.83"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.83 - 192.0.2.83"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.83 - 192.0.2.83"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-83"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.84 - 192.0.2.84"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.84 - 192.0.2.84"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.84 - 192.0.2.84"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-84"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.85 - 192.0.2.85"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.85 - 192.0.2.85"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.85 - 192.0.2.85"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-85"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.86 - 192.0.2.86"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.86 - 192.0.2.86"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.86 - 192.0.2.86"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-86"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.87 - 192.0.2.87"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.87 - 192.0.2.87"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.87 - 192.0.2.87"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-87"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.88 - 192.0.2.88"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.88 - 192.0.2.88"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.88 - 192.0.2.88"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-88"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.89 - 192.0.2.89"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.89 - 192.0.2.89"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.89 - 192.0.2.89"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-89"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.90 - 192.0.2.90"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.90 - 192.0.2.90"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.90 - 192.0.2.90"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-90"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.91 - 192.0.2.91"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.91 - 192.0.2.91"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.91 - 192.0.2.91"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-91"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.92 - 192.0.2.92"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.92 - 192.0.2.92"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.92 - 192.0.2.92"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-92"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.93 - 192.0.2.93"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.93 - 192.0.2.93"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.93 - 192.0.2.93"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-93"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.94 - 192.0.2.94"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.94 - 192.0.2.94"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.94 - 192.0.2.94"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-94"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.95 - 192.0.2.95"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.95 - 192.0.2.95"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.95 - 192.0.2.95"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-95"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.96 - 192.0.2.96"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.96 - 192.0.2.96"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.96 - 192.0.2.96"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-96"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.97 - 192.0.2.97"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.97 - 192.0.2.97"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.97 - 192.0.2.97"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-97"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.98 - 192.0.2.98"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.98 - 192.0.2.98"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.98 - 192.0.2.98"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-98"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.99 - 192.0.2.99"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.99 - 192.0.2.99"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.99 - 192.0.2.99"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-99"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      },
+      {
+        "type": "inetnum",
+        "link": {
+          "type": "locator",
+          "href": "https://rest.ripe.test/ripe/inetnum/192.0.2.100 - 192.0.2.100"
+        },
+        "source": {
+          "id": "ripe"
+        },
+        "primary-key": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.100 - 192.0.2.100"
+            }
+          ]
+        },
+        "attributes": {
+          "attribute": [
+            {
+              "name": "inetnum",
+              "value": "192.0.2.100 - 192.0.2.100"
+            },
+            {
+              "name": "netname",
+              "value": "BULK-100"
+            },
+            {
+              "name": "country",
+              "value": "XA"
+            },
+            {
+              "name": "status",
+              "value": "ASSIGNED PA"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest.ripe.test/ripe/mntner/BULK-MNT"
+              },
+              "name": "mnt-by",
+              "value": "BULK-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "source",
+              "value": "RIPE"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

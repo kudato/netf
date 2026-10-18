@@ -1,0 +1,177 @@
+{
+  "objectClassName": "entity",
+  "handle": "ORG-CC1-AP",
+  "vcardArray": [
+    "vcard",
+    [
+      [
+        "version",
+        {},
+        "text",
+        "4.0"
+      ],
+      [
+        "fn",
+        {},
+        "text",
+        "CDN Customer Pty Ltd"
+      ],
+      [
+        "kind",
+        {},
+        "text",
+        "org"
+      ]
+    ]
+  ],
+  "links": [
+    {
+      "value": "https://rdap.apnic.test/entity/ORG-CC1-AP",
+      "rel": "self",
+      "href": "https://rdap.apnic.test/entity/ORG-CC1-AP",
+      "type": "application/rdap+json"
+    }
+  ],
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "networks": [
+    {
+      "objectClassName": "ip network",
+      "handle": "203.0.113.16 - 203.0.113.31",
+      "startAddress": "203.0.113.16",
+      "endAddress": "203.0.113.31",
+      "ipVersion": "v4",
+      "name": "CDN-CUSTOMER-XG",
+      "type": "ASSIGNED NON-PORTABLE",
+      "country": "XG",
+      "cidr0_cidrs": [
+        {
+          "v4prefix": "203.0.113.16",
+          "length": 28
+        }
+      ],
+      "status": [
+        "active"
+      ],
+      "entities": [
+        {
+          "objectClassName": "entity",
+          "handle": "ORG-CC1-AP",
+          "roles": [
+            "registrant"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "CDN Customer Pty Ltd"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "org"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.apnic.test/entity/ORG-CC1-AP",
+              "rel": "self",
+              "href": "https://rdap.apnic.test/entity/ORG-CC1-AP",
+              "type": "application/rdap+json"
+            }
+          ]
+        },
+        {
+          "objectClassName": "entity",
+          "handle": "IRT-CDNCUSTOMER-XG",
+          "roles": [
+            "abuse"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "IRT-CDNCUSTOMER-XG"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "group"
+              ],
+              [
+                "email",
+                {},
+                "text",
+                "abuse@cdn-customer.example"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.apnic.test/entity/IRT-CDNCUSTOMER-XG",
+              "rel": "self",
+              "href": "https://rdap.apnic.test/entity/IRT-CDNCUSTOMER-XG",
+              "type": "application/rdap+json"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "value": "https://rdap.apnic.test/ip/203.0.113.16/28",
+          "rel": "self",
+          "href": "https://rdap.apnic.test/ip/203.0.113.16/28",
+          "type": "application/rdap+json"
+        },
+        {
+          "value": "https://rdap.apnic.test/ip/203.0.113.16/28",
+          "rel": "up",
+          "href": "https://rdap.apnic.test/ip/203.0.113.0/26",
+          "type": "application/rdap+json"
+        }
+      ],
+      "events": [
+        {
+          "eventAction": "registration",
+          "eventDate": "2020-01-01T00:00:00Z"
+        },
+        {
+          "eventAction": "last changed",
+          "eventDate": "2025-06-01T00:00:00Z"
+        }
+      ],
+      "parentHandle": "203.0.113.0 - 203.0.113.95"
+    }
+  ],
+  "autnums": [],
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    }
+  ]
+}

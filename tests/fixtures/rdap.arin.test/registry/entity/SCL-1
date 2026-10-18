@@ -1,0 +1,139 @@
+{
+  "objectClassName": "entity",
+  "handle": "SCL-1",
+  "vcardArray": [
+    "vcard",
+    [
+      [
+        "version",
+        {},
+        "text",
+        "4.0"
+      ],
+      [
+        "fn",
+        {},
+        "text",
+        "Small Customer LLC"
+      ],
+      [
+        "kind",
+        {},
+        "text",
+        "org"
+      ]
+    ]
+  ],
+  "links": [
+    {
+      "value": "https://rdap.arin.test/registry/entity/SCL-1",
+      "rel": "self",
+      "href": "https://rdap.arin.test/registry/entity/SCL-1",
+      "type": "application/rdap+json"
+    }
+  ],
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "networks": [
+    {
+      "objectClassName": "ip network",
+      "handle": "NET-198-51-100-128-1",
+      "startAddress": "198.51.100.128",
+      "endAddress": "198.51.100.191",
+      "ipVersion": "v4",
+      "name": "SMALL-CUSTOMER",
+      "type": "REASSIGNED",
+      "country": "XE",
+      "cidr0_cidrs": [
+        {
+          "v4prefix": "198.51.100.128",
+          "length": 26
+        }
+      ],
+      "status": [
+        "active"
+      ],
+      "entities": [
+        {
+          "objectClassName": "entity",
+          "handle": "SCL-1",
+          "roles": [
+            "registrant"
+          ],
+          "vcardArray": [
+            "vcard",
+            [
+              [
+                "version",
+                {},
+                "text",
+                "4.0"
+              ],
+              [
+                "fn",
+                {},
+                "text",
+                "Small Customer LLC"
+              ],
+              [
+                "kind",
+                {},
+                "text",
+                "org"
+              ]
+            ]
+          ],
+          "links": [
+            {
+              "value": "https://rdap.arin.test/registry/entity/SCL-1",
+              "rel": "self",
+              "href": "https://rdap.arin.test/registry/entity/SCL-1",
+              "type": "application/rdap+json"
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "value": "https://rdap.arin.test/registry/ip/198.51.100.128/26",
+          "rel": "self",
+          "href": "https://rdap.arin.test/registry/ip/198.51.100.128/26",
+          "type": "application/rdap+json"
+        },
+        {
+          "value": "https://rdap.arin.test/registry/ip/198.51.100.128/26",
+          "rel": "up",
+          "href": "https://rdap.arin.test/registry/ip/198.51.100.0/24",
+          "type": "application/rdap+json"
+        }
+      ],
+      "events": [
+        {
+          "eventAction": "registration",
+          "eventDate": "2020-01-01T00:00:00Z"
+        },
+        {
+          "eventAction": "last changed",
+          "eventDate": "2025-06-01T00:00:00Z"
+        }
+      ],
+      "parentHandle": "NET-198-51-100-0-1"
+    }
+  ],
+  "autnums": [],
+  "notices": [
+    {
+      "title": "Terms of Service",
+      "description": [
+        "Synthetic data of the tests of netf."
+      ]
+    },
+    {
+      "title": "Whois Inaccuracy Reporting",
+      "description": [
+        "Synthetic data; nothing to report."
+      ]
+    }
+  ]
+}

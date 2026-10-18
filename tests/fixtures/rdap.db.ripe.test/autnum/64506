@@ -1,0 +1,178 @@
+{
+  "rdapConformance": [
+    "rdap_level_0"
+  ],
+  "objectClassName": "autnum",
+  "handle": "AS64506",
+  "startAutnum": 64506,
+  "endAutnum": 64506,
+  "name": "SIXNET",
+  "status": [
+    "active"
+  ],
+  "entities": [
+    {
+      "objectClassName": "entity",
+      "handle": "ORG-SX1-RIPE",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Six Net BV"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "org"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/ORG-SX1-RIPE",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/ORG-SX1-RIPE",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "SIXNET-MNT",
+      "roles": [
+        "registrant"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "SIXNET-MNT"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "individual"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/SIXNET-MNT",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/SIXNET-MNT",
+          "type": "application/rdap+json"
+        }
+      ]
+    },
+    {
+      "objectClassName": "entity",
+      "handle": "AR-64506-RIPE",
+      "roles": [
+        "abuse"
+      ],
+      "vcardArray": [
+        "vcard",
+        [
+          [
+            "version",
+            {},
+            "text",
+            "4.0"
+          ],
+          [
+            "fn",
+            {},
+            "text",
+            "Six Net BV Abuse"
+          ],
+          [
+            "kind",
+            {},
+            "text",
+            "group"
+          ],
+          [
+            "email",
+            {},
+            "text",
+            "abuse@sixnet.example"
+          ]
+        ]
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/entity/AR-64506-RIPE",
+          "rel": "self",
+          "href": "https://rdap.db.ripe.test/entity/AR-64506-RIPE",
+          "type": "application/rdap+json"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "value": "https://rdap.db.ripe.test/autnum/64506",
+      "rel": "self",
+      "href": "https://rdap.db.ripe.test/autnum/64506",
+      "type": "application/rdap+json"
+    }
+  ],
+  "events": [
+    {
+      "eventAction": "registration",
+      "eventDate": "2020-01-01T00:00:00Z"
+    }
+  ],
+  "notices": [
+    {
+      "title": "Filtered",
+      "description": [
+        "This output has been filtered."
+      ]
+    },
+    {
+      "title": "Source",
+      "description": [
+        "Objects returned came from source",
+        "RIPE"
+      ]
+    },
+    {
+      "title": "Terms and Conditions",
+      "description": [
+        "This is the RIPE Database query service. The objects are in RDAP format."
+      ],
+      "links": [
+        {
+          "value": "https://rdap.db.ripe.test/",
+          "rel": "terms-of-service",
+          "href": "https://apps.db.ripe.test/docs/terms",
+          "type": "application/pdf"
+        }
+      ]
+    }
+  ]
+}
