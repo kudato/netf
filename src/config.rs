@@ -368,7 +368,7 @@ fn resolve(cli: &Cli, config: ConfigFile, env: &Environment, home: PathBuf) -> R
         Mode::Ipset
     } else {
         let limit = cli.limit.or(config.limit).unwrap_or(DEFAULT_LIMIT);
-        let fields = match &cli.fields {
+        let fields = match cli.columns.as_ref().or(cli.fields.as_ref()) {
             Some(fields) => fields.clone(),
             None => config
                 .fields

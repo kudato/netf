@@ -13,6 +13,27 @@ pub(crate) mod table;
 use crate::{addr::set::AddrSet, model::Row};
 use column::Column;
 
+/// How selected fields are laid out. Only explicit formats affect pipes/files.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum Format {
+    Auto,
+    Table,
+    Details,
+    Plain,
+}
+
+impl Format {
+    pub(crate) fn parse(value: &str) -> Option<Self> {
+        match value {
+            "auto" => Some(Self::Auto),
+            "table" => Some(Self::Table),
+            "details" => Some(Self::Details),
+            "plain" => Some(Self::Plain),
+            _ => None,
+        }
+    }
+}
+
 /// What the engine answered.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum Answer {
@@ -30,12 +51,25 @@ pub(crate) enum Answer {
 
 impl Answer {
     /// Renders the answer as the text netf prints.
-    pub(crate) fn render(&self, terminal_width: Option<usize>) -> String {
+    pub(crate) fn render(
+        &self,
+        terminal_width: Option<usize>,
+        format: Option<Format>,
+        columns: Option<&[Column]>,
+    ) -> String {
         match self {
-            Self::Rows { rows, fields } => match terminal_width {
-                Some(width) => human::render(rows, fields, width),
-                None => table::render(rows, fields),
-            },
+            Self::Rows { rows, fields } => {
+                let width = terminal_width.unwrap_or(80);
+                if let Some(columns) = columns {
+                    human::exact(rows, columns, width, format.unwrap_or(Format::Auto))
+                } else if format == Some(Format::Plain)
+                    || format.is_none() && terminal_width.is_none()
+                {
+                    table::render(rows, fields)
+                } else {
+                    human::render_with_format(rows, fields, width, format.unwrap_or(Format::Auto))
+                }
+            }
             Self::Ipset(set) => ipset::render(set),
         }
     }

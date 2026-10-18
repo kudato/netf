@@ -410,7 +410,9 @@ async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<V
     }
     let width =
         (env.stdout_is_terminal && output.is_none()).then_some(env.stdout_columns.unwrap_or(80));
-    let text = answer.render(width).into_bytes();
+    let text = answer
+        .render(width, cli.format, cli.columns.as_deref())
+        .into_bytes();
     match output {
         Some(output) => {
             output.commit(&text)?;

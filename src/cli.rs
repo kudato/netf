@@ -64,6 +64,10 @@ pub(crate) struct Cli {
     pub(crate) file: Option<PathBuf>,
     /// `--fields`.
     pub(crate) fields: Option<Vec<Column>>,
+    /// Exact output fields, in order.
+    pub(crate) columns: Option<Vec<Column>>,
+    /// Explicit text layout, including when stdout is redirected.
+    pub(crate) format: Option<crate::output::Format>,
     /// `--limit`. `Some(0)` shows all networks.
     pub(crate) limit: Option<usize>,
     /// `--ttl`.
@@ -182,8 +186,20 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
             }
             Arg::Long("fields") => {
                 let value = text(&name, &mut parser)?;
-                let fields = output_fields(&name, &value)?;
+                let fields = output_fields(&name, &value, false)?;
                 once(&name, &mut cli.fields, fields)?;
+            }
+            Arg::Long("columns") => {
+                let value = text(&name, &mut parser)?;
+                let columns = output_fields(&name, &value, true)?;
+                once(&name, &mut cli.columns, columns)?;
+            }
+            Arg::Long("format") => {
+                let value = text(&name, &mut parser)?;
+                let format = crate::output::Format::parse(&value).ok_or_else(|| {
+                    invalid_value(&name, &value, "use auto, table, details, or plain")
+                })?;
+                once(&name, &mut cli.format, format)?;
             }
             Arg::Long("limit") => {
                 let value = text(&name, &mut parser)?;
@@ -242,6 +258,22 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
     }
     cli.query = query;
 
+    if cli.fields.is_some() && cli.columns.is_some() {
+        return Err(Error::usage(
+            "--fields cannot be combined with --columns: choose additive or exact fields",
+        ));
+    }
+    if cli.columns.is_some() && cli.format == Some(crate::output::Format::Plain) {
+        return Err(Error::usage(
+            "--columns cannot be combined with --format plain",
+        ));
+    }
+    if cli.interactive && (cli.columns.is_some() || cli.format.is_some()) {
+        return Err(Error::usage(
+            "-i cannot be combined with --columns or --format",
+        ));
+    }
+
     let ipset = if cli.ipset {
         Some("--ipset")
     } else if cli.set.is_some() {
@@ -250,6 +282,11 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
         None
     };
     if let Some(ipset) = ipset {
+        if cli.columns.is_some() || cli.format.is_some() {
+            return Err(Error::usage(format!(
+                "--columns and --format cannot be combined with {ipset}: CIDR exports have a fixed format"
+            )));
+        }
         if cli.fields.is_some() {
             return Err(Error::usage(format!(
                 "--fields cannot be combined with {ipset}: the list has no columns"
@@ -273,6 +310,8 @@ const OPTIONS: &[&str] = &[
     "--ipset",
     "--file",
     "--fields",
+    "--columns",
+    "--format",
     "--limit",
     "--ttl",
     "--cache-dir",
@@ -290,13 +329,18 @@ fn invalid_value(name: &str, value: &str, reason: &str) -> Error {
         .source(&source)
 }
 
-fn output_fields(name: &str, value: &str) -> Result<Vec<Column>> {
+fn output_fields(name: &str, value: &str, exact: bool) -> Result<Vec<Column>> {
     let source = format!("{name} {value}");
     let mut offset = name.len() + 1;
     let mut fields = Vec::new();
     for item in value.split(',') {
         let word = item.trim();
-        let parsed = parse_field(word);
+        let parsed = if exact {
+            Column::parse(word)
+                .ok_or_else(|| format!("{word}: unknown field; see netf --help=fields"))
+        } else {
+            parse_field(word)
+        };
         let field = parsed.map_err(|reason| {
             let at = offset + item.len() - item.trim_start().len();
             let mut error = Error::usage(format!("{name}: {reason}"))
@@ -308,7 +352,9 @@ fn output_fields(name: &str, value: &str) -> Result<Vec<Column>> {
             }
             error
         })?;
-        fields.push(field);
+        if !exact || !fields.contains(&field) {
+            fields.push(field);
+        }
         offset += item.len() + 1;
     }
     Ok(fields)

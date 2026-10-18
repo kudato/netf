@@ -69,6 +69,8 @@ Output:
       --ipset            Export the selected addresses as collapsed CIDRs
   -f, --file <PATH>       Save to PATH. Replace the old file only on success.
       --fields <LIST>    Add comma-separated fields. See --help=fields.
+      --columns <LIST>   Show exactly these fields, in this order
+      --format <NAME>    auto, table, details, or plain. See --help=fields.
       --limit <N>        Show at most N routes [default: 100]. 0 shows all.
                          CIDR exports have no limit.
 
@@ -102,7 +104,7 @@ Terminal results show BGP route, Origin AS, AS organization, and Network holder.
 Match shows selected addresses that differ from the route.
 Registry network shows a different or unavailable registration range.
 Results that do not fit the terminal use cards.
-Pipes and files keep the plain output format.
+Pipes and files keep plain output unless --columns or --format is set.
 Examples use synthetic data and may return no matches.
 ";
 
@@ -198,7 +200,7 @@ ip, domain, and set are selectors. See --help=query.
 ARIN and LACNIC have no maintainers. LACNIC has no contact search.
 AFRINIC has no abuse contact.
 
-Output fields (--fields)
+Output fields (--fields, --columns)
 
 Default terminal columns: BGP route, Origin AS, AS organization, Network holder.
 AS organization is as.org, not the short as.name.
@@ -228,7 +230,23 @@ Match appears when selected addresses differ from the route or no route is seen.
 Registry network appears when the most specific record differs from the route,
 when no route is seen, or when the record is unavailable.
 A narrower terminal changes the layout, not the fields or values.
---fields is unavailable with --ipset or --set.
+--columns selects exact fields and their order, including route.
+It replaces configured fields. It cannot be combined with --fields.
+Only requested fields appear: include match for exact selected addresses,
+or net.range for the registry chain. No other context fields are added.
+  netf --columns route,as.asn 'as.asn: 64498'
+
+Formats (--format):
+  auto     Table if all columns fit; otherwise cards with the same values
+  table    Aligned table; may exceed the terminal width; no truncation
+  details  Wrapped cards; the same selected fields
+  plain    The original format; additive --fields; no --columns
+Explicit --columns and --format also apply to pipes and -f files.
+Without either option, pipes and files keep the original plain format.
+Redirected auto/details output uses a width of 80 columns.
+--fields, --columns, and --format are unavailable with --ipset or --set.
+--columns and --format are unavailable with -i.
+
 ";
 
 /// Returns one topic, or the complete reference.

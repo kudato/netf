@@ -1,6 +1,6 @@
 //! Terminal output: a table when every selected field fits, cards otherwise.
 
-use super::{column::Column, fields};
+use super::{Format, column::Column, fields};
 use crate::{
     addr::set::AddrSet,
     model::{AsInfo, OrgRef, Rir, Row},
@@ -19,7 +19,12 @@ const HEADERS: [&str; 4] = [
 ];
 
 /// Renders every value without truncation. An empty answer stays empty.
-pub(crate) fn render(rows: &[Row], fields: &[Column], width: usize) -> String {
+pub(crate) fn render_with_format(
+    rows: &[Row],
+    fields: &[Column],
+    width: usize,
+    format: Format,
+) -> String {
     if rows.is_empty() {
         return String::new();
     }
@@ -87,7 +92,8 @@ pub(crate) fn render(rows: &[Row], fields: &[Column], width: usize) -> String {
                 .unwrap_or(0)
         })
         .collect();
-    let table = widths.iter().sum::<usize>() + (widths.len() - 1) * 2 <= width;
+    let table = format == Format::Table
+        || format == Format::Auto && widths.iter().sum::<usize>() + (widths.len() - 1) * 2 <= width;
     let mut out = String::new();
     if table {
         aligned(&mut out, &headers, &widths);
@@ -143,6 +149,102 @@ pub(crate) fn render(rows: &[Row], fields: &[Column], width: usize) -> String {
     out.push('\n');
     out.push_str(&wrap("Field reference: netf --help=fields", "", width));
     out
+}
+
+#[cfg(test)]
+fn render(rows: &[Row], fields: &[Column], width: usize) -> String {
+    render_with_format(rows, fields, width, Format::Auto)
+}
+
+/// Exact fields have no implicit match, registry context, or default columns.
+pub(crate) fn exact(rows: &[Row], columns: &[Column], width: usize, format: Format) -> String {
+    if rows.is_empty() || columns.is_empty() {
+        return String::new();
+    }
+    let width = width.max(1);
+    let headers: Vec<_> = columns.iter().map(|c| exact_label(*c)).collect();
+    let has_as = columns.iter().any(|c| c.is_as());
+    let groups: Vec<Vec<Vec<String>>> = rows
+        .iter()
+        .map(|row| {
+            let count = if has_as { row.ases.len().max(1) } else { 1 };
+            (0..count)
+                .map(|index| {
+                    columns
+                        .iter()
+                        .map(|column| {
+                            let value = if column.is_as() {
+                                row.ases.get(index).map_or_else(
+                                    || MISSING.into(),
+                                    |info| match column {
+                                        Column::Field(Field::AsAsn) => format!("AS{}", info.asn),
+                                        Column::Field(Field::AsOrg) => as_org(info),
+                                        _ => available(fields::as_cell(info, *column)),
+                                    },
+                                )
+                            } else if index > 0 {
+                                String::new()
+                            } else {
+                                match column {
+                                    Column::Field(Field::Route) => route(row),
+                                    Column::NetHolder => holder(row),
+                                    _ => available(fields::output_cell(row, *column)),
+                                }
+                            };
+                            terminal_safe(&value)
+                        })
+                        .collect()
+                })
+                .collect()
+        })
+        .collect();
+    let widths: Vec<_> = headers
+        .iter()
+        .enumerate()
+        .map(|(index, header)| {
+            groups
+                .iter()
+                .flatten()
+                .map(|cells| cells[index].width())
+                .chain([header.width()])
+                .max()
+                .unwrap_or(0)
+        })
+        .collect();
+    let table = format == Format::Table
+        || format == Format::Auto && widths.iter().sum::<usize>() + (widths.len() - 1) * 2 <= width;
+    let mut out = String::new();
+    if table {
+        aligned(&mut out, &headers, &widths);
+    }
+    for (group, lines) in groups.iter().enumerate() {
+        if !table && group > 0 {
+            out.push('\n');
+        }
+        for (origin, cells) in lines.iter().enumerate() {
+            if table {
+                aligned(&mut out, cells, &widths);
+            } else {
+                if origin > 0 {
+                    out.push('\n');
+                }
+                for (header, value) in headers.iter().zip(cells).filter(|(_, v)| !v.is_empty()) {
+                    item(&mut out, "", header, value, width);
+                }
+            }
+        }
+    }
+    out
+}
+
+fn exact_label(column: Column) -> String {
+    match column {
+        Column::Field(Field::Route) => HEADERS[0].into(),
+        Column::Field(Field::AsAsn) => HEADERS[1].into(),
+        Column::Field(Field::AsOrg) => HEADERS[2].into(),
+        Column::NetHolder => HEADERS[3].into(),
+        _ => label(column),
+    }
 }
 
 /// A registration country must not read as the location of an address.
