@@ -111,7 +111,7 @@ fn the_rest_loads_on_expand() {
     assert_eq!(run.outcome.code, 0, "{:?}", run.stderr);
     assert_eq!(
         run.stderr,
-        ["netf: showing 2 of 8 routes; refine the query or use --limit 0"]
+        ["netf: showing 2 of 8 matches; refine the query or use --limit 0"]
     );
     assert_eq!(
         run.frames[0].lines[2..],

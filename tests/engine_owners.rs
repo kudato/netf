@@ -461,7 +461,7 @@ fn holders_only_for_the_rows_shown() {
     );
     assert_eq!(
         stderr,
-        ["netf: showing 2 of 8 routes; refine the query or use --limit 0"]
+        ["netf: showing 2 of 8 matches; refine the query or use --limit 0"]
     );
     assert_eq!(
         asked_routes(&world, "rdap.apnic.test", &CDN_ROUTES),
@@ -500,8 +500,10 @@ fn check_window(window: usize) {
         .unwrap_or_else(|| panic!("no limit message: {stderr:?}"));
     let rest = line
         .strip_prefix("netf: showing first 2 matches; ")
-        .and_then(|r| r.strip_suffix(" routes not checked; use --limit 0"))
-        .unwrap_or_else(|| panic!("expected `<N> routes not checked; use --limit 0`: {line:?}"));
+        .and_then(|r| r.strip_suffix(" candidates not checked; use --limit 0"))
+        .unwrap_or_else(|| {
+            panic!("expected `<N> candidates not checked; use --limit 0`: {line:?}")
+        });
     let unchecked: usize = rest.parse().expect("a number of routes");
     assert!(
         (8 - asked.len()..=6).contains(&unchecked),

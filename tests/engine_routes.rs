@@ -766,7 +766,7 @@ fn limit_shows_the_first_routes() {
     assert_eq!(got, want);
     assert_eq!(
         stderr,
-        ["netf: showing 5 of 16 routes; refine the query or use --limit 0"]
+        ["netf: showing 5 of 16 matches; refine the query or use --limit 0"]
     );
     // `--limit 0` shows every route, without the notice.
     let t = quiet(&world, &["--limit", "0", "route: *"]);
@@ -797,7 +797,7 @@ fn default_limit_is_100() {
     assert_eq!(t.rows[0].ases, "AS64510");
     assert_eq!(
         stderr,
-        ["netf: showing 100 of 150 routes; refine the query or use --limit 0"]
+        ["netf: showing 100 of 150 matches; refine the query or use --limit 0"]
     );
     // `--ipset` is never limited.
     assert_eq!(

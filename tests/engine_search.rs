@@ -417,8 +417,8 @@ fn expensive_filter_stops_at_the_limit() {
         .unwrap_or_else(|| panic!("no limit message: {stderr:?}"));
     let unchecked: usize = line
         .strip_prefix("netf: showing first 2 matches; ")
-        .and_then(|r| r.strip_suffix(" routes not checked; use --limit 0"))
-        .unwrap_or_else(|| panic!("expected `<N> routes not checked; use --limit 0`: {line:?}"))
+        .and_then(|r| r.strip_suffix(" candidates not checked; use --limit 0"))
+        .unwrap_or_else(|| panic!("expected `<N> candidates not checked; use --limit 0`: {line:?}"))
         .parse()
         .expect("a number of routes");
     assert!((1..=6).contains(&unchecked), "{line}");

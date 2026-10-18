@@ -158,7 +158,7 @@ pub enum Notice {
         family: Family,
     },
     /// The limit cut the rows, and the total is known:
-    /// `netf: showing 100 of 25325 routes; refine the query or use --limit 0`.
+    /// `netf: showing 100 of 25325 matches; refine the query or use --limit 0`.
     Limit {
         /// The number of routes shown.
         shown: usize,
@@ -167,7 +167,7 @@ pub enum Notice {
     },
     /// The limit cut the rows during a check of a condition on the holder,
     /// so the total is unknown:
-    /// `netf: showing first 100 matches; 2400 routes not checked; use --limit 0`.
+    /// `netf: showing first 100 matches; 2400 candidates not checked; use --limit 0`.
     LimitUnchecked {
         /// The number of routes shown.
         shown: usize,
@@ -243,13 +243,13 @@ impl fmt::Display for Notice {
             Self::Limit { shown, total } => write!(
                 f,
                 "showing {shown} of {total} {}; refine the query or use --limit 0",
-                plural(*total, "route", "routes")
+                plural(*total, "match", "matches")
             ),
             Self::LimitUnchecked { shown, unchecked } => write!(
                 f,
                 "showing first {shown} {}; {unchecked} {} not checked; use --limit 0",
                 plural(*shown, "match", "matches"),
-                plural(*unchecked, "route", "routes")
+                plural(*unchecked, "candidate", "candidates")
             ),
             Self::RateLimited { class, wait } => {
                 write!(f, "{class}: rate limited, waiting {}", duration(*wait))
@@ -730,21 +730,21 @@ mod tests {
                 shown: 100,
                 total: 25325
             }),
-            "netf: showing 100 of 25325 routes; refine the query or use --limit 0"
+            "netf: showing 100 of 25325 matches; refine the query or use --limit 0"
         );
         assert_eq!(
             text(Notice::LimitUnchecked {
                 shown: 100,
                 unchecked: 2400
             }),
-            "netf: showing first 100 matches; 2400 routes not checked; use --limit 0"
+            "netf: showing first 100 matches; 2400 candidates not checked; use --limit 0"
         );
         assert_eq!(
             text(Notice::LimitUnchecked {
                 shown: 1,
                 unchecked: 1
             }),
-            "netf: showing first 1 match; 1 route not checked; use --limit 0"
+            "netf: showing first 1 match; 1 candidate not checked; use --limit 0"
         );
     }
 

@@ -71,7 +71,7 @@ Output:
       --fields <LIST>    Add comma-separated fields. See --help=fields.
       --columns <LIST>   Show exactly these fields, in this order
       --format <NAME>    auto, table, details, or plain. See --help=fields.
-      --limit <N>        Show at most N routes [default: 100]. 0 shows all.
+      --limit <N>        Show at most N matches [default: 100]. 0 shows all.
                          CIDR exports have no limit.
 
 Help topics: --help=query, --help=fields, --help=all
