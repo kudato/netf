@@ -589,7 +589,8 @@ impl View<'_> {
     fn record(&self, index: usize) -> Result<Record, Corrupt> {
         let size = record_size(self.family);
         let start = index.checked_mul(size).ok_or(Corrupt)?;
-        let bytes = self.routes.get(start..start + size).ok_or(Corrupt)?;
+        let end = start.checked_add(size).ok_or(Corrupt)?;
+        let bytes = self.routes.get(start..end).ok_or(Corrupt)?;
         let at = word(self.family);
         let first = match self.family {
             Family::V4 => u128::from(u32_at(bytes, 0)),
@@ -618,7 +619,9 @@ impl View<'_> {
     fn route(&self, index: usize) -> Result<Route, Corrupt> {
         let record = self.record(index)?;
         let start = (record.off as usize).checked_mul(4).ok_or(Corrupt)?;
-        let end = start + usize::from(record.n) * 4;
+        let end = start
+            .checked_add(usize::from(record.n) * 4)
+            .ok_or(Corrupt)?;
         let origins = self.origins.get(start..end).ok_or(Corrupt)?;
         if origins.is_empty() {
             return Err(Corrupt);
@@ -690,7 +693,8 @@ impl View<'_> {
 
     fn by_asn_at(&self, k: usize) -> Result<(Asn, u32), Corrupt> {
         let start = k.checked_mul(BY_ASN_SIZE).ok_or(Corrupt)?;
-        let bytes = self.by_asn.get(start..start + BY_ASN_SIZE).ok_or(Corrupt)?;
+        let end = start.checked_add(BY_ASN_SIZE).ok_or(Corrupt)?;
+        let bytes = self.by_asn.get(start..end).ok_or(Corrupt)?;
         Ok((u32_at(bytes, 0), u32_at(bytes, 4)))
     }
 
@@ -1182,6 +1186,47 @@ this is not a route
             answer.covering,
             [Some(route("192.0.2.0/24", &[64496, 64497]))]
         );
+    }
+
+    #[test]
+    fn cache_ranges_are_checked() {
+        for (family, prefix) in [(Family::V4, "192.0.2.0/24"), (Family::V6, "2001:db8::/32")] {
+            let good = file_of(&format!("64496\t{prefix}\t1\n"), family);
+            let layout = container::Layout::parse(&good).unwrap();
+            let start =
+                layout.section(&good, ROUTES).unwrap().as_ptr() as usize - good.as_ptr() as usize;
+            let request = RouteRequest {
+                all: true,
+                ..RouteRequest::default()
+            };
+            for (off, n, valid) in [
+                (0u32, 1u16, true),
+                (1, 0, false), // A route must have an origin.
+                (1, 1, false),
+                (u32::MAX / 4, 1, false), // The byte offset fits 32 bits, the end does not.
+                (u32::MAX / 4 + 1, 1, false),
+                (u32::MAX, 1, false),
+            ] {
+                let mut bytes = good.clone();
+                let at = start + word(family);
+                bytes[at + 2..at + 4].copy_from_slice(&n.to_le_bytes());
+                bytes[at + 4..at + 8].copy_from_slice(&off.to_le_bytes());
+                let answer = open(bytes, family).unwrap().answer(&request);
+                if valid {
+                    assert_eq!(answer.unwrap().routes, [route(prefix, &[64496])]);
+                } else {
+                    assert_eq!(answer, Err(Corrupt), "{family:?}, off={off}, n={n}");
+                }
+            }
+            let index = open(good, family).unwrap();
+            let view = index.view().unwrap();
+            for i in [view.len(), usize::MAX / record_size(family), usize::MAX] {
+                assert_eq!(view.record(i).err(), Some(Corrupt));
+            }
+            for i in [view.by_asn_len(), usize::MAX / BY_ASN_SIZE, usize::MAX] {
+                assert_eq!(view.by_asn_at(i), Err(Corrupt));
+            }
+        }
     }
 
     #[test]

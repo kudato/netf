@@ -848,9 +848,8 @@ impl View<'_> {
     fn record(&self, tab: Tab, index: usize) -> Result<Rec, Corrupt> {
         let size = tab.size();
         let start = index.checked_mul(size).ok_or(Corrupt)?;
-        let bytes = self.tables[tab as usize]
-            .get(start..start + size)
-            .ok_or(Corrupt)?;
+        let end = start.checked_add(size).ok_or(Corrupt)?;
+        let bytes = self.tables[tab as usize].get(start..end).ok_or(Corrupt)?;
         let w = tab.word();
         let word = |at: usize| match tab {
             Tab::V6 => u128_at(bytes, at),
@@ -862,7 +861,10 @@ impl View<'_> {
         }
         let off = u32_at(bytes, 3 * w);
         let len = u16_at(bytes, 3 * w + 4);
-        if off as usize + usize::from(len) > self.strings.len() {
+        let end = (off as usize)
+            .checked_add(usize::from(len))
+            .ok_or(Corrupt)?;
+        if end > self.strings.len() {
             return Err(Corrupt);
         }
         let cc = std::str::from_utf8(&bytes[3 * w + 6..3 * w + 8])
@@ -988,7 +990,8 @@ impl View<'_> {
     fn string(&self, record: &[u8; BY_OPAQUE_SIZE]) -> Option<&[u8]> {
         let off = u32_at(record, 0) as usize;
         let len = usize::from(u16_at(record, 4));
-        self.strings.get(off..off + len)
+        let end = off.checked_add(len)?;
+        self.strings.get(off..end)
     }
 
     /// Returns the opaque id of a record.
@@ -1008,10 +1011,8 @@ impl View<'_> {
             return Ok(Some(id.clone()));
         }
         let start = rec.off as usize;
-        let bytes = self
-            .strings
-            .get(start..start + usize::from(rec.len))
-            .ok_or(Corrupt)?;
+        let end = start.checked_add(usize::from(rec.len)).ok_or(Corrupt)?;
+        let bytes = self.strings.get(start..end).ok_or(Corrupt)?;
         let id: Arc<str> = std::str::from_utf8(bytes).map_err(|_| Corrupt)?.into();
         ids.insert(rec.off, id.clone());
         Ok(Some(id))
@@ -1518,6 +1519,60 @@ ripencc|XD|ipv4|10.0.0.0
         };
         let merged = StatsAnswer::merge([a, c]);
         assert_eq!(merged.covering[0].as_ref().unwrap().rir, Rir::Ripencc);
+    }
+
+    #[test]
+    fn cache_ranges_are_checked() {
+        let sections = sections_of(
+            "ripencc|XD|ipv4|192.0.2.0|256||allocated|x\n\
+             ripencc|XD|ipv6|2001:db8::|32||allocated|x\n\
+             ripencc|XD|asn|64496|1||assigned|x\n",
+        )
+        .unwrap();
+        for (tag, size, off_at) in [
+            (NETS_V4, Tab::V4.size(), 12),
+            (NETS_V6, Tab::V6.size(), 48),
+            (ASNS, Tab::As.size(), 12),
+            (BY_OPAQUE, BY_OPAQUE_SIZE, 0),
+        ] {
+            let request = if tag == BY_OPAQUE {
+                StatsRequest {
+                    by_opaque: vec!["x".into()],
+                    as_by_opaque: vec!["x".into()],
+                    ..StatsRequest::default()
+                }
+            } else {
+                all()
+            };
+            for (off, len, valid) in [
+                (0u32, 1u16, true),
+                (1, 0, true),
+                (1, 1, false),
+                (u32::MAX, 0, false),
+                (u32::MAX, 1, false),
+                (u32::MAX - 1, 2, false),
+            ] {
+                let mut changed = sections.clone();
+                let section = changed.iter_mut().find(|s| s.tag == tag).unwrap();
+                for record in section.data.chunks_exact_mut(size) {
+                    record[off_at..off_at + 4].copy_from_slice(&off.to_le_bytes());
+                    record[off_at + 4..off_at + 6].copy_from_slice(&len.to_le_bytes());
+                }
+                let answer = open(file_of_sections(&changed)).unwrap().answer(&request);
+                assert_eq!(
+                    answer.err(),
+                    if valid { None } else { Some(Corrupt) },
+                    "tag={tag}, off={off}, len={len}"
+                );
+            }
+        }
+        let index = open(file_of_sections(&sections)).unwrap();
+        let view = index.view().unwrap();
+        for tab in Tab::ALL {
+            for i in [view.len(tab), usize::MAX / tab.size(), usize::MAX] {
+                assert_eq!(view.record(tab, i).err(), Some(Corrupt));
+            }
+        }
     }
 
     #[test]

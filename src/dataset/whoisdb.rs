@@ -1262,10 +1262,8 @@ impl WhoisIndex {
 impl View<'_> {
     fn text(&self, off: u32, len: u16) -> Result<&str, Corrupt> {
         let start = off as usize;
-        let bytes = self
-            .strings
-            .get(start..start + usize::from(len))
-            .ok_or(Corrupt)?;
+        let end = start.checked_add(usize::from(len)).ok_or(Corrupt)?;
+        let bytes = self.strings.get(start..end).ok_or(Corrupt)?;
         std::str::from_utf8(bytes).map_err(|_| Corrupt)
     }
 
@@ -1344,7 +1342,10 @@ impl View<'_> {
             org: None,
         };
         let attrs_off = u32_at(rec, 36) as usize;
-        for i in attrs_off..attrs_off + usize::from(u16_at(rec, 42)) {
+        let attrs_end = attrs_off
+            .checked_add(usize::from(u16_at(rec, 42)))
+            .ok_or(Corrupt)?;
+        for i in attrs_off..attrs_end {
             let attr = self.attrs.get(i)?;
             let handle = self.handle(u32_at(attr, 0))?.to_owned();
             match Attr::from_code(attr[4]).ok_or(Corrupt)? {
@@ -1821,6 +1822,34 @@ org:            ORG-NONE-AP
         assert_eq!(merged.mnt[0].autnums.len(), 2);
         assert_eq!(WhoisAnswer::merge([apnic.clone()]), apnic);
         assert_eq!(WhoisAnswer::empty(&request).mnt, [WhoisFound::default()]);
+    }
+
+    #[test]
+    fn cache_ranges_are_checked() {
+        let sections =
+            sections_of("inetnum: 192.0.2.0 - 192.0.2.255\nnetname: X\nmnt-by: X\n").unwrap();
+        // The name and the single attribute both end at their section boundary.
+        for (off_at, len_at) in [(32, 40), (36, 42)] {
+            for (off, len, valid) in [
+                (0u32, 1u16, true),
+                (1, 0, true),
+                (1, 1, false),
+                (u32::MAX, 1, false),
+                (u32::MAX - 1, 2, false),
+            ] {
+                let mut changed = sections.clone();
+                let records = changed.iter_mut().find(|s| s.tag == RECORDS).unwrap();
+                records.data[off_at..off_at + 4].copy_from_slice(&off.to_le_bytes());
+                records.data[len_at..len_at + 2].copy_from_slice(&len.to_le_bytes());
+                let index = open(file_of_sections(&changed)).unwrap();
+                let record = index.view().unwrap().record(0);
+                assert_eq!(
+                    record.err(),
+                    if valid { None } else { Some(Corrupt) },
+                    "off_at={off_at}, off={off}, len={len}"
+                );
+            }
+        }
     }
 
     #[test]

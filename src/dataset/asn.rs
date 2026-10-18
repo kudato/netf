@@ -303,7 +303,8 @@ fn decode(record: &[u8; ENTRY], strings: &[u8]) -> Result<AsnEntry, Corrupt> {
     let name_len = usize::from(u16_at(record, 10));
     let org_start = usize::from(u16_at(record, 12));
     let org_len = usize::from(u16_at(record, 14));
-    let raw = strings.get(off..off + len).ok_or(Corrupt)?;
+    let end = off.checked_add(len).ok_or(Corrupt)?;
+    let raw = strings.get(off..end).ok_or(Corrupt)?;
     let raw = std::str::from_utf8(raw).map_err(|_| Corrupt)?;
     let name = raw.get(..name_len).ok_or(Corrupt)?;
     let org = raw.get(org_start..org_start + org_len).ok_or(Corrupt)?;
@@ -521,6 +522,37 @@ not a number\n\
         let mut stream = AsnStream::new(&request);
         feed(&mut stream, b"");
         assert!(stream.finish().is_err());
+    }
+
+    #[test]
+    fn cache_ranges_are_checked() {
+        let good = file_of(b"64496 A\n");
+        let layout = container::Layout::parse(&good).unwrap();
+        let start =
+            layout.section(&good, ENTRIES).unwrap().as_ptr() as usize - good.as_ptr() as usize;
+        let request = AsnRequest {
+            all: true,
+            ..AsnRequest::default()
+        };
+        for (off, len, expected) in [
+            (0u32, 1u16, Some("A")),
+            (1, 0, Some("")),
+            (1, 1, None),
+            (u32::MAX, 0, None),
+            (u32::MAX, 1, None),
+            (u32::MAX - 1, 2, None),
+        ] {
+            let mut bytes = good.clone();
+            bytes[start + 4..start + 8].copy_from_slice(&off.to_le_bytes());
+            bytes[start + 8..start + 10].copy_from_slice(&len.to_le_bytes());
+            // Empty name and organisation ranges also fit an empty string.
+            bytes[start + 10..start + 16].fill(0);
+            let answer = open(bytes).unwrap().answer(&request);
+            match expected {
+                Some(raw) => assert_eq!(answer.unwrap().entries[0].raw, raw),
+                None => assert_eq!(answer, Err(Corrupt), "off={off}, len={len}"),
+            }
+        }
     }
 
     #[test]
