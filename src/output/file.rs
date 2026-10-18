@@ -1,14 +1,20 @@
-//! The `-f PATH` file: an adjacent `.NAME.lock`, renamed over `PATH`.
-//! If the run fails, the old file stays as it was. The lock also holds the
-//! replacement contents, so only one run can write a given output at a time.
+//! Atomic replacement of the `-f PATH` output file.
 //!
-//! netf creates the lock exclusively before the run starts, so an occupied
-//! name or an unwritable directory fails at once, before any downloads.
-//! An existing entry, including a symbolic link, is left untouched.
-//! The temporary file gets the permissions of the umask, like any new file.
-//! netf removes the temporary file if the run fails or is interrupted.
-//! A killed process can leave a lock behind. After checking that no run is
-//! using it, remove it manually to allow another write.
+//! [`Output::create`] reserves `PATH` with a lock file in the same directory.
+//! For example, `-f networks.txt` uses `.networks.txt.lock`.
+//! The lock file holds the replacement contents.
+//! If the lock path exists or the directory is unwritable, the run fails
+//! before any downloads. An existing entry, including a symbolic link,
+//! stays unchanged. On Unix, the umask controls the lock file permissions.
+//!
+//! [`Output::commit`] writes the result and calls [`File::sync_all`] before
+//! it renames the lock file over `PATH`. If publication fails, `PATH` keeps
+//! its previous contents. On failure or interruption, [`Drop`] attempts to
+//! remove the lock file.
+//!
+//! Process termination without `Drop` can leave the lock file behind.
+//! That file blocks later runs and requires manual removal after its writer
+//! stops.
 
 use std::{
     ffi::OsString,
@@ -17,30 +23,34 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::error::{Error, Result};
+use crate::{
+    config::io_reason,
+    error::{Error, Result},
+};
 
-/// The `-f` file, written through a temporary file.
+/// The output path and the lock file that holds its replacement contents.
 #[derive(Debug)]
 pub(crate) struct Output {
     /// The file to replace.
     path: PathBuf,
-    /// The adjacent `.NAME.lock`. `None` once the rename consumes it.
+    /// The `.NAME.lock` path. `None` after a successful rename.
     temp: Option<PathBuf>,
-    /// The open temporary file. `None` once committed.
+    /// The open lock file. `None` after `publish` takes the handle.
     file: Option<File>,
 }
 
 impl Output {
-    /// Reserves `path` by creating its adjacent temporary file exclusively.
+    /// Creates the lock file with `create_new(true)` to reserve `path`.
     ///
     /// # Errors
     ///
-    /// Returns a runtime error if the name is already occupied, the path
-    /// has no file name, or the temporary file cannot be created.
+    /// Returns a runtime error if `path` has no file name or the lock file
+    /// cannot be created. An existing entry at the lock path, including a
+    /// symbolic link, causes an error.
     pub(crate) fn create(path: &Path) -> Result<Self> {
         let file_name = path
             .file_name()
-            .ok_or_else(|| failed(path, &"expected a file name"))?;
+            .ok_or_else(|| failed(path, "expected a file name"))?;
         let mut name = OsString::from(".");
         name.push(file_name);
         name.push(".lock");
@@ -56,7 +66,7 @@ impl Output {
                         &format!("output is busy: {} already exists", temp.display()),
                     )
                 } else {
-                    failed(path, &error)
+                    failed(path, &io_reason(&error))
                 }
             })?;
         Ok(Self {
@@ -66,7 +76,7 @@ impl Output {
         })
     }
 
-    /// Writes `bytes` and renames the temporary file over the target file.
+    /// Writes `bytes` to the lock file, syncs it, and replaces the output file.
     ///
     /// # Errors
     ///
@@ -75,21 +85,22 @@ impl Output {
         self.publish(bytes)
     }
 
-    /// Publishes the complete contents and gives up ownership of the lock
-    /// name. On failure, `Drop` still owns and removes the temporary file.
+    /// Renames the lock file over the output file after the write and sync.
+    /// On error, `Drop` attempts to remove the lock file.
+    /// After a successful rename, `Drop` leaves the lock path unchanged.
     fn publish(&mut self, bytes: &[u8]) -> Result<()> {
         let mut file = self
             .file
             .take()
-            .ok_or_else(|| failed(&self.path, &"closed"))?;
+            .ok_or_else(|| failed(&self.path, "closed"))?;
         file.write_all(bytes)
             .and_then(|()| file.sync_all())
-            .map_err(|error| failed(&self.path, &error))?;
+            .map_err(|error| failed(&self.path, &io_reason(&error)))?;
         drop(file);
         let temp = self.temp.as_deref().expect("unpublished output");
-        fs::rename(temp, &self.path).map_err(|error| failed(&self.path, &error))?;
-        // Another run may reserve the same name as soon as rename returns.
-        // Drop must not remove that run's file.
+        fs::rename(temp, &self.path).map_err(|error| failed(&self.path, &io_reason(&error)))?;
+        // A new run can create a lock file as soon as `rename` returns.
+        // Clear `temp` so `Drop` cannot remove the new lock file.
         self.temp = None;
         Ok(())
     }
@@ -105,7 +116,7 @@ impl Drop for Output {
 }
 
 /// Returns the runtime error `netf: -f PATH: <error>`.
-fn failed(path: &Path, error: &dyn std::fmt::Display) -> Error {
+fn failed(path: &Path, error: &str) -> Error {
     Error::runtime(format!("-f {}: {error}", path.display()))
 }
 
@@ -121,6 +132,15 @@ mod tests {
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).unwrap();
         dir
+    }
+
+    fn assert_io_error(error: &Error, path: &Path) {
+        assert_eq!(error.exit_code().code(), 1);
+        let message = error.to_string();
+        let prefix = format!("netf: -f {}: ", path.display());
+        let reason = message.strip_prefix(&prefix).expect(&message);
+        assert!(!reason.is_empty(), "{message}");
+        assert!(!reason.contains("(os error "), "{message}");
     }
 
     #[test]
@@ -143,9 +163,9 @@ mod tests {
         drop(Output::create(&path).unwrap());
         assert_eq!(fs::read_to_string(&path).unwrap(), "old\n");
         assert_eq!(fs::read_dir(&dir).unwrap().count(), 1);
-        let missing = dir.join("no-such-dir").join("out.txt");
+        let missing = dir.join("no-such-dir (os error 123)").join("out.txt");
         let error = Output::create(&missing).unwrap_err();
-        assert!(error.to_string().contains("-f "), "{error}");
+        assert_io_error(&error, &missing);
     }
 
     #[test]
@@ -218,10 +238,11 @@ mod tests {
         let lock = dir.join(".out.txt.lock");
         fs::write(&path, "old\n").unwrap();
         let mut output = Output::create(&path).unwrap();
-        // Force a write error without depending on the user's permissions.
+        // A read-only handle makes `write_all` fail.
         output.file = Some(File::open(&lock).unwrap());
 
-        assert!(output.commit(b"new\n").is_err());
+        let error = output.commit(b"new\n").unwrap_err();
+        assert_io_error(&error, &path);
 
         assert_eq!(fs::read_to_string(&path).unwrap(), "old\n");
         assert!(!lock.exists());
@@ -235,12 +256,12 @@ mod tests {
         let path = dir.join("out.txt");
         let lock = dir.join(".out.txt.lock");
         let output = Output::create(&path).unwrap();
-        // A directory that appeared during the run cannot be replaced by
-        // the output file.
+        // A directory created after reservation makes `rename` fail.
         fs::create_dir(&path).unwrap();
         fs::write(path.join("keep.txt"), "keep\n").unwrap();
 
-        assert!(output.commit(b"new\n").is_err());
+        let error = output.commit(b"new\n").unwrap_err();
+        assert_io_error(&error, &path);
 
         assert!(!lock.exists());
         assert_eq!(fs::read_to_string(path.join("keep.txt")).unwrap(), "keep\n");
