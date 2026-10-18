@@ -145,7 +145,12 @@ fn file_is_replaced_only_on_success() {
     assert!(run.stderr.starts_with("netf: ris-v4: "), "{}", run.stderr);
     assert_eq!(fs::read_to_string(&out).unwrap(), "192.0.2.64/27\n");
     let files = files_under(home.path());
-    assert!(files.iter().all(|f| !f.contains(".tmp")), "{files:?}");
+    assert!(
+        files
+            .iter()
+            .all(|f| !f.contains(".tmp") && f != ".out.txt.lock"),
+        "{files:?}"
+    );
 }
 
 #[test]

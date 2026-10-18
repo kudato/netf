@@ -817,9 +817,27 @@ fn assert_untouched(world: &World) {
     assert_eq!(std::fs::read_to_string(out).unwrap(), "old\n");
     let names = common::files_in(world.home.path());
     assert!(
-        names.iter().all(|n| !n.contains(".tmp")),
+        names
+            .iter()
+            .all(|n| !n.contains(".tmp") && n != ".out.txt.lock"),
         "temporary files left: {names:?}"
     );
+}
+
+#[test]
+fn a_reserved_output_fails_before_any_download() {
+    let world = World::standard();
+    let out = world.write("out.txt", "old\n");
+    let lock = world.write(".out.txt.lock", "another writer\n");
+
+    let (code, stderr) = world.fail(&["-f", "out.txt", "--ipset", "as.asn: 64498"]);
+
+    assert_eq!(code, 1);
+    assert_eq!(stderr.len(), 1, "{stderr:?}");
+    assert!(stderr[0].contains("output is busy"), "{stderr:?}");
+    assert!(world.transport.requests().is_empty());
+    assert_eq!(std::fs::read_to_string(out).unwrap(), "old\n");
+    assert_eq!(std::fs::read_to_string(lock).unwrap(), "another writer\n");
 }
 
 #[test]
