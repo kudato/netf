@@ -20,7 +20,7 @@ use std::{
     fmt,
     hash::{BuildHasher as _, Hasher as _},
     net::{Ipv4Addr, Ipv6Addr},
-    sync::atomic::{AtomicU64, Ordering},
+    sync::atomic::{AtomicU32, Ordering},
 };
 
 /// The longest name on the wire, from RFC 1035, section 2.3.4.
@@ -109,16 +109,16 @@ pub(crate) fn rcode_name(rcode: u8) -> String {
     }
 }
 
-/// Returns a query id that a stranger cannot guess.
+/// Returns a query id for a DoH request.
 ///
-/// `RandomState` is seeded randomly per process. Hashing a counter through
-/// it gives a different id per query without the `rand` crate. Over HTTPS,
-/// the id matters little, and RFC 8484 even suggests 0, but checking the id
-/// costs nothing and catches a confused server.
+/// Each call hashes a counter with a new `RandomState`. The counter can
+/// wrap, and the 16-bit ids can repeat. HTTP matches each response to its
+/// request, so the id provides an extra check on the DNS reply.
 pub(crate) fn random_id() -> u16 {
-    static COUNTER: AtomicU64 = AtomicU64::new(0);
+    // Use 32 bits for MIPS targets without 64-bit atomics.
+    static COUNTER: AtomicU32 = AtomicU32::new(0);
     let mut hasher = std::hash::RandomState::new().build_hasher();
-    hasher.write_u64(COUNTER.fetch_add(1, Ordering::Relaxed));
+    hasher.write_u64(u64::from(COUNTER.fetch_add(1, Ordering::Relaxed)));
     // The truncation is intended, because any 16 bits of the hash will do.
     hasher.finish() as u16
 }
