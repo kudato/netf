@@ -681,7 +681,7 @@ fn values_from_a_file() {
     // netf drops the addresses of the other family and says so in one
     // line.
     assert_eq!(stderr, ["netf: 1 IPv6 address skipped, use -6"]);
-    let absolute = format!("ip: @{}", path.display());
+    let absolute = format!("ip: @{path:?}");
     assert_eq!(world.ok(&["--ipset", &absolute]).0, stdout);
 
     // The same with `-6`, with the plural in the notice.
@@ -700,10 +700,11 @@ fn values_from_a_file() {
 fn path_in_a_config_set() {
     // `@path` works in the config too.
     let world = World::standard();
-    let path = world.write("lists/banned.txt", BANNED);
+    let path = world.write("lists with spaces/banned.txt", BANNED);
+    let query = format!("ip: @{path:?}");
     world.base_config(&format!(
-        "[set.banned]\nquery = \"ip: @{}\"\n",
-        path.display()
+        "[set.banned]\nquery = {}\n",
+        toml::Value::String(query)
     ));
     let (stdout, stderr) = world.ok(&["-s", "banned"]);
     assert_eq!(stdout, "192.0.2.70/32\n198.51.100.130/32\n");

@@ -85,12 +85,16 @@ pub(crate) fn prepare(env: &Environment) -> Result<PathBuf> {
 
 /// Creates the directory.
 ///
-/// On unix, the directory is private from the start.
+/// On Unix, the directory is private from the start.
 fn create_dir(dir: &std::path::Path) -> io::Result<()> {
-    let mut builder = fs::DirBuilder::new();
     #[cfg(unix)]
-    std::os::unix::fs::DirBuilderExt::mode(&mut builder, 0o700);
-    builder.create(dir)
+    {
+        use std::os::unix::fs::DirBuilderExt as _;
+
+        fs::DirBuilder::new().mode(0o700).create(dir)
+    }
+    #[cfg(not(unix))]
+    fs::create_dir(dir)
 }
 
 /// Checks the owner and the mode of the directory.

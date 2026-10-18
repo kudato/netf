@@ -148,7 +148,7 @@ impl Cache {
     }
 
     /// Returns the cache directory.
-    #[cfg(test)] // Tests check the mode of the created directory.
+    #[cfg(all(test, unix))] // Unix tests check the mode of the created directory.
     pub(crate) fn dir(&self) -> &Path {
         &self.dir
     }

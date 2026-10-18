@@ -935,7 +935,8 @@ mod tests {
             "# banned\n192.0.2.1\n\n  198.51.100.0/24  # office\n2001:db8::1\n",
         )
         .unwrap();
-        std::fs::write(dir.join("orgs.txt"), "\"SAMPLE LLC\"\nORG-SA1-RIPE\n").unwrap();
+        let orgs = dir.join("orgs with spaces.txt");
+        std::fs::write(&orgs, "\"SAMPLE LLC\"\nORG-SA1-RIPE\n").unwrap();
         std::fs::write(dir.join("empty.txt"), "# nothing\n").unwrap();
         let none: HashMap<String, String> = HashMap::new();
         let expand = |text: &str| {
@@ -948,7 +949,7 @@ mod tests {
             Expr::Or(vec![ip("192.0.2.1"), ip("198.51.100.0/24"), Expr::False])
         );
         assert_eq!(notices.len(), 1);
-        let (expr, _) = expand(&format!("net.org: @{}", dir.join("orgs.txt").display())).unwrap();
+        let (expr, _) = expand(&format!("net.org: @{orgs:?}")).unwrap();
         assert_eq!(
             expr,
             Expr::Or(vec![
