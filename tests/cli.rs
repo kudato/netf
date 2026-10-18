@@ -85,6 +85,7 @@ fn netf(args: &[&str]) -> std::process::Output {
         .args(args)
         .current_dir(home.path())
         .env("HOME", home.path())
+        .env("USERPROFILE", home.path())
         .env("NETF_SOURCE_BASE", CLOSED_BASE)
         .output()
         .expect("run netf")

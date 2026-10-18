@@ -27,6 +27,7 @@ fn netf_at(home: &Path, base: &str, args: &[&str]) -> Run {
         .args(args)
         .current_dir(home)
         .env("HOME", home)
+        .env("USERPROFILE", home)
         .env("NETF_SOURCE_BASE", base)
         .output()
         .expect("run netf");
