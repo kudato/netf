@@ -27,14 +27,14 @@ use lexopt::{Arg, Parser};
 use crate::{
     config::{DURATION_HINT, parse_duration, parse_field},
     error::{Error, Result},
-    query::Field,
+    output::column::Column,
 };
 
 /// What the command line asks for.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum Command {
     /// `-h`, `--help`.
-    Help,
+    Help(help::Topic),
     /// `-V`, `--version`.
     Version,
     /// A query or `-s`.
@@ -63,7 +63,7 @@ pub(crate) struct Cli {
     /// `-f`, `--file`, as given.
     pub(crate) file: Option<PathBuf>,
     /// `--fields`.
-    pub(crate) fields: Option<Vec<Field>>,
+    pub(crate) fields: Option<Vec<Column>>,
     /// `--limit`. `Some(0)` shows all networks.
     pub(crate) limit: Option<usize>,
     /// `--ttl`.
@@ -113,6 +113,9 @@ enum Place {
 /// - The query is missing, or `-s` comes with a query.
 /// - Two options cannot be combined.
 pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
+    if args.is_empty() {
+        return Err(Error::usage(help::FIRST_RUN));
+    }
     let mut parser = Parser::from_args(args.iter().cloned());
     let mut cli = Cli::default();
     let mut words: Vec<String> = Vec::new();
@@ -145,7 +148,17 @@ pub(crate) fn parse(args: &[OsString]) -> Result<Command> {
             after = Some(name.clone());
         }
         match arg {
-            Arg::Short('h') | Arg::Long("help") => return Ok(Command::Help),
+            Arg::Short('h') | Arg::Long("help") => {
+                let topic = match parser.optional_value() {
+                    Some(value) => help::Topic::parse(
+                        value
+                            .to_str()
+                            .ok_or_else(|| Error::usage("--help: topic is not valid UTF-8"))?,
+                    )?,
+                    None => help::Topic::Main,
+                };
+                return Ok(Command::Help(topic));
+            }
             Arg::Short('V') | Arg::Long("version") => return Ok(Command::Version),
             Arg::Short('s') | Arg::Long("set") => {
                 let value = text(&name, &mut parser)?;
@@ -302,6 +315,7 @@ fn lexopt_error(error: lexopt::Error) -> Error {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::query::Field;
 
     fn args(list: &[&str]) -> Vec<OsString> {
         list.iter().map(OsString::from).collect()
@@ -376,7 +390,10 @@ mod tests {
         assert_eq!(cli.config, Some(PathBuf::from("router.toml")));
         assert!(cli.v4 && cli.v6);
         assert_eq!(cli.file, Some(PathBuf::from("out.txt")));
-        assert_eq!(cli.fields, Some(vec![Field::NetOrg, Field::NetCountry]));
+        assert_eq!(
+            cli.fields,
+            Some(vec![Field::NetOrg.into(), Field::NetCountry.into()])
+        );
         assert_eq!(cli.limit, Some(0));
         assert_eq!(cli.ttl, Some(Duration::from_secs(1800)));
         assert_eq!(cli.cache_dir, Some(PathBuf::from("/tmp/c")));
@@ -417,7 +434,7 @@ mod tests {
 
     #[test]
     fn no_query() {
-        assert_eq!(error(&[]), "netf: no query; see netf --help");
+        assert_eq!(error(&[]), format!("netf: {}", help::FIRST_RUN));
         assert_eq!(error(&["-4"]), "netf: no query; see netf --help");
         assert_eq!(error(&["", " "]), "netf: no query; see netf --help");
     }
@@ -473,7 +490,7 @@ mod tests {
         assert_eq!(run(&["--ttl", "0", "x"]).ttl, Some(Duration::ZERO));
         assert_eq!(
             error(&["--fields", "net.org,holder", "x"]),
-            "netf: --fields: holder: unknown field; see the fields in netf --help"
+            "netf: --fields: holder: unknown field; see netf --help=fields"
         );
         assert_eq!(
             error(&["--fields", "route", "x"]),

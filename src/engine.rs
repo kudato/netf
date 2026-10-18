@@ -71,7 +71,10 @@ pub(crate) struct Context<'a> {
 /// Returns an error if a source, a registry, or a domain lookup fails.
 pub(crate) async fn run(plan: &Plan, context: &Context<'_>) -> Result<Answer> {
     let sources = context.sources;
+    context.reporter.activity(Some("loading network data"));
     sources.prepare(&plan.needs).await?;
+    // Without a cache, datasets stream during matching instead of prepare.
+    context.reporter.activity(Some("finding matches"));
     let egresses = sources.transport().egresses().len().max(1);
     let engine = Engine {
         sources,

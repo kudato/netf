@@ -7,9 +7,10 @@
 //! [`Display`](fmt::Display) implementation is the only place that forms
 //! the text, so tests compare texts against one catalogue.
 //!
-//! Every message is one line that starts with `netf: `. Errors that end the
+//! Notices are one line that starts with `netf: `. Errors that end the
 //! run are not notices. They are [`Error`](crate::error::Error)s, and
 //! [`Reporter::error`] prints the error once, at the end.
+//! The no-argument usage screen is a multiline usage error.
 //!
 //! # Ordering
 //!
@@ -23,8 +24,9 @@ use std::{
     fmt,
     io::{self, Write as _},
     sync::{Mutex, PoisonError},
-    time::{Duration, Instant},
+    time::Duration,
 };
+use tokio::time::Instant;
 
 use crate::{addr::Family, transport::Class};
 
@@ -52,6 +54,40 @@ pub trait Reporter: Send + Sync {
 
     /// Removes the progress line, if one is shown, at the end of the check.
     fn clear_progress(&self);
+
+    /// Starts a terminal activity, or ends it with `None`.
+    /// This does not add log lines for nonterminal reporters.
+    fn activity(&self, _action: Option<&'static str>) {}
+
+    /// Updates a known terminal count. `unit` names the objects counted.
+    fn items(&self, _done: u32, _total: u32, _unit: &'static str) {}
+
+    /// Redraws a slow activity, including while no request has completed.
+    fn tick(&self) {}
+}
+
+/// Drives progress independently of results arriving from the network.
+/// Dropping this future clears the activity, including on cancellation.
+pub(crate) async fn drive<T>(reporter: &dyn Reporter, work: impl Future<Output = T>) -> T {
+    struct Guard<'a>(&'a dyn Reporter);
+    impl Drop for Guard<'_> {
+        fn drop(&mut self) {
+            self.0.activity(None);
+            self.0.clear_progress();
+        }
+    }
+    let _guard = Guard(reporter);
+    tokio::pin!(work);
+    // Ticks only inspect state. The reporter limits actual writes to 2/s.
+    let mut timer = tokio::time::interval(Duration::from_millis(100));
+    timer.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
+    loop {
+        tokio::select! {
+            biased;
+            result = &mut work => return result,
+            _ = timer.tick() => reporter.tick(),
+        }
+    }
 }
 
 /// A message on stderr that does not stop the run.
@@ -268,48 +304,110 @@ const MIN_PROGRESS: u32 = 10;
 /// Erases the current terminal line.
 const ERASE_LINE: &str = "\r\x1b[K";
 
-/// A [`Reporter`] that writes to the stderr of the process.
-///
-/// On a terminal, progress is one line. The reporter redraws it in place at
-/// most twice a second and erases it at the end. Without a terminal, the
-/// reporter prints a line at every 10 %. A check of fewer than 10 items
-/// shows no progress. The reporter ignores write errors, because there is
-/// nowhere left to report them.
+/// A reporter that redraws slow activities on stderr terminals.
+/// Nonterminals retain the existing progress log at each tenth.
 #[derive(Debug)]
 pub struct StderrReporter {
     terminal: bool,
+    dumb: bool,
+    columns: usize,
     state: Mutex<ProgressState>,
 }
 
-/// What the progress output has shown so far.
+/// One activity and the output emitted for it.
 #[derive(Debug, Default)]
 struct ProgressState {
-    /// A progress line is on the terminal and must be erased before the
-    /// next line.
     shown: bool,
-    /// When the terminal line was last drawn.
     drawn_at: Option<Instant>,
-    /// The last tenth printed without a terminal.
     tenth: u64,
+    activity: Option<Activity>,
+}
+
+#[derive(Debug)]
+struct Activity {
+    action: &'static str,
+    started: Instant,
+    count: Option<(u32, u32, &'static str)>,
+    static_shown: bool,
+}
+
+impl ProgressState {
+    /// Computes one redraw from a supplied time, without doing I/O.
+    fn draw(&mut self, now: Instant, dumb: bool, columns: usize) -> Option<String> {
+        let activity = self.activity.as_mut()?;
+        let elapsed = now.duration_since(activity.started);
+        if elapsed < REDRAW
+            || self
+                .drawn_at
+                .is_some_and(|at| now.duration_since(at) < REDRAW)
+            || (dumb && activity.static_shown)
+        {
+            return None;
+        }
+        let mut line = format!("netf: {}", activity.action);
+        if let Some((done, total, unit)) = activity.count {
+            line.push_str(&format!(" · {done} of {total} {unit}"));
+        }
+        line.push_str(&format!(" · elapsed {}s", elapsed.as_secs()));
+        if crate::text::width(&line) > columns {
+            let action = match activity.action {
+                "reading registry records" => "registry records",
+                "fetching additional contacts" => "additional contacts",
+                action => action,
+            };
+            line = format!("netf: {action}");
+            if let Some((done, total, unit)) = activity.count {
+                line.push_str(&format!(" · {done}/{total} {unit}"));
+            }
+            line.push_str(&format!(" · {}s", elapsed.as_secs()));
+            line = crate::text::truncate(&line, columns);
+        }
+        self.drawn_at = Some(now);
+        activity.static_shown = true;
+        self.shown = !dumb;
+        Some(if dumb {
+            format!("{line}\n")
+        } else {
+            format!("{ERASE_LINE}{line}")
+        })
+    }
 }
 
 impl StderrReporter {
-    /// Creates a reporter. `terminal` tells whether stderr is a terminal.
+    /// Creates a reporter for stderr. Use `with_terminal` to honor TERM=dumb.
     pub fn new(terminal: bool) -> Self {
+        Self::with_terminal(terminal, false)
+    }
+
+    /// Creates a reporter with plain, static progress for a dumb terminal.
+    pub fn with_terminal(terminal: bool, dumb: bool) -> Self {
         Self {
             terminal,
+            dumb,
+            columns: 80,
             state: Mutex::new(ProgressState::default()),
         }
     }
 
-    /// Prints one line, erasing the progress line first.
+    /// Limits progress to one physical line on stderr.
+    pub fn with_columns(mut self, columns: usize) -> Self {
+        self.columns = columns.max(1);
+        self
+    }
+
+    /// Removes a transient line before a notice, error, or new stage.
+    fn erase(state: &mut ProgressState, stderr: &mut impl io::Write) {
+        if state.shown {
+            let _ = stderr.write_all(ERASE_LINE.as_bytes());
+            let _ = stderr.flush();
+            state.shown = false;
+        }
+    }
+
     fn line(&self, text: &str) {
         let mut state = self.state.lock().unwrap_or_else(PoisonError::into_inner);
         let mut stderr = io::stderr().lock();
-        if state.shown {
-            let _ = stderr.write_all(ERASE_LINE.as_bytes());
-            state.shown = false;
-        }
+        Self::erase(&mut state, &mut stderr);
         let _ = writeln!(stderr, "{text}");
     }
 }
@@ -324,38 +422,59 @@ impl Reporter for StderrReporter {
     }
 
     fn progress(&self, done: u32, total: u32, what: &'static str) {
-        if total < MIN_PROGRESS {
-            return;
-        }
-        let mut state = self.state.lock().unwrap_or_else(PoisonError::into_inner);
-        let mut stderr = io::stderr().lock();
         if self.terminal {
-            let now = Instant::now();
-            let recent = state
-                .drawn_at
-                .is_some_and(|at| now.duration_since(at) < REDRAW);
-            if recent && done < total {
-                return;
-            }
-            let _ = write!(stderr, "{ERASE_LINE}netf: {what}: {done}/{total}");
-            let _ = stderr.flush();
-            state.shown = true;
-            state.drawn_at = Some(now);
-        } else {
+            // Existing RDAP checks count candidates, not HTTP requests.
+            self.items(done, total, "networks");
+        } else if total >= MIN_PROGRESS {
+            let mut state = self.state.lock().unwrap_or_else(PoisonError::into_inner);
             let tenth = u64::from(done) * 10 / u64::from(total);
             if tenth > state.tenth {
                 state.tenth = tenth;
-                let _ = writeln!(stderr, "netf: {what}: {done}/{total}");
+                let _ = writeln!(io::stderr().lock(), "netf: {what}: {done}/{total}");
             }
         }
     }
 
     fn clear_progress(&self) {
         let mut state = self.state.lock().unwrap_or_else(PoisonError::into_inner);
-        if state.shown {
-            let _ = io::stderr().lock().write_all(ERASE_LINE.as_bytes());
+        Self::erase(&mut state, &mut io::stderr().lock());
+        state.tenth = 0;
+        if let Some(activity) = &mut state.activity {
+            activity.count = None;
         }
-        *state = ProgressState::default();
+    }
+
+    fn activity(&self, action: Option<&'static str>) {
+        if !self.terminal {
+            return;
+        }
+        let mut state = self.state.lock().unwrap_or_else(PoisonError::into_inner);
+        Self::erase(&mut state, &mut io::stderr().lock());
+        state.activity = action.map(|action| Activity {
+            action,
+            started: Instant::now(),
+            count: None,
+            static_shown: false,
+        });
+    }
+
+    fn items(&self, done: u32, total: u32, unit: &'static str) {
+        let mut state = self.state.lock().unwrap_or_else(PoisonError::into_inner);
+        if let Some(activity) = &mut state.activity {
+            activity.count = Some((done, total, unit));
+        }
+    }
+
+    fn tick(&self) {
+        if !self.terminal {
+            return;
+        }
+        let mut state = self.state.lock().unwrap_or_else(PoisonError::into_inner);
+        if let Some(line) = state.draw(Instant::now(), self.dumb, self.columns) {
+            let mut stderr = io::stderr().lock();
+            let _ = stderr.write_all(line.as_bytes());
+            let _ = stderr.flush();
+        }
     }
 }
 
@@ -364,6 +483,159 @@ mod tests {
     use std::sync::Arc;
 
     use super::*;
+
+    fn activity_at(started: Instant, count: Option<(u32, u32, &'static str)>) -> ProgressState {
+        ProgressState {
+            activity: Some(Activity {
+                action: "reading registry records",
+                started,
+                count,
+                static_shown: false,
+            }),
+            ..ProgressState::default()
+        }
+    }
+
+    #[test]
+    fn progress_waits_half_a_second_even_for_one_object() {
+        let start = Instant::now();
+        let mut state = activity_at(start, Some((0, 1, "networks")));
+        assert!(
+            state
+                .draw(start + Duration::from_millis(499), false, 80)
+                .is_none()
+        );
+        let line = state.draw(start + REDRAW, false, 80).unwrap();
+        assert!(line.contains("0 of 1 networks"));
+        assert!(
+            state
+                .draw(start + Duration::from_millis(999), false, 80)
+                .is_none()
+        );
+        state.activity.as_mut().unwrap().count = Some((1, 1, "networks"));
+        assert!(
+            state
+                .draw(start + Duration::from_secs(1), false, 80)
+                .unwrap()
+                .contains("1 of 1 networks")
+        );
+    }
+
+    #[test]
+    fn unknown_total_has_elapsed_time_and_dumb_terminal_has_one_plain_line() {
+        let start = Instant::now();
+        let mut state = activity_at(start, None);
+        let line = state
+            .draw(start + Duration::from_secs(2), true, 80)
+            .unwrap();
+        assert_eq!(line, "netf: reading registry records · elapsed 2s\n");
+        assert!(!line.contains(['\r', '\u{1b}']));
+        assert!(
+            state
+                .draw(start + Duration::from_secs(20), true, 80)
+                .is_none()
+        );
+        assert!(!state.shown);
+    }
+
+    #[test]
+    fn progress_fits_a_narrow_stderr_without_leaving_wrapped_lines() {
+        let start = Instant::now();
+        let mut state = activity_at(start, Some((1, 3, "networks")));
+        let line = state
+            .draw(start + Duration::from_secs(4), false, 45)
+            .unwrap();
+        assert!(crate::text::width(line.strip_prefix(ERASE_LINE).unwrap()) <= 45);
+        assert!(line.contains("1/3 networks"), "{line}");
+        assert!(line.contains("registry records"));
+        assert!(line.ends_with("4s"));
+    }
+
+    #[test]
+    fn notice_cleanup_erases_only_transient_output() {
+        let start = Instant::now();
+        let mut state = activity_at(start, None);
+        state.draw(start + REDRAW, false, 80).unwrap();
+        let mut bytes = Vec::new();
+        StderrReporter::erase(&mut state, &mut bytes);
+        assert_eq!(bytes, ERASE_LINE.as_bytes());
+        StderrReporter::erase(&mut state, &mut bytes);
+        assert_eq!(bytes, ERASE_LINE.as_bytes());
+        let mut dumb = activity_at(start, None);
+        dumb.draw(start + REDRAW, true, 80).unwrap();
+        let mut bytes = Vec::new();
+        StderrReporter::erase(&mut dumb, &mut bytes);
+        assert!(bytes.is_empty());
+    }
+
+    /// Runs the real drawing state and timer against a captured output stream.
+    #[derive(Default)]
+    struct Capture {
+        state: Mutex<ProgressState>,
+        lines: Mutex<Vec<String>>,
+    }
+
+    impl Reporter for Capture {
+        fn notice(&self, _: &Notice) {}
+        fn error(&self, _: &str) {}
+        fn progress(&self, _: u32, _: u32, _: &'static str) {}
+        fn clear_progress(&self) {}
+        fn activity(&self, action: Option<&'static str>) {
+            self.state.lock().unwrap().activity = action.map(|action| Activity {
+                action,
+                started: Instant::now(),
+                count: None,
+                static_shown: false,
+            });
+        }
+        fn tick(&self) {
+            if let Some(line) = self.state.lock().unwrap().draw(Instant::now(), false, 80) {
+                self.lines.lock().unwrap().push(line);
+            }
+        }
+    }
+
+    #[tokio::test(start_paused = true)]
+    async fn timer_reports_pending_work_and_stops_on_success_error_and_drop() {
+        for fail in [false, true] {
+            let reporter = Capture::default();
+            let result = drive(&reporter, async {
+                reporter.activity(Some("loading network data"));
+                tokio::time::sleep(Duration::from_millis(1100)).await;
+                if fail { Err("failed") } else { Ok(()) }
+            })
+            .await;
+            assert_eq!(result.is_err(), fail);
+            assert_eq!(reporter.lines.lock().unwrap().len(), 2);
+            assert!(reporter.state.lock().unwrap().activity.is_none());
+        }
+        let reporter = Capture::default();
+        let result = tokio::time::timeout(
+            Duration::from_millis(1100),
+            drive(&reporter, async {
+                reporter.activity(Some("loading network data"));
+                std::future::pending::<()>().await;
+            }),
+        )
+        .await;
+        assert!(result.is_err());
+        assert_eq!(reporter.lines.lock().unwrap().len(), 2);
+        assert!(reporter.state.lock().unwrap().activity.is_none());
+        tokio::time::sleep(Duration::from_secs(2)).await;
+        assert_eq!(reporter.lines.lock().unwrap().len(), 2);
+    }
+
+    #[tokio::test(start_paused = true)]
+    async fn fast_work_is_silent() {
+        let reporter = Capture::default();
+        drive(&reporter, async {
+            reporter.activity(Some("finding matches"));
+            tokio::time::sleep(Duration::from_millis(499)).await;
+        })
+        .await;
+        assert!(reporter.lines.lock().unwrap().is_empty());
+        assert!(reporter.state.lock().unwrap().activity.is_none());
+    }
 
     fn text(notice: Notice) -> String {
         notice.to_string()

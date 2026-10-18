@@ -10,11 +10,10 @@
 //! fills the network, holder, and abuse columns. `--fields` adds its columns
 //! after them (see [`fields`]).
 
-use super::fields;
+use super::{column::Column, fields};
 use crate::{
     addr::Range,
     model::{Contact, Role, Row},
-    query::Field,
 };
 
 /// The cell of a missing value.
@@ -24,7 +23,7 @@ const NONE: &str = "-";
 /// after the usual ones.
 ///
 /// An empty `rows` renders as an empty string.
-pub(crate) fn render(rows: &[Row], extra: &[Field]) -> String {
+pub(crate) fn render(rows: &[Row], extra: &[Column]) -> String {
     let with_part = rows.iter().any(|row| row.part.is_some());
     let lines: Vec<Vec<String>> = rows
         .iter()
@@ -34,7 +33,7 @@ pub(crate) fn render(rows: &[Row], extra: &[Field]) -> String {
                 cells.push(row.part.map_or_else(|| NONE.to_owned(), part));
             }
             cells.extend([route(row), ases(row), network(row), holder(row), abuse(row)]);
-            cells.extend(extra.iter().map(|field| fields::cell(row, *field)));
+            cells.extend(extra.iter().map(|field| fields::output_cell(row, *field)));
             cells
         })
         .collect();
@@ -176,6 +175,7 @@ fn emails(contacts: &[Contact]) -> Vec<String> {
 mod tests {
     use super::*;
     use crate::model::{AsInfo, AsnEntry, Route};
+    use crate::query::Field;
 
     fn info(asn: u32, name: Option<&str>) -> AsInfo {
         AsInfo {
@@ -301,7 +301,7 @@ mod tests {
         holder.contacts.clear();
         alone.chain.records.push(Arc::new(holder));
         assert_eq!(
-            render(&[routed, alone], &[Field::NetRir]),
+            render(&[routed, alone], &[Field::NetRir.into()]),
             "-             203.0.113.0/28  AS64503 CDN  203.0.113.0-203.0.113.95  \
              Example CDN Ltd, XG  irt@cdn.example / abuse@cdn.example  apnic\n\
              203.0.113.90  no route        -            203.0.113.0-203.0.113.95  \

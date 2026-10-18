@@ -13,6 +13,76 @@
 //!
 //! The plural forms of messages live in `report.rs`, next to the messages.
 
+use unicode_segmentation::UnicodeSegmentation as _;
+use unicode_width::UnicodeWidthStr as _;
+
+/// Makes terminal controls and direction overrides visible in source data.
+pub(crate) fn terminal_safe(text: &str) -> String {
+    let mut out = String::new();
+    for c in text.chars() {
+        match c {
+            '\n' => out.push_str("\\n"),
+            '\r' => out.push_str("\\r"),
+            '\t' => out.push_str("\\t"),
+            '\u{1b}' => out.push_str("\\x1b"),
+            c if c.is_control()
+                || matches!(c, '\u{061c}' | '\u{200e}' | '\u{200f}' | '\u{2028}'..='\u{202e}' | '\u{2066}'..='\u{2069}') =>
+            {
+                out.extend(c.escape_unicode());
+            }
+            c => out.push(c),
+        }
+    }
+    out
+}
+
+/// Wraps a safe line in terminal columns, with indented continuations.
+///
+/// Words stay whole when they fit. Longer values wrap at grapheme boundaries.
+/// A single grapheme wider than the terminal stays whole and may overflow.
+pub(crate) fn wrap(text: &str, continuation: &str, columns: usize) -> String {
+    let columns = columns.max(1);
+    let indent = if continuation.width() < columns {
+        continuation
+    } else {
+        ""
+    };
+    let mut rest = text;
+    let mut prefix = "";
+    let mut out = String::new();
+    while !rest.is_empty() {
+        let room = columns - prefix.width();
+        let mut end = 0;
+        let mut space = None;
+        for (index, grapheme) in rest.grapheme_indices(true) {
+            let next = index + grapheme.len();
+            if rest[..next].width() > room && end > 0 {
+                break;
+            }
+            end = next;
+            if grapheme == " " && index > 0 {
+                space = Some(index);
+            }
+            if rest[..end].width() > room {
+                break;
+            }
+        }
+        let mut skip = end;
+        if end < rest.len()
+            && let Some(space) = space
+        {
+            end = space;
+            skip = space + 1;
+        }
+        out.push_str(prefix);
+        out.push_str(&rest[..end]);
+        out.push('\n');
+        rest = &rest[skip..];
+        prefix = indent;
+    }
+    out
+}
+
 /// Folds `text` for a comparison that ignores case.
 pub(crate) fn fold(text: &str) -> String {
     text.chars().flat_map(char::to_lowercase).collect()

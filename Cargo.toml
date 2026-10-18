@@ -31,6 +31,9 @@ toml = "1"
 flate2 = "1"
 lexopt = "0.3"
 crossterm = "0.29"
+# Terminal column widths and wrapping without splitting combining sequences.
+unicode-width = { version = "0.2", default-features = false }
+unicode-segmentation = "1"
 
 [target.'cfg(unix)'.dependencies]
 memmap2 = "0.9"
@@ -40,7 +43,7 @@ libc = "0.2"
 [dev-dependencies]
 # The stub server for the tests of the HTTP layer. It is never in the binary.
 hyper = { version = "1", features = ["server"] }
-tokio = { version = "1", features = ["io-util"] }
+tokio = { version = "1", features = ["io-util", "test-util"] }
 
 [profile.release]
 opt-level = 3

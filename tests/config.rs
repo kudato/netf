@@ -292,7 +292,6 @@ fn option_errors() {
             &["--ttl", "1w", "x"][..],
             "netf: --ttl 1w: expected a duration such as 30m, 12h, 7d, or 0",
         ),
-        (&[][..], "netf: no query; see netf --help"),
     ] {
         assert_eq!(run(&world, args), (2, message.to_owned()), "{args:?}");
     }
@@ -314,7 +313,7 @@ fn options_are_checked_before_the_config() {
         run(&world, &["--fields", "holder", "x"]),
         (
             2,
-            "netf: --fields: holder: unknown field; see the fields in netf --help".to_owned()
+            "netf: --fields: holder: unknown field; see netf --help=fields".to_owned()
         )
     );
 }

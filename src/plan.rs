@@ -16,6 +16,7 @@ use crate::{
     addr::{Addr, Families, Prefix},
     error::{Error, Result},
     model::{Cc, Rir, Role},
+    output::column::Column,
     query::{
         Expr, Field,
         expr::{AsnMatch, HandleMatch, Leaf, OrgMatch, RouteMatch},
@@ -32,7 +33,7 @@ pub(crate) enum Mode {
         /// limit.
         limit: Option<usize>,
         /// Extra columns from `--fields`. They need RDAP for the shown rows.
-        fields: Vec<Field>,
+        fields: Vec<Column>,
     },
     /// The collapsed CIDR list of `--ipset`. It has no limit.
     Ipset,
@@ -197,9 +198,12 @@ fn field_needs(field: Field) -> Needs {
 ///
 /// A column shows values of the shown rows only, so `*.mnt` and
 /// `*.contact` come from RDAP, not from the reverse searches.
-fn column_needs(field: Field) -> Needs {
-    let mut needs = field_needs(field);
-    if field.name().starts_with("net.") {
+fn column_needs(column: Column) -> Needs {
+    let mut needs = match column {
+        Column::Field(field) => field_needs(field),
+        _ => Needs::default(),
+    };
+    if column.needs_chain() {
         needs.stats = true;
     }
     needs
@@ -694,7 +698,7 @@ mod tests {
         // `--fields net.*` adds the stats, for the block the chain starts at.
         let chain = Mode::Rows {
             limit: Some(100),
-            fields: vec![Field::NetOrg],
+            fields: vec![Field::NetOrg.into()],
         };
         assert!(needs(&pure, &chain, v4).stats);
         // `net.*` and `as.rir` add the stats. `*.org` adds RDAP.

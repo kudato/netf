@@ -74,6 +74,32 @@ fn as_fields_list_every_as_of_the_route() {
 }
 
 #[test]
+fn output_fields_export_exact_matches_chains_and_origin_mailboxes() {
+    let world = World::owners();
+    assert_eq!(
+        extra(
+            &world,
+            &[
+                "--fields",
+                "match,net.holder,net.range,net.abuse,as.abuse",
+                "ip: 192.0.2.140",
+            ]
+        ),
+        [
+            "192.0.2.140",
+            "Tenant One GmbH",
+            "192.0.2.0/24 > 192.0.2.128/25 > 192.0.2.128/27",
+            "abuse@tenant-one.example",
+            "AS64499: abuse@set-one.example, AS64500: abuse@set-two.example",
+        ]
+    );
+    assert_eq!(
+        extra(&world, &["--fields", "as.abuse", "ip: 203.0.113.200"]),
+        ["-"]
+    );
+}
+
+#[test]
 fn arin_contacts_come_from_the_organization() {
     // ARIN keeps the contacts at the holder. Several contacts of one role
     // are joined with `; `.
@@ -127,7 +153,7 @@ fn fields_errors_are_usage_errors() {
     for (args, text) in [
         (
             &["--fields", "holder", "as.asn: 64496"][..],
-            "netf: --fields: holder: unknown field; see the fields in netf --help",
+            "netf: --fields: holder: unknown field; see netf --help=fields",
         ),
         (
             &["--fields", "route", "as.asn: 64496"][..],

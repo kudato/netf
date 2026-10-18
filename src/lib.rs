@@ -124,6 +124,10 @@ pub struct Environment {
     /// Whether stderr is a terminal. If it is, progress is redrawn in
     /// place.
     pub stderr_is_terminal: bool,
+    /// The width of stdout in terminal columns, or `None` if unknown.
+    pub stdout_columns: Option<usize>,
+    /// The width of stderr in terminal columns, or `None` if unknown.
+    pub stderr_columns: Option<usize>,
 }
 
 impl Environment {
@@ -142,12 +146,52 @@ impl Environment {
             stdin_is_terminal: std::io::stdin().is_terminal(),
             stdout_is_terminal: std::io::stdout().is_terminal(),
             stderr_is_terminal: std::io::stderr().is_terminal(),
+            stdout_columns: terminal_columns(true),
+            stderr_columns: terminal_columns(false),
         }
     }
 
     /// Returns the variable `name`, if set.
     pub fn var(&self, name: &str) -> Option<&str> {
         self.vars.get(name).map(String::as_str)
+    }
+}
+
+/// Reads the chosen output stream, independent of the controlling terminal.
+fn terminal_columns(stdout: bool) -> Option<usize> {
+    let is_terminal = if stdout {
+        std::io::stdout().is_terminal()
+    } else {
+        std::io::stderr().is_terminal()
+    };
+    if !is_terminal {
+        return None;
+    }
+    #[cfg(unix)]
+    {
+        use std::os::fd::AsRawFd as _;
+        let mut size = libc::winsize {
+            ws_row: 0,
+            ws_col: 0,
+            ws_xpixel: 0,
+            ws_ypixel: 0,
+        };
+        let fd = if stdout {
+            std::io::stdout().as_raw_fd()
+        } else {
+            std::io::stderr().as_raw_fd()
+        };
+        // SAFETY: fd is a live descriptor and size is writable for the ioctl.
+        #[allow(unsafe_code)]
+        let result = unsafe { libc::ioctl(fd, libc::TIOCGWINSZ, &mut size) };
+        (result == 0 && size.ws_col > 0).then_some(usize::from(size.ws_col))
+    }
+    #[cfg(not(unix))]
+    {
+        crossterm::terminal::size()
+            .ok()
+            .map(|(width, _)| usize::from(width))
+            .filter(|width| *width > 0)
     }
 }
 
@@ -176,7 +220,10 @@ impl Invocation {
     /// stderr.
     pub fn from_process() -> Self {
         let env = Environment::from_process();
-        let reporter = Arc::new(StderrReporter::new(env.stderr_is_terminal));
+        let reporter = Arc::new(
+            StderrReporter::with_terminal(env.stderr_is_terminal, env.var("TERM") == Some("dumb"))
+                .with_columns(env.stderr_columns.unwrap_or(80)),
+        );
         Self {
             args: std::env::args_os().skip(1).collect(),
             env,
@@ -203,7 +250,7 @@ pub struct Outcome {
 /// On failure, the reporter has already received the error, and `stdout`
 /// is empty.
 pub async fn run(invocation: Invocation) -> Outcome {
-    let result = execute(&invocation, None).await;
+    let result = report::drive(invocation.reporter.as_ref(), execute(&invocation, None)).await;
     finish(&invocation, result)
 }
 
@@ -212,7 +259,11 @@ pub async fn run(invocation: Invocation) -> Outcome {
 /// The process then needs no terminal of its own. Without `-i`, the
 /// function behaves like [`run`].
 pub async fn run_with_terminal(invocation: Invocation, terminal: &mut dyn Terminal) -> Outcome {
-    let result = execute(&invocation, Some(terminal)).await;
+    let result = report::drive(
+        invocation.reporter.as_ref(),
+        execute(&invocation, Some(terminal)),
+    )
+    .await;
     finish(&invocation, result)
 }
 
@@ -251,7 +302,7 @@ fn finish(invocation: &Invocation, result: Result<Vec<u8>>) -> Outcome {
 ///    takes the answer instead and returns the marked nodes.
 async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<Vec<u8>> {
     let cli = match cli::parse(&invocation.args)? {
-        Command::Help => return Ok(cli::help::help().into_bytes()),
+        Command::Help(topic) => return Ok(cli::help::help(topic).into_bytes()),
         Command::Version => return Ok(cli::help::version().into_bytes()),
         Command::Run(cli) => cli,
     };
@@ -356,7 +407,9 @@ async fn execute(invocation: &Invocation, terminal: TerminalArg<'_>) -> Result<V
     if let (Some(relay), output::Answer::Rows { rows, .. }) = (&relay, &answer) {
         return tree::run(&context, &plan, &settings.query, rows, relay, terminal).await;
     }
-    let text = answer.render().into_bytes();
+    let width =
+        (env.stdout_is_terminal && output.is_none()).then_some(env.stdout_columns.unwrap_or(80));
+    let text = answer.render(width).into_bytes();
     match output {
         Some(output) => {
             output.commit(&text)?;

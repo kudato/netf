@@ -35,8 +35,8 @@ use crate::{
     cli::Cli,
     dataset::Urls,
     error::{Error, Result},
+    output::column::Column,
     plan::Mode,
-    query::Field,
 };
 
 /// The default `ttl`: a day.
@@ -177,21 +177,19 @@ pub(crate) const DURATION_HINT: &str = "expected a duration such as 30m, 12h, 7d
 
 /// Parses one name from `--fields` or from the `fields` key.
 ///
-/// The name must be an `as.*` or `net.*` field from the help. Any other
-/// field is already a column.
+/// Accepts query fields under `as.*` and `net.*`, plus output-only names.
+/// The route is already a column.
 ///
 /// # Errors
 ///
 /// Returns the reason if the name is empty, unknown, or already a column.
 /// The caller prefixes the reason with the place that the name came from.
-pub(crate) fn parse_field(name: &str) -> Result<Field, String> {
-    match Field::parse(name) {
-        Some(field) if field.is_as() || field.is_net() => Ok(field),
-        Some(_) => Err(format!("{name}: already a column")),
+pub(crate) fn parse_field(name: &str) -> Result<Column, String> {
+    match Column::parse(name) {
+        Some(Column::Field(crate::query::Field::Route)) => Err(format!("{name}: already a column")),
+        Some(field) => Ok(field),
         None if name.is_empty() => Err("empty field name".to_owned()),
-        None => Err(format!(
-            "{name}: unknown field; see the fields in netf --help"
-        )),
+        None => Err(format!("{name}: unknown field; see netf --help=fields")),
     }
 }
 
@@ -467,7 +465,7 @@ impl<'de> Deserialize<'de> for Ttl {
 
 /// An item of the `fields` key.
 #[derive(Clone, Copy, Debug)]
-struct FieldName(Field);
+struct FieldName(Column);
 
 impl<'de> Deserialize<'de> for FieldName {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
@@ -482,6 +480,7 @@ impl<'de> Deserialize<'de> for FieldName {
 mod tests {
     use super::*;
     use crate::model::Role;
+    use crate::query::Field;
 
     fn parse(text: &str) -> Result<ConfigFile> {
         ConfigFile::parse(text, "test.toml")
@@ -525,15 +524,15 @@ mod tests {
 
     #[test]
     fn fields() {
-        assert_eq!(parse_field("net.org"), Ok(Field::NetOrg));
+        assert_eq!(parse_field("net.org"), Ok(Field::NetOrg.into()));
         assert_eq!(
             parse_field("as.contact.abuse"),
-            Ok(Field::AsContact(Some(Role::Abuse)))
+            Ok(Field::AsContact(Some(Role::Abuse)).into())
         );
         assert_eq!(parse_field("route"), Err("route: already a column".into()));
         assert_eq!(
             parse_field("holder"),
-            Err("holder: unknown field; see the fields in netf --help".into())
+            Err("holder: unknown field; see netf --help=fields".into())
         );
         assert!(parse_field("ip").is_err());
         assert_eq!(parse_field(""), Err("empty field name".into()));
@@ -577,7 +576,10 @@ mod tests {
             s.mode,
             Mode::Rows {
                 limit: None,
-                fields: vec![Field::NetContact(Some(Role::Administrative)), Field::AsOrg],
+                fields: vec![
+                    Field::NetContact(Some(Role::Administrative)).into(),
+                    Field::AsOrg.into()
+                ],
             }
         );
         assert_eq!(s.proxies.len(), 2);
@@ -604,7 +606,7 @@ mod tests {
             limit: Some(5),
             proxies: vec!["http://10.9.9.9:8080".into()],
             concurrency: Some(2),
-            fields: Some(vec![Field::NetOrg]),
+            fields: Some(vec![Field::NetOrg.into()]),
             doh: Some("https://doh.example/q".into()),
             file: Some(PathBuf::from("out.txt")),
             ..Cli::default()
@@ -619,7 +621,7 @@ mod tests {
             s.mode,
             Mode::Rows {
                 limit: Some(5),
-                fields: vec![Field::NetOrg]
+                fields: vec![Field::NetOrg.into()]
             }
         );
         assert_eq!(s.proxies, ["http://10.9.9.9:8080"]);

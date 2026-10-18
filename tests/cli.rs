@@ -7,76 +7,46 @@ use std::process::Command;
 
 use common::{CLOSED_BASE, TempHome, World};
 
-/// Joins all whitespace into single spaces, to look for sentences that the
-/// help wraps across lines.
-fn words(text: &str) -> String {
-    text.split_whitespace().collect::<Vec<_>>().join(" ")
-}
-
+/// General help keeps the first query and mode choices on the first screen.
 fn check_help(stdout: &[u8]) {
     let help = String::from_utf8(stdout.to_vec()).expect("UTF-8 help");
-    // The help starts with the usage and lists every option.
-    assert!(help.starts_with("Usage: netf "), "{help}");
+    assert!(help.contains("Usage: netf "), "{help}");
+    let first: Vec<_> = help.lines().take(24).collect();
+    for fragment in [
+        "netf 'route:",
+        "netf 'as.asn:",
+        "netf --ipset",
+        "--help=query",
+    ] {
+        assert!(
+            first.iter().any(|line| line.contains(fragment)),
+            "{fragment}: {help}"
+        );
+    }
     for option in [
-        "-s, --set <NAME>",
-        "-c, --config <FILE>",
+        "-s, --set",
+        "-c, --config",
         "--ipset",
-        "-4",
-        "-6",
-        "-f, --file <PATH>",
-        "--fields <LIST>",
-        "--limit <N>",
-        "--ttl <DURATION>",
-        "--cache-dir <DIR>",
+        "-i ",
+        "-4 ",
+        "-6 ",
+        "-f, --file",
+        "--fields",
+        "--limit",
+        "--ttl",
+        "--cache-dir",
         "--no-cache",
-        "--proxy <URL>",
-        "--concurrency <N>",
+        "--proxy",
+        "--concurrency",
         "--ripe-emails",
-        "--doh <URL>",
+        "--doh",
         "-h, --help",
         "-V, --version",
     ] {
         assert!(
             help.lines()
                 .any(|line| line.trim_start().starts_with(option)),
-            "help lacks the option {option}"
-        );
-    }
-    // Sentences of the help that must stay word for word.
-    for sentence in [
-        "Route, a prefix announced in BGP (RIPE RIS):",
-        "Registry network of the route: the block from the registry and records inside it \
-         (RDAP ip network, RIPE inetnum):",
-        "Names and organizations are case-insensitive.",
-        "ARIN and LACNIC have no maintainers; LACNIC cannot be searched by contact; \
-         AFRINIC has no abuse contact.",
-        "Conditions on as.* must hold for one AS of the route, on net.* for one network.",
-    ] {
-        assert!(words(&help).contains(sentence), "help lacks {sentence:?}");
-    }
-    // Every field and selector is listed.
-    for name in [
-        "route",
-        "net.country",
-        "net.org",
-        "net.rir",
-        "net.mnt",
-        "net.contact",
-        "as.asn",
-        "as.name",
-        "as.org",
-        "as.country",
-        "as.rir",
-        "as.mnt",
-        "as.contact",
-        "ip",
-        "domain",
-        "set",
-    ] {
-        assert!(
-            help.lines()
-                .any(|line| line.trim_start().starts_with(&format!("{name} "))),
-            "help lacks the field {name}"
+            "help lacks {option}"
         );
     }
 }
@@ -134,4 +104,91 @@ fn version_from_the_binary() {
     assert_eq!(output.status.code(), Some(0));
     assert!(output.stderr.is_empty());
     assert_eq!(String::from_utf8(output.stdout).unwrap(), version_line());
+}
+
+#[test]
+fn topics_and_first_run_need_neither_home_config_nor_network() {
+    let world = World::bare();
+    std::fs::write(world.home.path().join("invalid.toml"), "invalid TOML [").unwrap();
+    for topic in [
+        "--help",
+        "--help=query",
+        "--help=fields",
+        "--help=all",
+        "--version",
+    ] {
+        let (mut invocation, reporter) = world.invocation(&["-c", "invalid.toml", topic]);
+        invocation.env.home = None;
+        invocation.env.vars.clear();
+        let outcome = common::runtime().block_on(netf::run(invocation));
+        assert_eq!(outcome.code, 0, "{topic}: {:?}", reporter.lines());
+        assert!(!outcome.stdout.is_empty());
+        assert!(reporter.lines().is_empty());
+    }
+    let (mut invocation, reporter) = world.invocation(&[]);
+    invocation.env.home = None;
+    let outcome = common::runtime().block_on(netf::run(invocation));
+    assert_eq!(outcome.code, 2);
+    assert!(outcome.stdout.is_empty());
+    let screen = reporter.lines().join("\n");
+    assert!(screen.starts_with("netf: enter a query"), "{screen}");
+    assert!(screen.lines().count() <= 24);
+    assert!(screen.contains("netf --ipset 'as.asn: 64498'"));
+    assert!(world.transport.requests().is_empty());
+}
+
+#[test]
+fn all_help_contains_query_and_output_catalogs() {
+    let world = World::bare();
+    let (out, _) = world.run(&["--help=all"]);
+    let all = String::from_utf8(out.stdout).unwrap();
+    for topic in ["query", "fields"] {
+        let (out, _) = world.run(&[&format!("--help={topic}")]);
+        assert!(all.contains(&String::from_utf8(out.stdout).unwrap()));
+    }
+    for name in [
+        "route",
+        "net.country",
+        "net.org",
+        "net.rir",
+        "net.mnt",
+        "net.contact",
+        "as.asn",
+        "as.name",
+        "as.org",
+        "as.country",
+        "as.rir",
+        "as.mnt",
+        "as.contact",
+        "match",
+        "net.holder",
+        "net.range",
+        "net.abuse",
+        "as.abuse",
+    ] {
+        assert!(
+            all.lines()
+                .any(|line| line.trim_start().starts_with(&format!("{name} "))),
+            "missing {name}"
+        );
+    }
+}
+
+#[test]
+fn unknown_topic_is_usage_error_and_no_arguments_use_stderr() {
+    let output = netf(&["--help=unknown"]);
+    assert_eq!(output.status.code(), Some(2));
+    assert!(output.stdout.is_empty());
+    let error = String::from_utf8(output.stderr).unwrap();
+    for topic in ["--help=query", "--help=fields", "--help=all"] {
+        assert!(error.contains(topic), "{error}");
+    }
+    let output = netf(&[]);
+    assert_eq!(output.status.code(), Some(2));
+    assert!(output.stdout.is_empty());
+    assert!(
+        String::from_utf8(output.stderr)
+            .unwrap()
+            .contains("Usage: netf")
+    );
 }

@@ -20,6 +20,7 @@ use super::Engine;
 use crate::{
     error::Result,
     model::{Contact, NetChain, Rir, Role, Row},
+    output::column::Column,
     plan::eval,
     query::Field,
     rdap,
@@ -31,22 +32,37 @@ use crate::{
 /// # Errors
 ///
 /// Returns an error if a registry fails.
-pub(crate) async fn rows(engine: &Engine<'_>, rows: &mut Vec<Row>, fields: &[Field]) -> Result<()> {
+pub(crate) async fn rows(
+    engine: &Engine<'_>,
+    rows: &mut Vec<Row>,
+    fields: &[Column],
+) -> Result<()> {
     if rows.is_empty() {
         return Ok(());
     }
-    let chain = fields.iter().any(|field| is_net(*field));
+    let chain = fields.iter().any(|field| field.needs_chain());
+    let total = u32::try_from(rows.len()).unwrap_or(u32::MAX);
+    engine.reporter.activity(Some("reading registry records"));
+    engine.reporter.items(0, total, "networks");
     let mut enriched = stream::iter(std::mem::take(rows))
         .map(|row| enrich(engine, row, chain))
         .buffered(engine.window.max(1));
     while let Some(row) = enriched.next().await {
         rows.push(row?);
+        engine.reporter.items(
+            u32::try_from(rows.len()).unwrap_or(u32::MAX),
+            total,
+            "networks",
+        );
     }
     drop(enriched);
     let handles = hidden(rows, fields);
     if handles.is_empty() {
         return Ok(());
     }
+    engine
+        .reporter
+        .activity(Some("fetching additional contacts"));
     let emails = engine.rdap.ripe_emails(&handles).await?;
     if !emails.is_empty() {
         for row in rows.iter_mut() {
@@ -54,14 +70,6 @@ pub(crate) async fn rows(engine: &Engine<'_>, rows: &mut Vec<Row>, fields: &[Fie
         }
     }
     Ok(())
-}
-
-/// Returns `true` for the `net.*` fields.
-fn is_net(field: Field) -> bool {
-    matches!(
-        field,
-        Field::NetCountry | Field::NetOrg | Field::NetRir | Field::NetMnt | Field::NetContact(_)
-    )
 }
 
 /// Fetches the records of one row: the most specific network record of its
@@ -113,18 +121,18 @@ pub(crate) fn in_role(contact: &Contact, role: Option<Role>) -> bool {
 
 /// Returns the RIPE handles with hidden e-mail among the contacts that
 /// `rows` show in the abuse column and in the contact fields.
-fn hidden(rows: &[Row], fields: &[Field]) -> Vec<String> {
+fn hidden(rows: &[Row], fields: &[Column]) -> Vec<String> {
     let net_roles: Vec<Option<Role>> = fields
         .iter()
         .filter_map(|field| match field {
-            Field::NetContact(role) => Some(*role),
+            Column::Field(Field::NetContact(role)) => Some(*role),
             _ => None,
         })
         .collect();
     let as_roles: Vec<Option<Role>> = fields
         .iter()
         .filter_map(|field| match field {
-            Field::AsContact(role) => Some(*role),
+            Column::Field(Field::AsContact(role)) => Some(*role),
             _ => None,
         })
         .collect();
@@ -229,7 +237,10 @@ mod tests {
         let rows = [row];
         assert_eq!(hidden(&rows, &[]), ["ABUSE-RIPE"]);
         assert_eq!(
-            hidden(&rows, &[Field::NetContact(Some(Role::Administrative))]),
+            hidden(
+                &rows,
+                &[Field::NetContact(Some(Role::Administrative)).into()]
+            ),
             ["TOP-RIPE", "ABUSE-RIPE"]
         );
         let mut row = rows[0].clone();

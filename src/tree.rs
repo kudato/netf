@@ -996,6 +996,18 @@ impl Reporter for Relay {
             self.inner.clear_progress();
         }
     }
+
+    fn activity(&self, action: Option<&'static str>) {
+        if !self.state().captured {
+            self.inner.activity(action);
+        }
+    }
+
+    fn items(&self, done: u32, total: u32, unit: &'static str) {
+        if !self.state().captured {
+            self.inner.items(done, total, unit);
+        }
+    }
 }
 
 /// Runs `-i` and returns the output for stdout.
@@ -1021,7 +1033,10 @@ pub(crate) async fn run(
     relay: &Relay,
     terminal: Option<&mut dyn tui::Terminal>,
 ) -> Result<Vec<u8>> {
+    context.reporter.activity(Some("reading registry records"));
     let mut tree = build(context, plan, query, rows, relay.truncated()).await?;
+    context.reporter.activity(None);
+    context.reporter.clear_progress();
     if tree.is_empty() {
         return Ok(Vec::new());
     }

@@ -11,10 +11,89 @@
 //! maintainers or contacts, are joined with `; `. A contact is shown whole,
 //! without its postal address. A missing value is `-`.
 
+use super::column::Column;
 use crate::{
+    addr::Family,
     model::{AsInfo, Block, Contact, NetRecord, Row},
     query::Field,
 };
+
+/// Returns a selected output field, retaining legacy field values.
+pub(crate) fn output_cell(row: &Row, column: Column) -> String {
+    match column {
+        Column::Field(field) => cell(row, field),
+        Column::Match => matched(row),
+        Column::NetHolder => row
+            .chain
+            .records
+            .last()
+            .and_then(|record| record.org.as_ref())
+            .map(|org| org.name.clone().unwrap_or_else(|| org.handle.clone()))
+            .unwrap_or_else(|| NONE.into()),
+        Column::NetRange => net(row, true, |link| {
+            link.record
+                .map(|record| record.range.to_string())
+                .into_iter()
+                .collect()
+        }),
+        Column::NetAbuse => row
+            .chain
+            .records
+            .last()
+            .map(|record| mailboxes(&record.contacts))
+            .unwrap_or_else(|| NONE.into()),
+        Column::AsAbuse => ases(row, |info| {
+            vec![format!("AS{}: {}", info.asn, as_cell(info, column))]
+        }),
+    }
+}
+
+/// The complete selected address set, including every disjoint range.
+pub(crate) fn matched(row: &Row) -> String {
+    let values: Vec<_> = [Family::V4, Family::V6]
+        .into_iter()
+        .flat_map(|family| row.addresses.ranges(family))
+        .map(|range| {
+            if range.first() == range.last() {
+                range.first_addr().to_string()
+            } else {
+                range.to_string()
+            }
+        })
+        .collect();
+    if values.is_empty() {
+        NONE.into()
+    } else {
+        values.join(", ")
+    }
+}
+
+/// A field of one origin AS, so the human layout retains its association.
+pub(crate) fn as_cell(info: &AsInfo, column: Column) -> String {
+    match column {
+        Column::AsAbuse => info
+            .rdap
+            .as_ref()
+            .map(|record| mailboxes(&record.contacts))
+            .unwrap_or_else(|| NONE.into()),
+        Column::Field(field) => joined(vec![as_values(info, field)], ", "),
+        _ => NONE.into(),
+    }
+}
+
+/// The abuse mailboxes of one record, without contact names or handles.
+fn mailboxes(contacts: &[Contact]) -> String {
+    let emails: Vec<_> = contacts
+        .iter()
+        .filter(|contact| contact.roles.contains(&crate::model::Role::Abuse))
+        .flat_map(|contact| contact.email.iter().cloned())
+        .collect();
+    if emails.is_empty() {
+        NONE.into()
+    } else {
+        emails.join(", ")
+    }
+}
 
 /// The cell of a missing value.
 const NONE: &str = "-";
@@ -93,59 +172,61 @@ pub(crate) fn cell(row: &Row, field: Field) -> String {
                 .map(|record| contacts(&record.contacts, role))
                 .unwrap_or_default()
         }),
-        Field::AsAsn => ases(row, |info| vec![format!("AS{}", info.asn)]),
-        Field::AsName => ases(row, |info| {
-            info.entry
-                .as_ref()
-                .map(|entry| entry.name.clone())
-                .filter(|name| !name.is_empty())
-                .or_else(|| info.rdap.as_ref().and_then(|record| record.name.clone()))
-                .into_iter()
-                .collect()
-        }),
-        Field::AsOrg => ases(row, |info| {
-            info.rdap
-                .as_ref()
-                .and_then(|record| record.org.as_ref())
-                .map(|org| org.name.clone().unwrap_or_else(|| org.handle.clone()))
-                .or_else(|| {
-                    info.block
-                        .as_ref()
-                        .and_then(|block| block.opaque_id.as_deref().map(str::to_owned))
-                })
-                .into_iter()
-                .collect()
-        }),
-        Field::AsCountry => ases(row, |info| {
-            info.entry
-                .as_ref()
-                .and_then(|entry| entry.country)
-                .or_else(|| info.block.as_ref().map(|block| block.cc))
-                .map(|cc| cc.to_string())
-                .into_iter()
-                .collect()
-        }),
-        Field::AsRir => ases(row, |info| {
-            info.block
-                .as_ref()
-                .map(|block| block.rir)
-                .or_else(|| info.rdap.as_ref().map(|record| record.rir))
-                .map(|rir| rir.name().to_owned())
-                .into_iter()
-                .collect()
-        }),
-        Field::AsMnt => ases(row, |info| {
-            info.rdap
-                .as_ref()
-                .map(|record| record.mnt.clone())
-                .unwrap_or_default()
-        }),
-        Field::AsContact(role) => ases(row, |info| {
-            info.rdap
-                .as_ref()
-                .map(|record| contacts(&record.contacts, role))
-                .unwrap_or_default()
-        }),
+        field => ases(row, |info| as_values(info, field)),
+    }
+}
+
+/// Returns the values of one AS field.
+fn as_values(info: &AsInfo, field: Field) -> Vec<String> {
+    match field {
+        Field::AsAsn => vec![format!("AS{}", info.asn)],
+        Field::AsName => info
+            .entry
+            .as_ref()
+            .map(|entry| entry.name.clone())
+            .filter(|name| !name.is_empty())
+            .or_else(|| info.rdap.as_ref().and_then(|record| record.name.clone()))
+            .into_iter()
+            .collect(),
+        Field::AsOrg => info
+            .rdap
+            .as_ref()
+            .and_then(|record| record.org.as_ref())
+            .map(|org| org.name.clone().unwrap_or_else(|| org.handle.clone()))
+            .or_else(|| {
+                info.block
+                    .as_ref()
+                    .and_then(|block| block.opaque_id.as_deref().map(str::to_owned))
+            })
+            .into_iter()
+            .collect(),
+        Field::AsCountry => info
+            .entry
+            .as_ref()
+            .and_then(|entry| entry.country)
+            .or_else(|| info.block.as_ref().map(|block| block.cc))
+            .map(|cc| cc.to_string())
+            .into_iter()
+            .collect(),
+        Field::AsRir => info
+            .block
+            .as_ref()
+            .map(|block| block.rir)
+            .or_else(|| info.rdap.as_ref().map(|record| record.rir))
+            .map(|rir| rir.name().to_owned())
+            .into_iter()
+            .collect(),
+        Field::AsMnt => info
+            .rdap
+            .as_ref()
+            .map(|record| record.mnt.clone())
+            .unwrap_or_default(),
+        Field::AsContact(role) => info
+            .rdap
+            .as_ref()
+            .map(|record| contacts(&record.contacts, role))
+            .unwrap_or_default(),
+        _ => Vec::new(),
     }
 }
 

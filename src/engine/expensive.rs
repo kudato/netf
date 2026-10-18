@@ -92,6 +92,7 @@ pub(crate) async fn check(
     let mut checked = Checked::default();
     let mut consumed = 0;
     let mut done = 0;
+    engine.reporter.items(0, total, "networks");
     while let Some(next) = checks.next().await {
         let (row, fetched) = match next {
             Ok(next) => next,
